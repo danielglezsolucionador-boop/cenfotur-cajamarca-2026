@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sesión 7 | Estados Financieros Básicos | CENFOTUR Cajamarca</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --tierra: #8B5E3C;
+    --tierra-light: #C4946A;
+    --tierra-pale: #F5EDE4;
+    --ocre: #C8922A;
+    --ocre-light: #F0C96A;
+    --ocre-pale: #FDF5E0;
+    --verde: #2E6B4F;
+    --verde-light: #52A97A;
+    --verde-pale: #E5F4EC;
+    --azul: #1B3D6E;
+    --azul-light: #3A6CB5;
+    --azul-pale: #EAF0FA;
+    --rojo: #B83232;
+    --rojo-pale: #FDEAEA;
+    --gris: #F7F5F2;
+    --gris-dark: #6B6560;
+    --text: #1A1410;
+    --text-soft: #5A534C;
+    --border: #E0D8CF;
+    --white: #FFFFFF;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: var(--gris);
+    color: var(--text);
+    line-height: 1.65;
+    font-size: 16px;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(160deg, var(--azul) 0%, #112850 100%);
+    color: white;
+    padding: 60px 24px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: rgba(200,146,42,0.12);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -40px;
+    width: 240px; height: 240px;
+    border-radius: 50%;
+    background: rgba(46,107,79,0.15);
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: var(--ocre-light);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 6vw, 48px);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-sub {
+    font-size: 17px;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 32px;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-meta {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-meta span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.85);
+  }
+  .hero-meta .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--ocre-light);
+    flex-shrink: 0;
+  }
+
+  /* SECTIONS */
+  .section {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 48px 24px 0;
+  }
+  .section:last-child { padding-bottom: 64px; }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--tierra);
+    margin-bottom: 6px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 4vw, 30px);
+    font-weight: 700;
+    color: var(--azul);
+    margin-bottom: 24px;
+    line-height: 1.25;
+  }
+
+  /* OBJETIVOS */
+  .obj-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .obj-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+    border-top: 3px solid var(--ocre);
+  }
+  .obj-card .num {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--ocre-light);
+    font-family: 'Playfair Display', serif;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .obj-card p {
+    font-size: 14px;
+    color: var(--text-soft);
+    line-height: 1.5;
+  }
+
+  /* AGENDA */
+  .agenda-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--white);
+  }
+  .agenda-item {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+  .agenda-item:last-child { border-bottom: none; }
+  .agenda-time {
+    background: var(--gris);
+    padding: 16px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--tierra);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-right: 1px solid var(--border);
+  }
+  .agenda-content {
+    padding: 14px 18px;
+  }
+  .agenda-content strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .agenda-content p {
+    font-size: 13px;
+    color: var(--text-soft);
+  }
+  .agenda-highlight {
+    background: var(--azul-pale);
+  }
+  .agenda-highlight .agenda-time {
+    background: var(--azul);
+    color: white;
+  }
+  .agenda-highlight .agenda-content strong {
+    color: var(--azul);
+  }
+
+  /* FORMULA BOX */
+  .formula-box {
+    background: var(--azul);
+    color: white;
+    border-radius: 12px;
+    padding: 28px 32px;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .formula-box .formula-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 4vw, 28px);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    margin-bottom: 8px;
+  }
+  .formula-box .formula-note {
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+  }
+
+  /* BALANCE TABLE */
+  .balance-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 580px) { .balance-grid { grid-template-columns: 1fr; } }
+  .balance-col {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .balance-header {
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .balance-header.activo {
+    background: var(--azul);
+    color: white;
+  }
+  .balance-header.pasivo {
+    background: var(--tierra);
+    color: white;
+  }
+  .balance-sub {
+    background: var(--white);
+    padding: 0;
+  }
+  .balance-sub-header {
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-soft);
+    background: var(--gris);
+    border-bottom: 1px solid var(--border);
+    border-top: 1px solid var(--border);
+  }
+  .balance-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 16px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+  .balance-row:last-child { border-bottom: none; }
+  .balance-row.total {
+    font-weight: 600;
+    background: var(--gris);
+    color: var(--azul);
+  }
+  .balance-row.patrimonio {
+    background: var(--verde-pale);
+    font-weight: 600;
+    color: var(--verde);
+  }
+
+  /* CASCADA */
+  .cascada {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--white);
+  }
+  .cascada-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    align-items: center;
+    gap: 12px;
+  }
+  .cascada-row:last-child { border-bottom: none; }
+  .cascada-row.neg { color: var(--rojo); }
+  .cascada-row.pos { color: var(--verde); font-weight: 600; }
+  .cascada-row.total-row {
+    background: var(--azul);
+    color: white;
+    font-weight: 600;
+    font-size: 15px;
+  }
+  .cascada-row.sub-total {
+    background: var(--verde-pale);
+    color: var(--verde);
+    font-weight: 600;
+  }
+  .cascada-val { font-weight: 600; white-space: nowrap; }
+  .cascada-row.neg .cascada-val { color: var(--rojo); }
+
+  /* CASOS */
+  .casos-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    padding: 8px 18px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    background: var(--white);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--text-soft);
+    transition: all 0.2s;
+  }
+  .tab-btn.active {
+    background: var(--azul);
+    color: white;
+    border-color: var(--azul);
+  }
+  .caso-panel { display: none; }
+  .caso-panel.active { display: block; }
+
+  .caso-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .caso-card h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--azul);
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .caso-data {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 540px) { .caso-data { grid-template-columns: 1fr; } }
+  .dato-grupo {
+    background: var(--gris);
+    border-radius: 8px;
+    padding: 14px;
+  }
+  .dato-grupo h5 {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--tierra);
+    margin-bottom: 8px;
+  }
+  .dato-line {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    padding: 3px 0;
+    color: var(--text-soft);
+  }
+  .dato-line strong { color: var(--text); }
+
+  .resultado-box {
+    background: var(--verde-pale);
+    border: 1px solid var(--verde-light);
+    border-radius: 10px;
+    padding: 16px 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+  }
+  .res-item { text-align: center; }
+  .res-label { font-size: 11px; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+  .res-value { font-size: 20px; font-weight: 700; color: var(--verde); font-family: 'Playfair Display', serif; }
+
+  /* PREGUNTAS */
+  .pregunta-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .pregunta-item {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--ocre);
+    border-radius: 0 10px 10px 0;
+    padding: 16px 20px;
+  }
+  .pregunta-item p {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--text-soft);
+  }
+  .pregunta-item strong { color: var(--text); display: block; margin-bottom: 4px; }
+
+  /* CONCEPTOS CLAVE */
+  .concepto-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+  }
+  .concepto-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+  }
+  .concepto-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  .concepto-card h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .concepto-card p {
+    font-size: 13px;
+    color: var(--text-soft);
+    line-height: 1.5;
+  }
+
+  /* CIERRE */
+  .cierre-box {
+    background: var(--azul);
+    color: white;
+    border-radius: 16px;
+    padding: 36px 32px;
+    text-align: center;
+  }
+  .cierre-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    margin-bottom: 12px;
+  }
+  .cierre-box p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 24px;
+  }
+  .cierre-tags {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .cierre-tag {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--ocre-light);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 100px;
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 28px 24px;
+    font-size: 12px;
+    color: var(--gris-dark);
+    border-top: 1px solid var(--border);
+    margin-top: 48px;
+  }
+
+  /* REPASO */
+  .repaso-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+  }
+  .repaso-item {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: var(--text-soft);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .repaso-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--tierra-light);
+    margin-top: 5px;
+    flex-shrink: 0;
+  }
+
+  hr.divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 40px 0 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="badge">CENFOTUR · Cajamarca, Perú</div>
+  <h1>Estados Financieros<br>Básicos</h1>
+  <p class="hero-sub">Sesión 7 de 8 · Costos, Presupuesto y Principios Financieros en Turismo</p>
+  <div class="hero-meta">
+    <span><span class="dot"></span> 120 minutos · Zoom</span>
+    <span><span class="dot"></span> Restaurantes, hoteles y agencias</span>
+    <span><span class="dot"></span> Cajamarca, 2024</span>
+  </div>
+</div>
+
+<!-- REPASO SESIÓN 6 -->
+<div class="section">
+  <p class="section-label">Antes de empezar</p>
+  <h2 class="section-title">Repaso de la Sesión 6</h2>
+  <div class="repaso-grid">
+    <div class="repaso-item"><span class="repaso-dot"></span>Sistema financiero peruano: SBS, diversificación, inclusión financiera</div>
+    <div class="repaso-item"><span class="repaso-dot"></span>Crédito formal vs. informal: tasas, requisitos y riesgos</div>
+    <div class="repaso-item"><span class="repaso-dot"></span>Productos financieros: créditos, leasing, factoring, líneas de crédito</div>
+    <div class="repaso-item"><span class="repaso-dot"></span>Tasa fija vs. variable y costo efectivo del crédito</div>
+    <div class="repaso-item"><span class="repaso-dot"></span>Formas de pago: pago único, cuotas, negociación, consolidación</div>
+    <div class="repaso-item"><span class="repaso-dot"></span>El triángulo financiero: rentabilidad, riesgo y liquidez</div>
+  </div>
+</div>
+
+<!-- OBJETIVOS -->
+<div class="section">
+  <p class="section-label">¿Qué logras hoy?</p>
+  <h2 class="section-title">Objetivos de la sesión</h2>
+  <div class="obj-grid">
+    <div class="obj-card">
+      <div class="num">01</div>
+      <p>Identificar y leer el <strong>Balance General</strong> de una empresa turística</p>
+    </div>
+    <div class="obj-card">
+      <div class="num">02</div>
+      <p>Interpretar el <strong>Estado de Ganancias y Pérdidas</strong> paso a paso</p>
+    </div>
+    <div class="obj-card">
+      <div class="num">03</div>
+      <p>Armar ambos estados financieros con los <strong>números reales de tu negocio</strong></p>
+    </div>
+    <div class="obj-card">
+      <div class="num">04</div>
+      <p>Tomar decisiones financieras con base en lo que muestran los documentos</p>
+    </div>
+  </div>
+</div>
+
+<!-- AGENDA -->
+<div class="section">
+  <p class="section-label">Estructura</p>
+  <h2 class="section-title">¿Cómo fluye la sesión?</h2>
+  <div class="agenda-list">
+    <div class="agenda-item">
+      <div class="agenda-time">0 – 5 min</div>
+      <div class="agenda-content">
+        <strong>Repaso Sesión 6</strong>
+        <p>3 preguntas sobre crédito, sistema financiero y costo efectivo</p>
+      </div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-time">5 – 15 min</div>
+      <div class="agenda-content">
+        <strong>Apertura y encuadre</strong>
+        <p>Pregunta de impacto: ¿sabes leer tu Balance General?</p>
+      </div>
+    </div>
+    <div class="agenda-item agenda-highlight">
+      <div class="agenda-time">15 – 45 min</div>
+      <div class="agenda-content">
+        <strong>Bloque 1 · Balance General</strong>
+        <p>Activo, Pasivo, Patrimonio. Caso en vivo: Hotel Laguna Seca</p>
+      </div>
+    </div>
+    <div class="agenda-item agenda-highlight">
+      <div class="agenda-time">45 – 75 min</div>
+      <div class="agenda-content">
+        <strong>Bloque 2 · Estado de Resultados</strong>
+        <p>Estructura completa en cascada. Caso: Restaurante El Batán</p>
+      </div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-time">75 – 110 min</div>
+      <div class="agenda-content">
+        <strong>Trabajo grupal</strong>
+        <p>Caso Agencia Inca Trail Cajamarca: arman balance y estado de resultados</p>
+      </div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-time">110 – 120 min</div>
+      <div class="agenda-content">
+        <strong>Cierre</strong>
+        <p>Resumen + anticipo de la sesión final de evaluación</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BALANCE GENERAL -->
+<div class="section">
+  <p class="section-label">Bloque 1</p>
+  <h2 class="section-title">Balance General: la fotografía financiera</h2>
+
+  <div class="formula-box" style="margin-bottom: 24px;">
+    <div class="formula-text">ACTIVO TOTAL = PASIVO + PATRIMONIO NETO</div>
+    <div class="formula-note">Esta ecuación siempre se cumple. Si no se cumple, hay un error contable.</div>
+  </div>
+
+  <div class="balance-grid">
+    <div class="balance-col">
+      <div class="balance-header activo">ACTIVO — Lo que la empresa TIENE</div>
+      <div class="balance-sub">
+        <div class="balance-sub-header">Corriente (liquidez alta)</div>
+        <div class="balance-row"><span>Caja y bancos</span></div>
+        <div class="balance-row"><span>Cuentas por cobrar</span></div>
+        <div class="balance-row"><span>Inventarios y materiales</span></div>
+        <div class="balance-row"><span>Pagos anticipados</span></div>
+        <div class="balance-sub-header">No Corriente (liquidez baja)</div>
+        <div class="balance-row"><span>Inmuebles (terreno / edificio)</span></div>
+        <div class="balance-row"><span>Maquinaria y equipos</span></div>
+        <div class="balance-row"><span>Muebles y enseres</span></div>
+        <div class="balance-row"><span>Vehículos</span></div>
+      </div>
+    </div>
+    <div class="balance-col">
+      <div class="balance-header pasivo">PASIVO — Lo que la empresa DEBE</div>
+      <div class="balance-sub">
+        <div class="balance-sub-header">Corriente (deuda corto plazo)</div>
+        <div class="balance-row"><span>Préstamos bancarios &lt;1 año</span></div>
+        <div class="balance-row"><span>Cuentas por pagar proveedores</span></div>
+        <div class="balance-row"><span>Impuestos por pagar (IGV, renta)</span></div>
+        <div class="balance-sub-header">No Corriente (deuda largo plazo)</div>
+        <div class="balance-row"><span>Préstamos hipotecarios</span></div>
+        <div class="balance-row"><span>Leasing de equipos (3–5 años)</span></div>
+        <div class="balance-row"><span>Deudas a socios a largo plazo</span></div>
+        <div class="balance-sub-header">Patrimonio Neto</div>
+        <div class="balance-row patrimonio"><span>Capital + Ganancias acumuladas</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ESTADO DE RESULTADOS -->
+<div class="section">
+  <p class="section-label">Bloque 2</p>
+  <h2 class="section-title">Estado de Resultados: la película del negocio</h2>
+  <div class="cascada">
+    <div class="cascada-row pos">
+      <span>Ventas (ingresos totales del período)</span>
+      <span class="cascada-val" style="color:var(--verde);">+ Ventas</span>
+    </div>
+    <div class="cascada-row neg">
+      <span>(–) Costo de Ventas (insumos, materia prima, guías)</span>
+      <span class="cascada-val">– Costos</span>
+    </div>
+    <div class="cascada-row sub-total">
+      <span>= UTILIDAD BRUTA</span>
+      <span class="cascada-val">Subtotal</span>
+    </div>
+    <div class="cascada-row neg">
+      <span>(–) Gastos Administrativos (sueldos, alquiler, servicios)</span>
+      <span class="cascada-val">– G. Admin</span>
+    </div>
+    <div class="cascada-row neg">
+      <span>(–) Gastos de Venta (publicidad, comisiones de reserva)</span>
+      <span class="cascada-val">– G. Venta</span>
+    </div>
+    <div class="cascada-row sub-total">
+      <span>= UTILIDAD OPERATIVA</span>
+      <span class="cascada-val">Subtotal</span>
+    </div>
+    <div class="cascada-row neg">
+      <span>(–) Gastos Financieros (intereses de préstamos)</span>
+      <span class="cascada-val">– G. Financ.</span>
+    </div>
+    <div class="cascada-row neg">
+      <span>(–) Impuesto a la Renta (según régimen: RUS, RER, General)</span>
+      <span class="cascada-val">– Impuesto</span>
+    </div>
+    <div class="cascada-row total-row">
+      <span>= UTILIDAD NETA — La ganancia real del negocio</span>
+      <span class="cascada-val">= Neto</span>
+    </div>
+  </div>
+</div>
+
+<!-- CASOS PRÁCTICOS -->
+<div class="section">
+  <p class="section-label">Casos prácticos</p>
+  <h2 class="section-title">Negocios reales de Cajamarca</h2>
+
+  <div class="casos-tabs">
+    <button class="tab-btn active" onclick="showCaso('laguna')">Hotel Laguna Seca</button>
+    <button class="tab-btn" onclick="showCaso('batan')">Rest. El Batán</button>
+    <button class="tab-btn" onclick="showCaso('inca')">Agencia Inca Trail</button>
+  </div>
+
+  <!-- LAGUNA SECA -->
+  <div class="caso-panel active" id="caso-laguna">
+    <div class="caso-card">
+      <h4>Hotel Laguna Seca · Balance General al 31/12/2024</h4>
+      <div class="caso-data">
+        <div class="dato-grupo">
+          <h5>Activos</h5>
+          <div class="dato-line"><span>Caja y bancos</span><strong>S/ 8,500</strong></div>
+          <div class="dato-line"><span>Cuentas por cobrar</span><strong>S/ 12,000</strong></div>
+          <div class="dato-line"><span>Inventario amenities</span><strong>S/ 4,200</strong></div>
+          <div class="dato-line"><span>Inmuebles</span><strong>S/ 420,000</strong></div>
+          <div class="dato-line"><span>Mobiliario y equipos</span><strong>S/ 65,000</strong></div>
+          <div class="dato-line"><span>Vehículo</span><strong>S/ 38,000</strong></div>
+        </div>
+        <div class="dato-grupo">
+          <h5>Pasivos</h5>
+          <div class="dato-line"><span>Préstamo corto plazo</span><strong>S/ 15,000</strong></div>
+          <div class="dato-line"><span>Cuentas por pagar</span><strong>S/ 6,800</strong></div>
+          <div class="dato-line"><span>Impuestos por pagar</span><strong>S/ 2,400</strong></div>
+          <div class="dato-line"><span>Préstamo hipotecario LP</span><strong>S/ 180,000</strong></div>
+        </div>
+      </div>
+      <div class="resultado-box">
+        <div class="res-item">
+          <div class="res-label">Activo Total</div>
+          <div class="res-value">S/ 547,700</div>
+        </div>
+        <div class="res-item">
+          <div class="res-label">Pasivo Total</div>
+          <div class="res-value" style="color:var(--rojo);">S/ 204,200</div>
+        </div>
+        <div class="res-item">
+          <div class="res-label">Patrimonio Neto</div>
+          <div class="res-value">S/ 343,500</div>
+        </div>
+        <div class="res-item">
+          <div class="res-label">% de los dueños</div>
+          <div class="res-value">62.7%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EL BATÁN -->
+  <div class="caso-panel" id="caso-batan">
+    <div class="caso-card">
+      <h4>Restaurante El Batán · Estado de Resultados — Diciembre 2024</h4>
+      <div class="cascada">
+        <div class="cascada-row pos"><span>Ventas (390 menús × S/ 22)</span><span class="cascada-val" style="color:var(--verde);">S/ 8,580</span></div>
+        <div class="cascada-row neg"><span>(–) Costo de Ventas (390 × S/ 8.50)</span><span class="cascada-val">S/ 3,315</span></div>
+        <div class="cascada-row sub-total"><span>= UTILIDAD BRUTA</span><span class="cascada-val">S/ 5,265</span></div>
+        <div class="cascada-row neg"><span>(–) Gastos Administrativos</span><span class="cascada-val">S/ 4,590</span></div>
+        <div class="cascada-row neg"><span>(–) Gastos de Venta</span><span class="cascada-val">S/ 150</span></div>
+        <div class="cascada-row sub-total"><span>= UTILIDAD OPERATIVA</span><span class="cascada-val">S/ 525</span></div>
+        <div class="cascada-row neg"><span>(–) Gastos Financieros</span><span class="cascada-val">S/ 80</span></div>
+        <div class="cascada-row neg"><span>(–) Impuesto a la Renta (RUS 1%)</span><span class="cascada-val">S/ 86</span></div>
+        <div class="cascada-row total-row"><span>= UTILIDAD NETA</span><span class="cascada-val">S/ 359</span></div>
+      </div>
+      <div style="margin-top:16px; background:var(--ocre-pale); border:1px solid var(--ocre-light); border-radius:10px; padding:14px 18px; font-size:13px; color:var(--text-soft);">
+        <strong style="color:var(--tierra); display:block; margin-bottom:4px;">Reflexión clave</strong>
+        El punto de equilibrio (Sesión 1) indicaba 340 menús. Don Marcos vendió 390. ¿Por qué la utilidad neta es solo S/ 359? Porque el PE no consideraba los gastos de venta ni los financieros. El Estado de Resultados completo es más preciso.
+      </div>
+    </div>
+  </div>
+
+  <!-- INCA TRAIL -->
+  <div class="caso-panel" id="caso-inca">
+    <div class="caso-card">
+      <h4>Agencia Inca Trail Cajamarca · Caso Grupal</h4>
+      <div class="caso-data">
+        <div class="dato-grupo">
+          <h5>Activos — Balance al 31/12/2024</h5>
+          <div class="dato-line"><span>Caja y bancos</span><strong>S/ 5,200</strong></div>
+          <div class="dato-line"><span>Cuentas por cobrar corporativas</span><strong>S/ 18,500</strong></div>
+          <div class="dato-line"><span>Útiles y materiales de tour</span><strong>S/ 3,800</strong></div>
+          <div class="dato-line"><span>Vehículo Toyota Hi-Ace (2022)</span><strong>S/ 95,000</strong></div>
+          <div class="dato-line"><span>Equipos de oficina</span><strong>S/ 12,000</strong></div>
+          <div class="dato-line"><span>Software de reservas</span><strong>S/ 4,500</strong></div>
+        </div>
+        <div class="dato-grupo">
+          <h5>Pasivos + Resultados anuales</h5>
+          <div class="dato-line"><span>Préstamo vehículo (36 meses)</span><strong>S/ 58,000</strong></div>
+          <div class="dato-line"><span>Cuentas por pagar hoteles</span><strong>S/ 9,200</strong></div>
+          <div class="dato-line"><span>Impuestos por pagar (IGV)</span><strong>S/ 2,100</strong></div>
+          <hr style="border:none;border-top:1px solid var(--border);margin:8px 0;">
+          <div class="dato-line"><span>Ingresos por tours</span><strong>S/ 285,000</strong></div>
+          <div class="dato-line"><span>Costo de tours</span><strong>S/ 162,000</strong></div>
+          <div class="dato-line"><span>Sueldos (3 personas)</span><strong>S/ 42,000</strong></div>
+          <div class="dato-line"><span>Alquiler + marketing + depreciación</span><strong>S/ 41,900</strong></div>
+          <div class="dato-line"><span>Intereses préstamo</span><strong>S/ 7,200</strong></div>
+        </div>
+      </div>
+
+      <div class="resultado-box" style="margin-bottom:16px;">
+        <div class="res-item">
+          <div class="res-label">Activo Total</div>
+          <div class="res-value">S/ 139,000</div>
+        </div>
+        <div class="res-item">
+          <div class="res-label">Patrimonio Neto</div>
+          <div class="res-value">S/ 69,700</div>
+        </div>
+        <div class="res-item">
+          <div class="res-label">Utilidad Neta</div>
+          <div class="res-value">S/ 22,590</div>
+        </div>
+        <div class="res-item">
+          <div class="res-label">Margen Neto</div>
+          <div class="res-value">7.9%</div>
+        </div>
+      </div>
+
+      <div class="pregunta-list">
+        <div class="pregunta-item">
+          <p><strong>Pregunta 1</strong>Construye el Balance General completo con sus totales y calcula el Patrimonio Neto.</p>
+        </div>
+        <div class="pregunta-item">
+          <p><strong>Pregunta 2</strong>Construye el Estado de Resultados: Utilidad Bruta, Operativa, antes de impuestos y Utilidad Neta.</p>
+        </div>
+        <div class="pregunta-item">
+          <p><strong>Pregunta 3</strong>Calcula el margen de utilidad neta (Utilidad Neta / Ventas × 100). ¿Ese porcentaje es saludable para una agencia de viajes?</p>
+        </div>
+        <div class="pregunta-item">
+          <p><strong>Pregunta 4</strong>¿La empresa puede pagar sus deudas de corto plazo con sus activos líquidos? Ratio de liquidez corriente = S/ 27,500 / S/ 11,300 = <strong>2.43</strong> — situación saludable.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONCEPTOS CLAVE -->
+<div class="section">
+  <p class="section-label">Para llevar</p>
+  <h2 class="section-title">Conceptos clave de la sesión</h2>
+  <div class="concepto-grid">
+    <div class="concepto-card">
+      <div class="concepto-icon" style="background:var(--azul-pale);">📸</div>
+      <h4>Balance General</h4>
+      <p>Fotografía financiera de la empresa en una fecha exacta. Activo = Pasivo + Patrimonio.</p>
+    </div>
+    <div class="concepto-card">
+      <div class="concepto-icon" style="background:var(--verde-pale);">🎬</div>
+      <h4>Estado de Resultados</h4>
+      <p>Película del negocio durante un período. Muestra cómo se llega a la utilidad neta.</p>
+    </div>
+    <div class="concepto-card">
+      <div class="concepto-icon" style="background:var(--ocre-pale);">⚖️</div>
+      <h4>Utilidad Bruta vs. Neta</h4>
+      <p>La diferencia entre ambas son los gastos operativos, financieros e impuestos.</p>
+    </div>
+    <div class="concepto-card">
+      <div class="concepto-icon" style="background:var(--tierra-pale);">💧</div>
+      <h4>Ratio de Liquidez</h4>
+      <p>Activo corriente / Pasivo corriente. Mayor a 1.5 indica buena capacidad de pago.</p>
+    </div>
+    <div class="concepto-card">
+      <div class="concepto-icon" style="background:var(--rojo-pale);">📊</div>
+      <h4>Margen Neto</h4>
+      <p>Utilidad Neta / Ventas × 100. Mide qué porcentaje de las ventas se convierte en ganancia real.</p>
+    </div>
+    <div class="concepto-card">
+      <div class="concepto-icon" style="background:var(--azul-pale);">🏛️</div>
+      <h4>Patrimonio Neto</h4>
+      <p>Lo que realmente pertenece a los dueños: Activo Total menos Pasivo Total.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CIERRE -->
+<div class="section">
+  <div class="cierre-box">
+    <h3>¡Próxima sesión: Evaluación Final!</h3>
+    <p>En la Sesión 8 aplicarás todo lo aprendido en el curso con casos integrales de tu propio negocio en Cajamarca.</p>
+    <div class="cierre-tags">
+      <span class="cierre-tag">Balance General ✓</span>
+      <span class="cierre-tag">Estado de Resultados ✓</span>
+      <span class="cierre-tag">Análisis de liquidez ✓</span>
+      <span class="cierre-tag">Margen neto ✓</span>
+    </div>
+  </div>
+</div>
+
+<footer>
+  Sesión 7 de 8 · Costos, Presupuesto y Principios Financieros en Turismo · CENFOTUR Cajamarca, Perú<br>
+  Documento preparado con Claude AI · Uso exclusivo del facilitador
+</footer>
+
+<script>
+function showCaso(id) {
+  document.querySelectorAll('.caso-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('caso-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+
+</body>
+</html>

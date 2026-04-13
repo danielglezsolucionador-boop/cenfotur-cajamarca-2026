@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sesión 4 | Flujo de Caja y Liquidez — CENFOTUR Cajamarca</title>
+<style>
+  :root {
+    --azul: #1D5FA0;
+    --azul-claro: #D6E8F7;
+    --azul-oscuro: #0D3A6B;
+    --dorado: #B8860B;
+    --dorado-claro: #FFF8E1;
+    --verde: #1B5E20;
+    --verde-claro: #E8F5E9;
+    --verde-medio: #2E7D32;
+    --amarillo: #F57F17;
+    --amarillo-claro: #FFFDE7;
+    --rojo: #C62828;
+    --rojo-claro: #FFEBEE;
+    --gris: #F5F5F5;
+    --gris-borde: #E0E0E0;
+    --texto: #1A1A1A;
+    --texto-sec: #555;
+    --blanco: #FFFFFF;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #F8F9FA; color: var(--texto); line-height: 1.6; }
+
+  .header { background: var(--azul-oscuro); color: white; padding: 1.5rem 1rem; text-align: center; }
+  .header .badge { display: inline-block; background: var(--dorado); color: white; font-size: 11px; font-weight: 700; padding: 3px 12px; border-radius: 20px; margin-bottom: 10px; letter-spacing: .06em; text-transform: uppercase; }
+  .header h1 { font-size: clamp(1.4rem, 4vw, 2.1rem); font-weight: 700; margin-bottom: 6px; }
+  .header p { font-size: 14px; opacity: .85; max-width: 580px; margin: 0 auto; }
+
+  .progreso { background: var(--azul); padding: .75rem 1rem; }
+  .prog-inner { max-width: 720px; margin: 0 auto; display: flex; align-items: center; gap: 12px; }
+  .prog-label { font-size: 12px; color: rgba(255,255,255,.75); white-space: nowrap; }
+  .prog-bar { flex: 1; height: 6px; background: rgba(255,255,255,.2); border-radius: 3px; overflow: hidden; }
+  .prog-fill { height: 100%; width: 50%; background: var(--dorado); border-radius: 3px; }
+  .prog-num { font-size: 12px; color: white; font-weight: 700; white-space: nowrap; }
+
+  .main { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+
+  .section-title { font-size: 18px; font-weight: 700; color: var(--azul); margin: 2rem 0 .5rem; padding-bottom: 8px; border-bottom: 2px solid var(--azul-claro); }
+  .section-sub { font-size: 13px; color: var(--texto-sec); margin-bottom: 1rem; line-height: 1.5; }
+
+  /* CONCEPTO CLAVE */
+  .concepto-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem; }
+  @media(max-width:500px){ .concepto-grid { grid-template-columns: 1fr; } }
+  .concepto-card { border-radius: 10px; padding: 1rem 1.25rem; }
+  .concepto-card.azul { background: var(--azul-claro); border-left: 4px solid var(--azul); }
+  .concepto-card.dorado { background: var(--dorado-claro); border-left: 4px solid var(--dorado); }
+  .concepto-tit { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+  .concepto-card.azul .concepto-tit { color: var(--azul); }
+  .concepto-card.dorado .concepto-tit { color: var(--dorado); }
+  .concepto-def { font-size: 13px; color: var(--texto); line-height: 1.5; }
+  .concepto-ej { font-size: 12px; color: var(--texto-sec); margin-top: 6px; font-style: italic; }
+
+  /* FORMULA */
+  .formula-box { background: var(--dorado-claro); border: 1.5px solid var(--dorado); border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; text-align: center; }
+  .formula-label { font-size: 11px; font-weight: 700; color: var(--dorado); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .formula-text { font-family: 'Courier New', monospace; font-size: 16px; font-weight: 700; color: var(--texto); }
+  .formula-nota { font-size: 12px; color: var(--texto-sec); margin-top: 8px; }
+  .formula-nota span { color: var(--rojo); font-weight: 600; }
+
+  /* SEMAFORO */
+  .semaforo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+  @media(max-width:480px){ .semaforo-grid { grid-template-columns: 1fr; } }
+  .sem-card { border-radius: 10px; padding: .9rem 1rem; }
+  .sem-card.verde { background: var(--verde-claro); border-left: 4px solid var(--verde-medio); }
+  .sem-card.amarillo { background: var(--amarillo-claro); border-left: 4px solid var(--amarillo); }
+  .sem-card.rojo { background: var(--rojo-claro); border-left: 4px solid var(--rojo); }
+  .sem-icono { font-size: 20px; margin-bottom: 4px; }
+  .sem-tit { font-size: 12px; font-weight: 700; margin-bottom: 4px; }
+  .sem-card.verde .sem-tit { color: var(--verde); }
+  .sem-card.amarillo .sem-tit { color: var(--amarillo); }
+  .sem-card.rojo .sem-tit { color: var(--rojo); }
+  .sem-desc { font-size: 12px; color: var(--texto-sec); line-height: 1.4; }
+
+  /* SIMULADOR FLUJO DE CAJA */
+  .sim-card { background: var(--blanco); border: 1px solid var(--gris-borde); border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
+  .sim-title { font-size: 15px; font-weight: 700; color: var(--azul); margin-bottom: 4px; }
+  .sim-sub { font-size: 12px; color: var(--texto-sec); margin-bottom: 16px; }
+
+  .mes-tabs { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+  .mes-tab { padding: 6px 16px; border: 1.5px solid var(--gris-borde); border-radius: 20px; background: var(--blanco); font-size: 13px; color: var(--texto-sec); cursor: pointer; transition: all .15s; }
+  .mes-tab.active { background: var(--azul); color: white; border-color: var(--azul); }
+
+  .mes-panel { display: none; }
+  .mes-panel.active { display: block; }
+
+  .input-section { margin-bottom: 14px; }
+  .input-section-label { font-size: 12px; font-weight: 700; color: var(--texto-sec); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid var(--gris-borde); }
+  .input-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .input-row label { font-size: 12px; color: var(--texto-sec); flex: 1; min-width: 0; }
+  .input-row input { width: 110px; height: 34px; border: 1px solid var(--gris-borde); border-radius: 6px; padding: 0 10px; font-size: 13px; color: var(--texto); background: var(--gris); text-align: right; flex-shrink: 0; }
+  .input-row input:focus { outline: none; border-color: var(--azul); background: white; }
+
+  .resultado-tabla { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 13px; }
+  .resultado-tabla th { background: var(--azul); color: white; padding: 8px 12px; text-align: left; font-weight: 600; }
+  .resultado-tabla td { padding: 7px 12px; border-bottom: 1px solid var(--gris-borde); }
+  .resultado-tabla tr.total-e td { background: var(--verde-claro); color: var(--verde); font-weight: 700; }
+  .resultado-tabla tr.total-s td { background: var(--rojo-claro); color: var(--rojo); font-weight: 700; }
+  .resultado-tabla tr.neto td { background: var(--dorado-claro); color: #5D3A00; font-weight: 700; font-size: 14px; }
+  .resultado-tabla tr.saldo td { font-weight: 700; font-size: 14px; }
+  .resultado-tabla td.pos { color: var(--verde); }
+  .resultado-tabla td.neg { color: var(--rojo); }
+
+  .alerta-box { border-radius: 8px; padding: 10px 14px; margin-top: 14px; font-size: 13px; display: none; }
+  .alerta-box.show { display: block; }
+  .alerta-box.verde { background: var(--verde-claro); color: var(--verde); border-left: 3px solid var(--verde-medio); }
+  .alerta-box.amarillo { background: var(--amarillo-claro); color: var(--amarillo); border-left: 3px solid var(--amarillo); }
+  .alerta-box.rojo { background: var(--rojo-claro); color: var(--rojo); border-left: 3px solid var(--rojo); }
+  .alerta-tit { font-weight: 700; margin-bottom: 4px; }
+
+  /* CASO PRACTICA */
+  .caso-card { background: var(--blanco); border: 1px solid var(--gris-borde); border-radius: 12px; overflow: hidden; margin-bottom: 1.2rem; }
+  .caso-header { background: var(--azul); color: white; padding: .75rem 1.25rem; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+  .caso-tipo { font-size: 11px; background: rgba(255,255,255,.2); padding: 2px 8px; border-radius: 10px; font-weight: 400; }
+  .caso-body { padding: 1.25rem; display: none; }
+  .caso-body.open { display: block; }
+  .caso-dato { font-size: 13px; color: var(--texto-sec); margin-bottom: 5px; }
+  .caso-dato strong { color: var(--texto); }
+  .tabla-caso { width: 100%; border-collapse: collapse; font-size: 12px; margin: 12px 0; }
+  .tabla-caso th { background: var(--azul); color: white; padding: 6px 10px; text-align: right; }
+  .tabla-caso th:first-child { text-align: left; }
+  .tabla-caso td { padding: 5px 10px; border-bottom: 1px solid var(--gris-borde); text-align: right; }
+  .tabla-caso td:first-child { text-align: left; color: var(--texto-sec); }
+  .tabla-caso tr.entradas td { color: var(--verde); font-weight: 600; }
+  .tabla-caso tr.salidas td { color: var(--rojo); font-weight: 600; }
+  .tabla-caso tr.neto-r td { background: var(--dorado-claro); font-weight: 700; color: #5D3A00; }
+  .tabla-caso tr.saldo-r td { font-weight: 700; }
+  .tabla-caso td.neg-r { color: var(--rojo) !important; }
+  .tabla-caso td.pos-r { color: var(--verde) !important; }
+
+  .btn-resp { background: none; border: 1.5px solid var(--azul); color: var(--azul); padding: 5px 14px; border-radius: 8px; font-size: 12px; cursor: pointer; margin-top: 10px; }
+  .btn-resp:hover { background: var(--azul-claro); }
+  .resp-box { background: var(--verde-claro); border-left: 3px solid var(--verde-medio); border-radius: 0 8px 8px 0; padding: 10px 14px; margin-top: 8px; font-size: 13px; color: var(--verde); line-height: 1.6; display: none; }
+  .resp-box.show { display: block; }
+  .resp-box .alerta-roja { background: var(--rojo-claro); color: var(--rojo); border-left: 3px solid var(--rojo); padding: 8px 12px; border-radius: 0 6px 6px 0; margin: 8px 0; font-weight: 600; }
+
+  /* CREDITO */
+  .credito-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem; }
+  @media(max-width:480px){ .credito-grid { grid-template-columns: 1fr; } }
+  .credito-card { border-radius: 10px; padding: 1rem 1.25rem; }
+  .credito-card.formal { background: var(--verde-claro); border-top: 3px solid var(--verde-medio); }
+  .credito-card.informal { background: var(--rojo-claro); border-top: 3px solid var(--rojo); }
+  .credito-tit { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+  .credito-card.formal .credito-tit { color: var(--verde); }
+  .credito-card.informal .credito-tit { color: var(--rojo); }
+  .credito-item { font-size: 12px; color: var(--texto-sec); margin-bottom: 4px; padding-left: 8px; }
+
+  /* PRODUCTOS FINANCIEROS */
+  .productos-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 1.5rem; }
+  .prod-card { background: var(--blanco); border: 1px solid var(--gris-borde); border-radius: 10px; padding: 1rem 1.25rem; display: flex; gap: 14px; align-items: flex-start; }
+  .prod-num { width: 32px; height: 32px; border-radius: 50%; background: var(--azul); color: white; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .prod-info .prod-tit { font-size: 14px; font-weight: 700; color: var(--azul); margin-bottom: 4px; }
+  .prod-info .prod-desc { font-size: 13px; color: var(--texto-sec); line-height: 1.5; }
+  .prod-info .prod-cuando { font-size: 12px; color: var(--dorado); font-weight: 600; margin-top: 4px; }
+
+  /* QUIZ */
+  .quiz-card { background: var(--blanco); border: 1px solid var(--gris-borde); border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
+  .quiz-p { font-size: 14px; color: var(--texto); margin-bottom: 12px; line-height: 1.5; }
+  .quiz-opts { display: grid; gap: 8px; }
+  .quiz-opt { padding: 10px 14px; border: 1.5px solid var(--gris-borde); border-radius: 8px; font-size: 13px; cursor: pointer; transition: all .15s; background: var(--blanco); color: var(--texto); text-align: left; }
+  .quiz-opt:hover { border-color: var(--azul); background: var(--azul-claro); }
+  .quiz-opt.ok { background: var(--verde-claro); border-color: var(--verde-medio); color: var(--verde); }
+  .quiz-opt.ko { background: var(--rojo-claro); border-color: var(--rojo); color: var(--rojo); }
+  .quiz-fb { font-size: 12px; margin-top: 10px; padding: 8px 12px; border-radius: 8px; display: none; line-height: 1.5; }
+  .quiz-fb.show { display: block; }
+  .quiz-fb.ok { background: var(--verde-claro); color: var(--verde); }
+  .quiz-fb.ko { background: var(--rojo-claro); color: var(--rojo); }
+  .puntaje { background: var(--gris); border-radius: 12px; padding: 1.5rem; text-align: center; margin-top: 1rem; display: none; }
+  .puntaje.show { display: block; }
+  .puntaje-n { font-size: 40px; font-weight: 700; color: var(--azul); }
+  .puntaje-m { font-size: 14px; color: var(--texto-sec); margin-top: 6px; }
+
+  /* CTA */
+  .cta-block { background: var(--azul-oscuro); border-radius: 12px; padding: 1.5rem; text-align: center; margin-top: 2rem; color: white; }
+  .cta-block h3 { font-size: 17px; margin-bottom: 8px; }
+  .cta-block p { font-size: 13px; opacity: .85; line-height: 1.6; margin-bottom: 16px; }
+  .cta-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .cta-btn { padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; }
+  .cta-primary { background: var(--dorado); color: white; border: none; }
+  .cta-sec { background: transparent; color: white; border: 1.5px solid rgba(255,255,255,.5); }
+  .cta-btn:hover { opacity: .88; }
+
+  .footer { text-align: center; font-size: 12px; color: #999; padding: 1.5rem 1rem; border-top: 1px solid var(--gris-borde); margin-top: 2rem; }
+</style>
+</head>
+<body>
+<div id="cenfotur-topbar" style="
+  position:fixed;top:0;left:0;right:0;z-index:9999;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 20px;
+  background:rgba(6,13,26,0.95);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(200,146,42,0.2);
+  font-family:'Segoe UI',Arial,sans-serif;
+">
+  <span style="font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#e8b84b;">CENFOTUR · CAJAMARCA 2026</span>
+  <a href="index.html" style="
+    display:flex;align-items:center;gap:7px;
+    font-size:11px;font-weight:600;color:rgba(255,255,255,.7);
+    text-decoration:none;
+    padding:6px 14px;border-radius:100px;
+    border:1px solid rgba(255,255,255,.12);
+    background:rgba(255,255,255,.04);
+    transition:all .2s;
+  " onmouseover="this.style.background='rgba(255,255,255,.1)';this.style.color='#fff'"
+     onmouseout="this.style.background='rgba(255,255,255,.04)';this.style.color='rgba(255,255,255,.7)'">
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="7 2 3 6 7 10"/></svg>
+    Volver al HUB
+  </a>
+</div>
+<div style="height:44px;"></div>
+
+
+<div class="header">
+  <div class="badge">CENFOTUR Cajamarca</div>
+  <h1>Sesión 4 — Flujo de Caja y Liquidez en Turismo</h1>
+  <p>Aprende a anticipar problemas de liquidez antes de que ocurran y a elegir el financiamiento adecuado</p>
+</div>
+
+<div class="progreso">
+  <div class="prog-inner">
+    <span class="prog-label">Progreso del curso</span>
+    <div class="prog-bar"><div class="prog-fill"></div></div>
+    <span class="prog-num">Sesión 4 de 8</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- CONCEPTO CLAVE -->
+  <div class="section-title">La distinción más importante de esta sesión</div>
+  <p class="section-sub">Un negocio puede ser rentable y quedarse sin dinero al mismo tiempo. Entender la diferencia entre rentabilidad y liquidez es el primer paso.</p>
+
+  <div class="concepto-grid">
+    <div class="concepto-card azul">
+      <div class="concepto-tit">Rentabilidad</div>
+      <div class="concepto-def">¿El negocio <strong>GANA</strong> dinero? Se mide en resultados: ventas menos costos.</div>
+      <div class="concepto-ej">Ejemplo: vendes S/ 30,000 en el mes pero cobras el 60% a 30 días.</div>
+    </div>
+    <div class="concepto-card dorado">
+      <div class="concepto-tit">Liquidez</div>
+      <div class="concepto-def">¿El negocio <strong>TIENE</strong> dinero disponible hoy para operar?</div>
+      <div class="concepto-ej">Ejemplo: tienes que pagar planilla hoy pero el efectivo llega la próxima semana.</div>
+    </div>
+  </div>
+
+  <div class="formula-box">
+    <div class="formula-label">Fórmula del Saldo Final de Caja</div>
+    <div class="formula-text">Saldo Final = Saldo Inicial + Total Entradas − Total Salidas</div>
+    <div class="formula-nota">Si el Saldo Final es <span>negativo</span> → necesitas financiamiento o debes acelerar cobros</div>
+  </div>
+
+  <!-- SEMAFORO -->
+  <div class="section-title">Las 3 señales del flujo de caja</div>
+  <div class="semaforo-grid">
+    <div class="sem-card verde">
+      <div class="sem-icono">&#128994;</div>
+      <div class="sem-tit">Flujo saludable</div>
+      <div class="sem-desc">Neto positivo y saldo creciente. Puedes planificar inversiones o prepagar deuda.</div>
+    </div>
+    <div class="sem-card amarillo">
+      <div class="sem-icono">&#128993;</div>
+      <div class="sem-tit">Saldo bajo</div>
+      <div class="sem-desc">Neto positivo pero poco colchón. Una emergencia puede crear problemas. Acumula reservas.</div>
+    </div>
+    <div class="sem-card rojo">
+      <div class="sem-icono">&#128308;</div>
+      <div class="sem-tit">Déficit proyectado</div>
+      <div class="sem-desc">Flujo neto negativo en algún mes. Actúa con anticipación: acelera cobros o busca financiamiento.</div>
+    </div>
+  </div>
+
+  <!-- SIMULADOR FLUJO DE CAJA -->
+  <div class="section-title">Simulador de flujo de caja</div>
+  <p class="section-sub">Ingresa los datos de tu negocio para construir tu flujo de caja mensual. Usa los datos del caso de la sesión para practicar o pon los números reales de tu empresa.</p>
+
+  <div class="sim-card">
+    <div class="sim-title">Constructor de Flujo de Caja Mensual</div>
+    <div class="sim-sub">Completa los campos para cada mes y el simulador calcula el saldo final y te alerta automáticamente.</div>
+
+    <div class="mes-tabs">
+      <button class="mes-tab active" onclick="cambiarMes('m1',this)">Mes 1</button>
+      <button class="mes-tab" onclick="cambiarMes('m2',this)">Mes 2</button>
+      <button class="mes-tab" onclick="cambiarMes('m3',this)">Mes 3</button>
+    </div>
+
+    <!-- MES 1 -->
+    <div id="m1" class="mes-panel active">
+      <div class="input-section">
+        <div class="input-section-label">Saldo inicial</div>
+        <div class="input-row"><label>Saldo en caja al inicio del mes (S/)</label><input type="number" id="m1-si" value="3500" min="0" oninput="calcMes('m1')"></div>
+      </div>
+      <div class="input-section">
+        <div class="input-section-label">Entradas de caja</div>
+        <div class="input-row"><label>Ventas al contado del mes (S/)</label><input type="number" id="m1-vc" value="16961" min="0" oninput="calcMes('m1')"></div>
+        <div class="input-row"><label>Cobro de crédito mes anterior (S/)</label><input type="number" id="m1-cc" value="6600" min="0" oninput="calcMes('m1')"></div>
+        <div class="input-row"><label>Otras entradas (dividendos, etc.) (S/)</label><input type="number" id="m1-oe" value="0" min="0" oninput="calcMes('m1')"></div>
+      </div>
+      <div class="input-section">
+        <div class="input-section-label">Salidas de caja</div>
+        <div class="input-row"><label>Compra de insumos/mercadería (S/)</label><input type="number" id="m1-in" value="8481" min="0" oninput="calcMes('m1')"></div>
+        <div class="input-row"><label>Planilla y sueldos (S/)</label><input type="number" id="m1-pl" value="4800" min="0" oninput="calcMes('m1')"></div>
+        <div class="input-row"><label>Alquiler (S/)</label><input type="number" id="m1-al" value="2500" min="0" oninput="calcMes('m1')"></div>
+        <div class="input-row"><label>Servicios (luz, agua, internet) (S/)</label><input type="number" id="m1-sv" value="600" min="0" oninput="calcMes('m1')"></div>
+        <div class="input-row"><label>Cuota de préstamo (S/)</label><input type="number" id="m1-pr" value="1200" min="0" oninput="calcMes('m1')"></div>
+        <div class="input-row"><label>Otros pagos (S/)</label><input type="number" id="m1-op" value="0" min="0" oninput="calcMes('m1')"></div>
+      </div>
+      <table class="resultado-tabla">
+        <tr><th colspan="2">Resultado del Mes 1</th></tr>
+        <tr class="total-e"><td>Total entradas de caja</td><td id="m1-te">S/ 0</td></tr>
+        <tr class="total-s"><td>Total salidas de caja</td><td id="m1-ts">S/ 0</td></tr>
+        <tr class="neto"><td>Flujo neto del mes</td><td id="m1-fn">S/ 0</td></tr>
+        <tr class="saldo"><td>Saldo final del mes</td><td id="m1-sf" class="pos">S/ 0</td></tr>
+      </table>
+      <div class="alerta-box" id="m1-alerta"></div>
+    </div>
+
+    <!-- MES 2 -->
+    <div id="m2" class="mes-panel">
+      <div class="input-section">
+        <div class="input-section-label">Saldo inicial</div>
+        <div class="input-row"><label>Saldo en caja al inicio del mes (S/)</label><input type="number" id="m2-si" value="9480" min="0" oninput="calcMes('m2')"></div>
+      </div>
+      <div class="input-section">
+        <div class="input-section-label">Entradas de caja</div>
+        <div class="input-row"><label>Ventas al contado del mes (S/)</label><input type="number" id="m2-vc" value="14000" min="0" oninput="calcMes('m2')"></div>
+        <div class="input-row"><label>Cobro de crédito mes anterior (S/)</label><input type="number" id="m2-cc" value="7269" min="0" oninput="calcMes('m2')"></div>
+        <div class="input-row"><label>Otras entradas (S/)</label><input type="number" id="m2-oe" value="0" min="0" oninput="calcMes('m2')"></div>
+      </div>
+      <div class="input-section">
+        <div class="input-section-label">Salidas de caja</div>
+        <div class="input-row"><label>Compra de insumos/mercadería (S/)</label><input type="number" id="m2-in" value="7000" min="0" oninput="calcMes('m2')"></div>
+        <div class="input-row"><label>Planilla y sueldos (S/)</label><input type="number" id="m2-pl" value="4800" min="0" oninput="calcMes('m2')"></div>
+        <div class="input-row"><label>Alquiler (S/)</label><input type="number" id="m2-al" value="2500" min="0" oninput="calcMes('m2')"></div>
+        <div class="input-row"><label>Servicios (S/)</label><input type="number" id="m2-sv" value="600" min="0" oninput="calcMes('m2')"></div>
+        <div class="input-row"><label>Cuota de préstamo (S/)</label><input type="number" id="m2-pr" value="1200" min="0" oninput="calcMes('m2')"></div>
+        <div class="input-row"><label>Otros pagos (S/)</label><input type="number" id="m2-op" value="0" min="0" oninput="calcMes('m2')"></div>
+      </div>
+      <table class="resultado-tabla">
+        <tr><th colspan="2">Resultado del Mes 2</th></tr>
+        <tr class="total-e"><td>Total entradas de caja</td><td id="m2-te">S/ 0</td></tr>
+        <tr class="total-s"><td>Total salidas de caja</td><td id="m2-ts">S/ 0</td></tr>
+        <tr class="neto"><td>Flujo neto del mes</td><td id="m2-fn">S/ 0</td></tr>
+        <tr class="saldo"><td>Saldo final del mes</td><td id="m2-sf" class="pos">S/ 0</td></tr>
+      </table>
+      <div class="alerta-box" id="m2-alerta"></div>
+    </div>
+
+    <!-- MES 3 -->
+    <div id="m3" class="mes-panel">
+      <div class="input-section">
+        <div class="input-section-label">Saldo inicial</div>
+        <div class="input-row"><label>Saldo en caja al inicio del mes (S/)</label><input type="number" id="m3-si" value="14649" min="0" oninput="calcMes('m3')"></div>
+      </div>
+      <div class="input-section">
+        <div class="input-section-label">Entradas de caja</div>
+        <div class="input-row"><label>Ventas al contado del mes (S/)</label><input type="number" id="m3-vc" value="21000" min="0" oninput="calcMes('m3')"></div>
+        <div class="input-row"><label>Cobro de crédito mes anterior (S/)</label><input type="number" id="m3-cc" value="6000" min="0" oninput="calcMes('m3')"></div>
+        <div class="input-row"><label>Otras entradas (S/)</label><input type="number" id="m3-oe" value="0" min="0" oninput="calcMes('m3')"></div>
+      </div>
+      <div class="input-section">
+        <div class="input-section-label">Salidas de caja</div>
+        <div class="input-row"><label>Compra de insumos/mercadería (S/)</label><input type="number" id="m3-in" value="10500" min="0" oninput="calcMes('m3')"></div>
+        <div class="input-row"><label>Planilla y sueldos (S/)</label><input type="number" id="m3-pl" value="4800" min="0" oninput="calcMes('m3')"></div>
+        <div class="input-row"><label>Alquiler (S/)</label><input type="number" id="m3-al" value="2500" min="0" oninput="calcMes('m3')"></div>
+        <div class="input-row"><label>Servicios (S/)</label><input type="number" id="m3-sv" value="600" min="0" oninput="calcMes('m3')"></div>
+        <div class="input-row"><label>Cuota de préstamo (S/)</label><input type="number" id="m3-pr" value="1200" min="0" oninput="calcMes('m3')"></div>
+        <div class="input-row"><label>Otros pagos (S/)</label><input type="number" id="m3-op" value="0" min="0" oninput="calcMes('m3')"></div>
+      </div>
+      <table class="resultado-tabla">
+        <tr><th colspan="2">Resultado del Mes 3</th></tr>
+        <tr class="total-e"><td>Total entradas de caja</td><td id="m3-te">S/ 0</td></tr>
+        <tr class="total-s"><td>Total salidas de caja</td><td id="m3-ts">S/ 0</td></tr>
+        <tr class="neto"><td>Flujo neto del mes</td><td id="m3-fn">S/ 0</td></tr>
+        <tr class="saldo"><td>Saldo final del mes</td><td id="m3-sf" class="pos">S/ 0</td></tr>
+      </table>
+      <div class="alerta-box" id="m3-alerta"></div>
+    </div>
+  </div>
+
+  <!-- CASOS -->
+  <div class="section-title">Casos de la sesión — practica aquí</div>
+  <p class="section-sub">Revisa los casos resueltos en clase y verifica tu comprensión antes de ver las respuestas.</p>
+
+  <!-- CASO 1 -->
+  <div class="caso-card">
+    <div class="caso-header" onclick="toggleCaso('caso1')">
+      Restaurante El Portal — Plaza de Armas de Cajamarca
+      <span class="caso-tipo">Caso 1 · Resuelto en vivo</span>
+    </div>
+    <div class="caso-body" id="caso1">
+      <div class="caso-dato"><strong>Situación:</strong> Doña Rosa proyecta el flujo de caja trimestral (oct-nov-dic).</div>
+      <div class="caso-dato"><strong>Ventas proyectadas:</strong> Octubre S/ 24,230 | Noviembre S/ 20,000 | Diciembre S/ 30,000</div>
+      <div class="caso-dato"><strong>Cobro:</strong> 70% al contado, 30% a 30 días. Ventas septiembre: S/ 22,000</div>
+      <div class="caso-dato"><strong>Costos variables:</strong> 35% de ventas | <strong>Gastos fijos mes:</strong> Planilla S/4,800 + Alquiler S/2,500 + Servicios S/600 + Préstamo S/1,200</div>
+      <div class="caso-dato"><strong>Saldo inicial octubre:</strong> S/ 3,500</div>
+
+      <table class="tabla-caso">
+        <thead><tr><th>Concepto</th><th>Octubre</th><th>Noviembre</th><th>Diciembre</th></tr></thead>
+        <tbody>
+          <tr><td>Ventas proyectadas</td><td>S/ 24,230</td><td>S/ 20,000</td><td>S/ 30,000</td></tr>
+          <tr><td>Ventas contado (70%)</td><td>S/ 16,961</td><td>S/ 14,000</td><td>S/ 21,000</td></tr>
+          <tr><td>Cobro crédito mes ant.</td><td>S/ 6,600</td><td>S/ 7,269</td><td>S/ 6,000</td></tr>
+          <tr class="entradas"><td>Total entradas</td><td>S/ 23,561</td><td>S/ 21,269</td><td>S/ 27,000</td></tr>
+          <tr><td>Insumos (35%)</td><td>S/ 8,481</td><td>S/ 7,000</td><td>S/ 10,500</td></tr>
+          <tr><td>Planilla</td><td>S/ 4,800</td><td>S/ 4,800</td><td>S/ 4,800</td></tr>
+          <tr><td>Alquiler</td><td>S/ 2,500</td><td>S/ 2,500</td><td>S/ 2,500</td></tr>
+          <tr><td>Servicios</td><td>S/ 600</td><td>S/ 600</td><td>S/ 600</td></tr>
+          <tr><td>Cuota préstamo</td><td>S/ 1,200</td><td>S/ 1,200</td><td>S/ 1,200</td></tr>
+          <tr class="salidas"><td>Total salidas</td><td>S/ 17,581</td><td>S/ 16,100</td><td>S/ 19,600</td></tr>
+          <tr class="neto-r"><td>Flujo neto</td><td class="pos-r">S/ 5,980</td><td class="pos-r">S/ 5,169</td><td class="pos-r">S/ 7,400</td></tr>
+          <tr><td>Saldo inicial</td><td>S/ 3,500</td><td>S/ 9,480</td><td>S/ 14,649</td></tr>
+          <tr class="saldo-r"><td>Saldo final</td><td class="pos-r">S/ 9,480</td><td class="pos-r">S/ 14,649</td><td class="pos-r">S/ 22,049</td></tr>
+        </tbody>
+      </table>
+      <button class="btn-resp" onclick="toggleResp('r1')">Ver análisis</button>
+      <div class="resp-box show" id="r1">
+        <strong>Diagnóstico:</strong> Los tres meses tienen flujo neto positivo y saldo final creciente. Posición muy saludable.<br><br>
+        El saldo de diciembre (S/ 22,049) equivale a casi 3 meses de gastos fijos. Doña Rosa debería destinar una parte de ese saldo a una reserva para enero-febrero (temporada baja).
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 2 -->
+  <div class="caso-card">
+    <div class="caso-header" onclick="toggleCaso('caso2')">
+      Hostal Boutique La Posada del Inca — Centro Histórico
+      <span class="caso-tipo">Caso 2 · Trabajo grupal</span>
+    </div>
+    <div class="caso-body" id="caso2">
+      <div class="caso-dato"><strong>Situación:</strong> Don Aurelio analiza enero y febrero, meses de temporada baja tras diciembre.</div>
+      <div class="caso-dato"><strong>Ventas:</strong> Diciembre S/ 34,950 (ejecutado) | Enero S/ 12,000 | Febrero S/ 14,000</div>
+      <div class="caso-dato"><strong>Cobro:</strong> 40% contado, 60% agencias a 30 días</div>
+      <div class="caso-dato"><strong>Costos variables:</strong> 40% de ventas | <strong>Gastos fijos:</strong> Alquiler S/3,200 + Planilla S/6,500 + Servicios S/900 + Préstamo S/2,000 + Publicidad S/800</div>
+      <div class="caso-dato"><strong>Febrero extra:</strong> Mantenimiento S/ 4,000 | <strong>Saldo inicial enero:</strong> S/ 5,000</div>
+
+      <table class="tabla-caso">
+        <thead><tr><th>Concepto</th><th>Enero</th><th>Febrero</th></tr></thead>
+        <tbody>
+          <tr><td>Ventas contado (40%)</td><td>S/ 4,800</td><td>S/ 5,600</td></tr>
+          <tr><td>Cobro crédito mes ant.</td><td>S/ 20,970</td><td>S/ 7,200</td></tr>
+          <tr class="entradas"><td>Total entradas</td><td>S/ 25,770</td><td>S/ 12,800</td></tr>
+          <tr><td>Insumos (40%)</td><td>S/ 4,800</td><td>S/ 5,600</td></tr>
+          <tr><td>Alquiler</td><td>S/ 3,200</td><td>S/ 3,200</td></tr>
+          <tr><td>Planilla</td><td>S/ 6,500</td><td>S/ 6,500</td></tr>
+          <tr><td>Servicios</td><td>S/ 900</td><td>S/ 900</td></tr>
+          <tr><td>Préstamo</td><td>S/ 2,000</td><td>S/ 2,000</td></tr>
+          <tr><td>Publicidad</td><td>S/ 800</td><td>S/ 800</td></tr>
+          <tr><td>Mantenimiento extra</td><td>—</td><td>S/ 4,000</td></tr>
+          <tr class="salidas"><td>Total salidas</td><td>S/ 18,200</td><td>S/ 23,000</td></tr>
+          <tr class="neto-r"><td>Flujo neto</td><td class="pos-r">S/ 7,570</td><td class="neg-r">−S/ 10,200</td></tr>
+          <tr><td>Saldo inicial</td><td>S/ 5,000</td><td>S/ 12,570</td></tr>
+          <tr class="saldo-r"><td>Saldo final</td><td class="pos-r">S/ 12,570</td><td class="neg-r">S/ 2,370</td></tr>
+        </tbody>
+      </table>
+      <button class="btn-resp" onclick="toggleResp('r2')">Ver análisis y recomendaciones</button>
+      <div class="resp-box" id="r2">
+        <div class="alerta-roja">Febrero tiene flujo neto NEGATIVO de S/ 10,200. Saldo final: S/ 2,370 — equivale a solo 3 días de gastos fijos. Señal de alerta ROJA.</div>
+        <strong>El negocio sobrevive febrero gracias al colchón de enero, pero queda muy expuesto a cualquier imprevisto en marzo.</strong><br><br>
+        <strong>Recomendaciones para Don Aurelio:</strong><br>
+        1. Negociar el mantenimiento de S/ 4,000 para pagarlo en dos cuotas (febrero y marzo).<br>
+        2. Ofrecer en enero una promoción de reserva anticipada para captar contado y reducir dependencia del crédito de diciembre.<br>
+        3. En diciembre (desde posición fuerte), gestionar una línea de crédito de capital de trabajo de S/ 8,000 para cubrir la temporada baja.<br>
+        4. Meta a mediano plazo: construir una reserva equivalente a 6 semanas de gastos fijos (~S/ 21,000) antes del próximo enero.
+      </div>
+    </div>
+  </div>
+
+  <!-- CREDITO -->
+  <div class="section-title">Crédito formal vs. informal</div>
+  <p class="section-sub">Cuando el flujo de caja muestra que necesitarás dinero, tienes dos caminos. La diferencia entre elegir bien o mal puede definir el futuro de tu negocio.</p>
+
+  <div class="credito-grid">
+    <div class="credito-card formal">
+      <div class="credito-tit">Crédito Formal &#10003;</div>
+      <div class="credito-item">Regulado por SBS y BCRP</div>
+      <div class="credito-item">Tasas de interés más bajas</div>
+      <div class="credito-item">Condiciones claras en contrato</div>
+      <div class="credito-item">Construye historial crediticio</div>
+      <div class="credito-item">Cajas municipales, bancos, cooperativas</div>
+    </div>
+    <div class="credito-card informal">
+      <div class="credito-tit">Crédito Informal &#9888;</div>
+      <div class="credito-item">Sin regulación ni supervisión</div>
+      <div class="credito-item">Tasas 3 a 5 veces más altas</div>
+      <div class="credito-item">Condiciones poco claras</div>
+      <div class="credito-item">No suma al historial crediticio</div>
+      <div class="credito-item">Mayor riesgo de conflictos y sobreendeudamiento</div>
+    </div>
+  </div>
+
+  <!-- PRODUCTOS -->
+  <div class="section-title">3 productos financieros clave para turismo</div>
+  <div class="productos-grid">
+    <div class="prod-card">
+      <div class="prod-num">1</div>
+      <div class="prod-info">
+        <div class="prod-tit">Capital de trabajo (corto plazo)</div>
+        <div class="prod-desc">Préstamo para financiar las operaciones del mes: compras, planilla, servicios. Plazo hasta 12 meses.</div>
+        <div class="prod-cuando">Cuándo usarlo: cuando el flujo muestra déficit temporal en temporada baja.</div>
+      </div>
+    </div>
+    <div class="prod-card">
+      <div class="prod-num">2</div>
+      <div class="prod-info">
+        <div class="prod-tit">Línea de crédito revolvente</div>
+        <div class="prod-desc">Cupo aprobado que usas cuando lo necesitas y repones al cobrarlo. Ideal para la estacionalidad del turismo en Cajamarca.</div>
+        <div class="prod-cuando">Cuándo usarlo: usas en enero (baja) y repones con ingresos del Carnaval (alta).</div>
+      </div>
+    </div>
+    <div class="prod-card">
+      <div class="prod-num">3</div>
+      <div class="prod-info">
+        <div class="prod-tit">Factoring</div>
+        <div class="prod-desc">Vendes tus facturas a una entidad financiera y recibes el dinero de inmediato. La entidad cobra a tu cliente y asume el riesgo.</div>
+        <div class="prod-cuando">Cuándo usarlo: si tienes clientes corporativos o agencias que pagan a 30 o 60 días.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="section-title">Quiz de autoevaluación — 5 preguntas</div>
+
+  <div class="quiz-card">
+    <div class="quiz-p">1. Un hostal vende S/ 34,950 en diciembre pero cobra el 60% a 30 días. ¿Cuánto entra en efectivo a caja en diciembre?</div>
+    <div class="quiz-opts">
+      <div class="quiz-opt" onclick="quiz(this,'q1','a')">a) S/ 34,950</div>
+      <div class="quiz-opt" onclick="quiz(this,'q1','b')">b) S/ 13,980 (40% al contado)</div>
+      <div class="quiz-opt" onclick="quiz(this,'q1','c')">c) S/ 20,970 (60% a crédito)</div>
+      <div class="quiz-opt" onclick="quiz(this,'q1','d')">d) S/ 0 porque todo es a crédito</div>
+    </div>
+    <div class="quiz-fb" id="q1-fb"></div>
+  </div>
+
+  <div class="quiz-card">
+    <div class="quiz-p">2. El flujo neto de febrero del Hostal La Posada del Inca es −S/ 10,200 pero el saldo final es S/ 2,370. ¿Cómo es eso posible?</div>
+    <div class="quiz-opts">
+      <div class="quiz-opt" onclick="quiz(this,'q2','a')">a) Hay un error en el cálculo</div>
+      <div class="quiz-opt" onclick="quiz(this,'q2','b')">b) El saldo inicial de febrero era S/ 12,570, lo que cubre el déficit del mes</div>
+      <div class="quiz-opt" onclick="quiz(this,'q2','c')">c) El préstamo cubre automáticamente el déficit</div>
+      <div class="quiz-opt" onclick="quiz(this,'q2','d')">d) Las ventas de febrero no se incluyeron</div>
+    </div>
+    <div class="quiz-fb" id="q2-fb"></div>
+  </div>
+
+  <div class="quiz-card">
+    <div class="quiz-p">3. ¿Cuál es la señal más peligrosa en un flujo de caja?</div>
+    <div class="quiz-opts">
+      <div class="quiz-opt" onclick="quiz(this,'q3','a')">a) Saldo final positivo pero bajo (menos de 2 semanas de gastos fijos)</div>
+      <div class="quiz-opt" onclick="quiz(this,'q3','b')">b) Cuotas de préstamo que superan el 25% de las entradas totales</div>
+      <div class="quiz-opt" onclick="quiz(this,'q3','c')">c) Saldo final negativo en algún mes sin posibilidad de cubrirlo con saldo anterior</div>
+      <div class="quiz-opt" onclick="quiz(this,'q3','d')">d) Ventas proyectadas mayores al promedio histórico</div>
+    </div>
+    <div class="quiz-fb" id="q3-fb"></div>
+  </div>
+
+  <div class="quiz-card">
+    <div class="quiz-p">4. Una agencia turística tiene clientes corporativos que pagan sus facturas a 45 días. ¿Qué producto financiero le conviene más para mejorar su liquidez inmediata?</div>
+    <div class="quiz-opts">
+      <div class="quiz-opt" onclick="quiz(this,'q4','a')">a) Leasing de vehículo</div>
+      <div class="quiz-opt" onclick="quiz(this,'q4','b')">b) Factoring — cede las facturas y recibe el dinero de inmediato</div>
+      <div class="quiz-opt" onclick="quiz(this,'q4','c')">c) Préstamo hipotecario a largo plazo</div>
+      <div class="quiz-opt" onclick="quiz(this,'q4','d')">d) Cuenta de ahorros empresarial</div>
+    </div>
+    <div class="quiz-fb" id="q4-fb"></div>
+  </div>
+
+  <div class="quiz-card">
+    <div class="quiz-p">5. ¿Por qué el flujo de caja del Restaurante El Portal en octubre muestra entradas de S/ 23,561 si sus ventas proyectadas fueron S/ 24,230?</div>
+    <div class="quiz-opts">
+      <div class="quiz-opt" onclick="quiz(this,'q5','a')">a) Porque no vendió todo lo que proyectó</div>
+      <div class="quiz-opt" onclick="quiz(this,'q5','b')">b) Porque el 30% de las ventas de octubre se cobra en noviembre, y en octubre entra el crédito de septiembre</div>
+      <div class="quiz-opt" onclick="quiz(this,'q5','c')">c) Porque parte de las ventas son devoluciones</div>
+      <div class="quiz-opt" onclick="quiz(this,'q5','d')">d) Porque el flujo de caja siempre es menor que las ventas</div>
+    </div>
+    <div class="quiz-fb" id="q5-fb"></div>
+  </div>
+
+  <div class="puntaje" id="puntaje-final">
+    <div class="puntaje-n" id="puntaje-n">0/5</div>
+    <div class="puntaje-m" id="puntaje-m"></div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-block">
+    <h3>¿Y si tu flujo de caja se construyera solo?</h3>
+    <p>Lo que calculaste manualmente hoy — entradas, salidas, saldo final, alertas — se puede automatizar conectando la información real de tu negocio. En las próximas sesiones verás cómo funciona eso.</p>
+    <div class="cta-btns">
+      <a href="index.html" class="cta-btn cta-primary" style="background:#c8922a;">🏠 Volver al HUB</a>
+      <a onclick="window.open('sesion5_cajamarca_landing.html','_blank')" class="cta-btn cta-btn-secondary" style="cursor:pointer;">📅 Sesión 5 — Finanzas</a>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer" style="text-align:center;font-size:12px;color:#888;padding:2rem 1rem;border-top:1px solid #e8e4dd;margin-top:0;background:#f8f9fa;">
+  <strong style="color:#0c1e38;font-size:13px;">M.Sc. Daniel González Hernández</strong><br>
+  <span>CENFOTUR Cajamarca · Costos, Presupuesto y Principios Financieros en Turismo · Sesión 4 de 8 · 2026</span>
+</div>
+
+<script>
+// Mes tabs
+function cambiarMes(id, btn) {
+  document.querySelectorAll('.mes-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.mes-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// Calcular mes
+function calcMes(m) {
+  const g = id => parseFloat(document.getElementById(m+'-'+id).value) || 0;
+  const si = g('si');
+  const te = g('vc') + g('cc') + g('oe');
+  const ts = g('in') + g('pl') + g('al') + g('sv') + g('pr') + g('op');
+  const fn = te - ts;
+  const sf = si + fn;
+
+  const fmt = n => (n < 0 ? '−S/ ' : 'S/ ') + Math.abs(n).toLocaleString('es-PE', {minimumFractionDigits:0,maximumFractionDigits:0});
+
+  document.getElementById(m+'-te').textContent = fmt(te);
+  document.getElementById(m+'-ts').textContent = fmt(ts);
+  document.getElementById(m+'-fn').textContent = fmt(fn);
+
+  const sfEl = document.getElementById(m+'-sf');
+  sfEl.textContent = fmt(sf);
+  sfEl.className = sf < 0 ? 'neg' : 'pos';
+
+  // Alerta
+  const al = document.getElementById(m+'-alerta');
+  const gastosFijos = g('pl') + g('al') + g('sv') + g('pr');
+  const semanas = gastosFijos > 0 ? (sf / gastosFijos) * 4 : 99;
+
+  al.className = 'alerta-box show';
+  if (sf < 0) {
+    al.classList.add('rojo');
+    al.innerHTML = '<div class="alerta-tit">Alerta Roja — Saldo negativo</div>El saldo final es negativo. El negocio no tiene suficiente efectivo para cubrir todos sus pagos este mes. Actúa con anticipación: acelera cobros, negocia pagos diferidos o gestiona financiamiento.';
+  } else if (semanas < 2) {
+    al.classList.add('amarillo');
+    al.innerHTML = '<div class="alerta-tit">Precaución — Liquidez mínima</div>El saldo final equivale a menos de 2 semanas de gastos fijos. Cualquier imprevisto puede crear problemas. Trabaja en acumular una reserva.';
+  } else if (fn < 0 && sf > 0) {
+    al.classList.add('amarillo');
+    al.innerHTML = '<div class="alerta-tit">Atención — Flujo neto negativo</div>El mes gasta más de lo que entra, pero el saldo inicial cubre la diferencia. Revisa si esta situación puede repetirse el próximo mes.';
+  } else {
+    al.classList.add('verde');
+    al.innerHTML = '<div class="alerta-tit">Situación saludable</div>El flujo de caja de este mes es positivo y el saldo final es suficiente. Considera reservar una parte para cubrir meses de menor actividad.';
+  }
+}
+
+// Casos
+function toggleCaso(id) { document.getElementById(id).classList.toggle('open'); }
+function toggleResp(id) { document.getElementById(id).classList.toggle('show'); }
+
+// Quiz
+const correctas = { q1:'b', q2:'b', q3:'c', q4:'b', q5:'b' };
+const expl = {
+  q1: 'Solo entra el 40% al contado = 34,950 × 0.40 = S/ 13,980. El 60% restante (S/ 20,970) entra en enero como cobro de crédito.',
+  q2: 'El saldo inicial de febrero era S/ 12,570 (resultado positivo de enero). Saldo final = 12,570 + (−10,200) = S/ 2,370. El saldo anterior absorbe el déficit.',
+  q3: 'Un saldo final negativo sin colchón para cubrirlo significa que el negocio no puede pagar sus obligaciones ese mes. Es la señal más crítica.',
+  q4: 'El factoring permite convertir facturas pendientes de cobro en efectivo inmediato. Es el producto diseñado exactamente para este problema.',
+  q5: 'El flujo de caja registra cuándo entra el dinero real, no cuándo se vende. El 30% de octubre se cobra en noviembre. En octubre entra el crédito de septiembre (30% × S/22,000 = S/6,600).'
+};
+const resp = {};
+let pts = 0;
+
+function quiz(el, qid, opt) {
+  if (resp[qid]) return;
+  resp[qid] = true;
+  const cor = correctas[qid];
+  el.parentNode.querySelectorAll('.quiz-opt').forEach(o => {
+    if (o.getAttribute('onclick').includes("'"+cor+"'")) o.classList.add('ok');
+    else if (o === el && opt !== cor) o.classList.add('ko');
+  });
+  const fb = document.getElementById(qid+'-fb');
+  fb.textContent = expl[qid];
+  fb.classList.add('show', opt === cor ? 'ok' : 'ko');
+  if (opt === cor) pts++;
+  if (Object.keys(resp).length === 5) {
+    const pf = document.getElementById('puntaje-final');
+    pf.classList.add('show');
+    document.getElementById('puntaje-n').textContent = pts+'/5';
+    const msgs = ['Repasa los conceptos de flujo de caja y vuelve a intentarlo.','Buen inicio. Revisa las explicaciones de cada respuesta.','Vas bien. Practica con el simulador usando tus números reales.','Muy bien. Estás listo para aplicar esto en tu negocio.','Excelente. Dominas el flujo de caja. Listo para la Sesión 5.'];
+    if(pts===5){
+      document.getElementById('puntaje-m').innerHTML = '🎉 <strong>¡Excelente! Dominas el Flujo de Caja.</strong><br><br><a onclick="window.open(\'sesion5_cajamarca_landing.html\',\'_blank\')" style="display:inline-block;margin-top:8px;padding:10px 22px;background:#c8922a;color:#fff;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;">📅 Ir a Sesión 5 — Finanzas →</a>';
+    } else {
+      document.getElementById('puntaje-m').textContent = msgs[pts];
+    }
+  }
+}
+
+// Inicializar simuladores
+['m1','m2','m3'].forEach(calcMes);
+</script>
+</body>
+</html>

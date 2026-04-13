@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sesión 6 | Sistema Financiero y Acceso al Crédito — CENFOTUR Cajamarca</title>
+<style>
+  :root {
+    --azul: #1D5FA0;
+    --azul-claro: #D6E8F7;
+    --azul-oscuro: #0D3A6B;
+    --dorado: #B8860B;
+    --dorado-claro: #FFF8E1;
+    --verde: #1B5E20;
+    --verde-claro: #E8F5E9;
+    --gris: #F5F5F5;
+    --gris-borde: #E0E0E0;
+    --texto: #1A1A1A;
+    --texto-secundario: #555;
+    --blanco: #FFFFFF;
+    --rojo: #C62828;
+    --rojo-claro: #FFEBEE;
+    --naranja: #E65100;
+    --morado: #7B1FA2;
+    --morado-claro: #F3E5F5;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #F8F9FA; color: var(--texto); line-height: 1.6; }
+
+  .header { background: var(--azul-oscuro); color: white; padding: 1.5rem 1rem; text-align: center; }
+  .header .badge { display: inline-block; background: var(--dorado); color: white; font-size: 11px; font-weight: 700; padding: 3px 12px; border-radius: 20px; margin-bottom: 10px; letter-spacing: .06em; text-transform: uppercase; }
+  .header h1 { font-size: clamp(1.4rem, 4vw, 2.2rem); font-weight: 700; margin-bottom: 8px; }
+  .header p { font-size: 14px; opacity: .85; max-width: 560px; margin: 0 auto; }
+
+  .progreso { background: var(--azul); padding: .75rem 1rem; }
+  .prog-inner { max-width: 720px; margin: 0 auto; display: flex; align-items: center; gap: 12px; }
+  .prog-label { font-size: 12px; color: rgba(255,255,255,.75); white-space: nowrap; }
+  .prog-bar { flex: 1; height: 6px; background: rgba(255,255,255,.2); border-radius: 3px; }
+  .prog-fill { height: 100%; width: 75%; background: var(--dorado); border-radius: 3px; }
+  .prog-num { font-size: 12px; color: white; font-weight: 700; white-space: nowrap; }
+
+  .main { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+
+  .section-title { font-size: 18px; font-weight: 700; color: var(--azul); margin: 2rem 0 1rem; padding-bottom: 8px; border-bottom: 2px solid var(--azul-claro); }
+  .section-sub { font-size: 13px; color: var(--texto-secundario); margin-bottom: 1rem; }
+
+  /* REPASO SESION 5 */
+  .repaso-box { background: var(--morado-claro); border: 2px solid var(--morado); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem; }
+  .repaso-title { font-size: 15px; font-weight: 700; color: var(--morado); margin-bottom: 10px; }
+  .repaso-item { font-size: 13px; color: var(--texto); margin-bottom: 6px; padding-left: 6px; }
+  .repaso-cta { font-size: 13px; font-weight: 700; color: var(--morado); margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(123,31,162,0.2); }
+
+  /* RESUMEN */
+  .resumen-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 1.5rem; }
+  .resumen-item { background: white; border: 1px solid var(--gris-borde); border-radius: 10px; padding: 12px 14px; }
+  .resumen-icon { font-size: 22px; margin-bottom: 6px; }
+  .resumen-label { font-size: 11px; color: var(--texto-secundario); text-transform: uppercase; letter-spacing: .05em; font-weight: 600; }
+  .resumen-val { font-size: 14px; font-weight: 700; color: var(--texto); margin-top: 2px; }
+
+  /* COMPARATIVA */
+  .comp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.5rem; }
+  .comp-card { border-radius: 10px; padding: 1rem; }
+  .comp-card.formal { background: var(--verde-claro); border: 2px solid var(--verde); }
+  .comp-card.informal { background: var(--rojo-claro); border: 2px solid var(--rojo); }
+  .comp-title { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+  .comp-card.formal .comp-title { color: var(--verde); }
+  .comp-card.informal .comp-title { color: var(--rojo); }
+  .comp-item { font-size: 12px; color: var(--texto-secundario); margin-bottom: 4px; }
+
+  /* SIMULADORES */
+  .tabs { display: flex; gap: 6px; margin-bottom: 1rem; flex-wrap: wrap; }
+  .tab-btn { padding: 8px 16px; border: 1.5px solid var(--gris-borde); border-radius: 20px; background: var(--blanco); font-size: 13px; color: var(--texto-secundario); cursor: pointer; transition: all .15s; }
+  .tab-btn.active { background: var(--azul); color: white; border-color: var(--azul); }
+
+  .sim-panel { background: var(--blanco); border: 1px solid var(--gris-borde); border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; display: none; }
+  .sim-panel.active { display: block; }
+  .sim-title { font-size: 14px; font-weight: 700; color: var(--azul); margin-bottom: 14px; }
+  .input-group { margin-bottom: 12px; }
+  .input-group label { display: block; font-size: 12px; color: var(--texto-secundario); margin-bottom: 4px; font-weight: 500; }
+  .input-group input, .input-group select { width: 100%; height: 38px; border: 1px solid var(--gris-borde); border-radius: 8px; padding: 0 12px; font-size: 14px; color: var(--texto); background: var(--gris); }
+  .input-group input:focus, .input-group select:focus { outline: none; border-color: var(--azul); background: white; }
+  .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-top: 14px; }
+  .result-card { background: var(--gris); border-radius: 8px; padding: 10px 12px; }
+  .result-label { font-size: 11px; color: var(--texto-secundario); margin-bottom: 4px; }
+  .result-value { font-size: 20px; font-weight: 700; color: var(--texto); }
+  .result-value.good { color: var(--verde); }
+  .result-value.warn { color: var(--naranja); }
+  .result-value.bad { color: var(--rojo); }
+  .sim-nota { font-size: 11px; color: var(--texto-secundario); background: var(--azul-claro); border-radius: 6px; padding: 8px 10px; margin-top: 10px; }
+  .semaforo { display: flex; gap: 6px; margin-top: 10px; align-items: center; flex-wrap: wrap; }
+  .sem-item { font-size: 12px; padding: 3px 10px; border-radius: 12px; font-weight: 600; }
+  .sem-verde { background: var(--verde-claro); color: var(--verde); }
+  .sem-amarillo { background: #FFFDE7; color: #F57F17; }
+  .sem-rojo { background: var(--rojo-claro); color: var(--rojo); }
+
+  /* TCEA VISUAL */
+  .tcea-visual { background: white; border: 1px solid var(--gris-borde); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem; }
+  .tcea-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 13px; }
+  .tcea-label { flex: 1; color: var(--texto-secundario); }
+  .tcea-pct { font-weight: 700; min-width: 60px; text-align: right; }
+  .tcea-bar { flex: 2; height: 10px; border-radius: 5px; }
+
+  /* CASOS */
+  .caso-card { background: var(--blanco); border: 1px solid var(--gris-borde); border-radius: 12px; overflow: hidden; margin-bottom: 1.2rem; }
+  .caso-header { background: var(--azul); color: white; padding: .75rem 1.25rem; font-size: 14px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+  .caso-header .tipo { font-size: 11px; background: rgba(255,255,255,.2); padding: 2px 8px; border-radius: 10px; font-weight: 400; }
+  .caso-body { padding: 1.25rem; display: none; }
+  .caso-body.open { display: block; }
+  .caso-dato { font-size: 13px; color: var(--texto-secundario); margin-bottom: 4px; }
+  .caso-dato strong { color: var(--texto); }
+  .caso-preguntas { margin-top: 14px; }
+  .pregunta-item { background: var(--azul-claro); border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; font-size: 13px; color: var(--azul-oscuro); }
+  .respuesta-toggle { background: none; border: 1.5px solid var(--azul); color: var(--azul); padding: 4px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; margin-top: 8px; }
+  .respuesta-box { background: var(--verde-claro); border-left: 3px solid var(--verde); border-radius: 0 8px 8px 0; padding: 10px 14px; margin-top: 8px; font-size: 13px; color: var(--verde); display: none; line-height: 1.6; }
+  .respuesta-box.show { display: block; }
+  .respuesta-box .num { font-weight: 700; color: var(--verde); }
+
+  /* QUIZ */
+  .quiz-card { background: var(--blanco); border: 1px solid var(--gris-borde); border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
+  .quiz-pregunta { font-size: 14px; color: var(--texto); margin-bottom: 12px; line-height: 1.5; }
+  .quiz-opciones { display: grid; gap: 8px; }
+  .quiz-opcion { padding: 10px 14px; border: 1.5px solid var(--gris-borde); border-radius: 8px; font-size: 13px; color: var(--texto); cursor: pointer; transition: all .15s; background: var(--blanco); text-align: left; width: 100%; }
+  .quiz-opcion:hover { border-color: var(--azul); background: var(--azul-claro); }
+  .quiz-opcion.correcta { background: var(--verde-claro); border-color: var(--verde); color: var(--verde); }
+  .quiz-opcion.incorrecta { background: var(--rojo-claro); border-color: var(--rojo); color: var(--rojo); }
+  .quiz-feedback { font-size: 12px; margin-top: 10px; padding: 8px 12px; border-radius: 8px; display: none; line-height: 1.5; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.ok { background: var(--verde-claro); color: var(--verde); }
+  .quiz-feedback.ko { background: var(--rojo-claro); color: var(--rojo); }
+  .puntaje-final { background: var(--gris); border-radius: 12px; padding: 1.5rem; text-align: center; margin-top: 1rem; display: none; }
+  .puntaje-final.show { display: block; }
+  .puntaje-num { font-size: 40px; font-weight: 700; color: var(--azul); }
+  .puntaje-msg { font-size: 14px; color: var(--texto-secundario); margin-top: 6px; }
+
+  /* CTA */
+  .cta-block { background: var(--azul-oscuro); border-radius: 12px; padding: 1.5rem; text-align: center; margin-top: 2rem; color: white; }
+  .cta-block h3 { font-size: 17px; margin-bottom: 8px; }
+  .cta-block p { font-size: 13px; opacity: .85; line-height: 1.6; margin-bottom: 16px; }
+  .cta-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .cta-btn { padding: 10px 20px; border-radius: 8px; font-size: 13px; cursor: pointer; font-weight: 600; text-decoration: none; display: inline-block; }
+  .cta-btn-primary { background: var(--dorado); color: white; border: none; }
+  .cta-btn-secondary { background: transparent; color: white; border: 1.5px solid rgba(255,255,255,.5); }
+  .cta-btn:hover { opacity: .88; }
+
+  .footer { text-align: center; font-size: 12px; color: #999; padding: 1.5rem 1rem; border-top: 1px solid var(--gris-borde); margin-top: 2rem; }
+</style>
+</head>
+<body>
+<div id="cenfotur-topbar" style="
+  position:fixed;top:0;left:0;right:0;z-index:9999;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 20px;
+  background:rgba(6,13,26,0.95);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(200,146,42,0.2);
+  font-family:'Segoe UI',Arial,sans-serif;
+">
+  <span style="font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#e8b84b;">CENFOTUR · CAJAMARCA 2026</span>
+  <a href="index.html" style="
+    display:flex;align-items:center;gap:7px;
+    font-size:11px;font-weight:600;color:rgba(255,255,255,.7);
+    text-decoration:none;
+    padding:6px 14px;border-radius:100px;
+    border:1px solid rgba(255,255,255,.12);
+    background:rgba(255,255,255,.04);
+    transition:all .2s;
+  " onmouseover="this.style.background='rgba(255,255,255,.1)';this.style.color='#fff'"
+     onmouseout="this.style.background='rgba(255,255,255,.04)';this.style.color='rgba(255,255,255,.7)'">
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="7 2 3 6 7 10"/></svg>
+    Volver al HUB
+  </a>
+</div>
+<div style="height:44px;"></div>
+
+
+<div class="header">
+  <div class="badge">CENFOTUR Cajamarca</div>
+  <h1>Sesión 6 — Sistema Financiero y Acceso al Crédito</h1>
+  <p>Crédito formal e informal, productos financieros y cómo elegir el mejor préstamo para tu negocio turístico</p>
+</div>
+
+<div class="progreso">
+  <div class="prog-inner">
+    <span class="prog-label">Progreso del curso</span>
+    <div class="prog-bar"><div class="prog-fill"></div></div>
+    <span class="prog-num">Sesión 6 de 8</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- REPASO SESIÓN 5 -->
+  <div class="repaso-box">
+    <div class="repaso-title">🔁 Repaso de la Sesión 5 — Fundamentos de Finanzas en Turismo</div>
+    <div class="repaso-item">✅ <strong>Las finanzas</strong> buscan maximizar el valor del negocio garantizando que se puedan atender todos los pagos.</div>
+    <div class="repaso-item">✅ En <strong>negocios familiares</strong>: separar finanzas del negocio de las personales. El propietario debe asignarse un sueldo.</div>
+    <div class="repaso-item">✅ <strong>Rentabilidad ≠ Liquidez.</strong> Puedes ser rentable y no tener dinero disponible hoy. Ambas importan.</div>
+    <div class="repaso-item">✅ <strong>A mayor riesgo, mayor rentabilidad esperada</strong> — pero también mayor posibilidad de perder.</div>
+    <div class="repaso-cta">Hoy: ¿Cómo conseguimos el dinero cuando el negocio lo necesita? ¿Qué opciones existen y cuál conviene? →</div>
+  </div>
+
+  <!-- RESUMEN SESION 6 -->
+  <div class="section-title">¿Qué aprendemos hoy?</div>
+  <div class="resumen-grid">
+    <div class="resumen-item"><div class="resumen-icon">🏦</div><div class="resumen-label">Tema principal</div><div class="resumen-val">Sistema financiero y crédito</div></div>
+    <div class="resumen-item"><div class="resumen-icon">⏱️</div><div class="resumen-label">Duración</div><div class="resumen-val">120 minutos</div></div>
+    <div class="resumen-item"><div class="resumen-icon">🎯</div><div class="resumen-label">Objetivo</div><div class="resumen-val">Elegir el crédito correcto</div></div>
+    <div class="resumen-item"><div class="resumen-icon">📌</div><div class="resumen-label">Concepto clave</div><div class="resumen-val">TCEA — el costo real</div></div>
+  </div>
+
+  <!-- CRÉDITO FORMAL VS INFORMAL -->
+  <div class="section-title">Crédito formal vs. crédito informal</div>
+  <p class="section-sub">La diferencia más importante de esta sesión. Siempre prioriza el crédito formal.</p>
+
+  <div class="comp-grid">
+    <div class="comp-card formal">
+      <div class="comp-title">✅ CRÉDITO FORMAL</div>
+      <div class="comp-item">Bancos, cajas municipales, financieras</div>
+      <div class="comp-item">Supervisado por SBS y BCRP</div>
+      <div class="comp-item">Tasas reguladas — más bajas</div>
+      <div class="comp-item">Contrato escrito con condiciones claras</div>
+      <div class="comp-item">Construye historial crediticio</div>
+      <div class="comp-item">En Cajamarca: CMAC, BCP, MiBanco</div>
+    </div>
+    <div class="comp-card informal">
+      <div class="comp-title">⚠️ CRÉDITO INFORMAL</div>
+      <div class="comp-item">Prestamistas sin regulación</div>
+      <div class="comp-item">Sin supervisión del Estado</div>
+      <div class="comp-item">Tasas muy altas — hasta 10×</div>
+      <div class="comp-item">Condiciones verbales, riesgo de conflicto</div>
+      <div class="comp-item">No suma al historial crediticio</div>
+      <div class="comp-item">Mayor riesgo legal y financiero</div>
+    </div>
+  </div>
+
+  <!-- SIMULADORES -->
+  <div class="section-title">Simuladores — usa los números de tu crédito</div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="mostrarSim('cuota',this)">Calcular cuota</button>
+    <button class="tab-btn" onclick="mostrarSim('comparar',this)">Comparar créditos</button>
+    <button class="tab-btn" onclick="mostrarSim('viabilidad',this)">¿Puedo pagarlo?</button>
+  </div>
+
+  <!-- SIMULADOR CUOTA -->
+  <div id="sim-cuota" class="sim-panel active">
+    <div class="sim-title">¿Cuánto pagaré cada mes por un préstamo?</div>
+    <p style="font-size:12px;color:var(--texto-secundario);margin-bottom:14px;">Calcula la cuota mensual aproximada de un préstamo (sistema francés — cuotas iguales).</p>
+    <div class="input-row">
+      <div class="input-group"><label>Monto del préstamo (S/)</label><input type="number" id="cu-monto" value="20000" min="0" oninput="calcCuota()"></div>
+      <div class="input-group"><label>Tasa de interés mensual (%)</label><input type="number" id="cu-tasa" value="2.5" min="0" step="0.1" oninput="calcCuota()"></div>
+    </div>
+    <div class="input-group"><label>Plazo (meses)</label><input type="number" id="cu-plazo" value="12" min="1" max="120" oninput="calcCuota()"></div>
+    <div class="input-group"><label>Seguro mensual adicional (S/) — si aplica</label><input type="number" id="cu-seguro" value="45" min="0" oninput="calcCuota()"></div>
+    <div class="results-grid">
+      <div class="result-card"><div class="result-label">Cuota mensual base</div><div class="result-value" id="cu-cuota">S/ 0</div></div>
+      <div class="result-card"><div class="result-label">Cuota total (con seguro)</div><div class="result-value warn" id="cu-total-cuota">S/ 0</div></div>
+      <div class="result-card"><div class="result-label">Total pagado</div><div class="result-value" id="cu-total">S/ 0</div></div>
+      <div class="result-card"><div class="result-label">Costo del dinero</div><div class="result-value bad" id="cu-costo">S/ 0</div></div>
+    </div>
+    <div class="sim-nota">💡 Esta es una aproximación. El costo real (TCEA) también incluye comisiones de desembolso y otros cargos. Siempre pide la simulación completa a la institución.</div>
+  </div>
+
+  <!-- SIMULADOR COMPARAR -->
+  <div id="sim-comparar" class="sim-panel">
+    <div class="sim-title">¿Cuál opción de crédito me conviene más?</div>
+    <p style="font-size:12px;color:var(--texto-secundario);margin-bottom:14px;">Ingresa los datos de dos opciones de crédito para el mismo monto y compara cuál es más barata en total.</p>
+    <div style="font-size:12px;font-weight:700;color:var(--verde);margin-bottom:8px;">📗 OPCIÓN A</div>
+    <div class="input-row">
+      <div class="input-group"><label>Tasa mensual A (%)</label><input type="number" id="cA-tasa" value="2.5" min="0" step="0.1" oninput="calcComparar()"></div>
+      <div class="input-group"><label>Plazo A (meses)</label><input type="number" id="cA-plazo" value="18" min="1" oninput="calcComparar()"></div>
+    </div>
+    <div class="input-row">
+      <div class="input-group"><label>Seguro mensual A (S/)</label><input type="number" id="cA-seguro" value="45" min="0" oninput="calcComparar()"></div>
+      <div class="input-group"><label>Comisión desembolso A (S/)</label><input type="number" id="cA-com" value="300" min="0" oninput="calcComparar()"></div>
+    </div>
+    <div style="font-size:12px;font-weight:700;color:var(--rojo);margin-bottom:8px;margin-top:12px;">📕 OPCIÓN B</div>
+    <div class="input-row">
+      <div class="input-group"><label>Tasa mensual B (%)</label><input type="number" id="cB-tasa" value="8" min="0" step="0.1" oninput="calcComparar()"></div>
+      <div class="input-group"><label>Plazo B (meses)</label><input type="number" id="cB-plazo" value="12" min="1" oninput="calcComparar()"></div>
+    </div>
+    <div class="input-row">
+      <div class="input-group"><label>Seguro mensual B (S/)</label><input type="number" id="cB-seguro" value="0" min="0" oninput="calcComparar()"></div>
+      <div class="input-group"><label>Comisión desembolso B (S/)</label><input type="number" id="cB-com" value="0" min="0" oninput="calcComparar()"></div>
+    </div>
+    <div class="input-group" style="margin-top:8px;"><label>Monto del préstamo a comparar (S/)</label><input type="number" id="c-monto" value="24000" min="0" oninput="calcComparar()"></div>
+    <div class="results-grid">
+      <div class="result-card"><div class="result-label">Cuota total A/mes</div><div class="result-value good" id="cA-cuota">S/ 0</div></div>
+      <div class="result-card"><div class="result-label">Costo total Opción A</div><div class="result-value good" id="cA-costo">S/ 0</div></div>
+      <div class="result-card"><div class="result-label">Cuota total B/mes</div><div class="result-value bad" id="cB-cuota">S/ 0</div></div>
+      <div class="result-card"><div class="result-label">Costo total Opción B</div><div class="result-value bad" id="cB-costo">S/ 0</div></div>
+    </div>
+    <div id="comp-resultado" class="sim-nota" style="margin-top:12px;"></div>
+  </div>
+
+  <!-- SIMULADOR VIABILIDAD -->
+  <div id="sim-viabilidad" class="sim-panel">
+    <div class="sim-title">¿Puedo asumir esta cuota sin comprometer mi negocio?</div>
+    <p style="font-size:12px;color:var(--texto-secundario);margin-bottom:14px;">La regla general: la cuota mensual no debería superar el 30% de tus entradas promedio.</p>
+    <div class="input-group"><label>Entradas de caja mensuales promedio (S/)</label><input type="number" id="vi-entradas" value="22000" min="0" oninput="calcViabilidad()"></div>
+    <div class="input-group"><label>Cuota mensual del crédito (S/)</label><input type="number" id="vi-cuota" value="1745" min="0" oninput="calcViabilidad()"></div>
+    <div class="input-group"><label>Gastos fijos mensuales SIN el crédito (S/)</label><input type="number" id="vi-gastos" value="14500" min="0" oninput="calcViabilidad()"></div>
+    <div class="results-grid">
+      <div class="result-card"><div class="result-label">% cuota sobre ingresos</div><div class="result-value" id="vi-pct">0%</div></div>
+      <div class="result-card"><div class="result-label">Margen restante</div><div class="result-value" id="vi-margen">S/ 0</div></div>
+      <div class="result-card"><div class="result-label">Diagnóstico</div><div class="result-value" id="vi-diag">—</div></div>
+    </div>
+    <div id="vi-semaforo" class="semaforo"></div>
+    <div class="sim-nota">💡 Si el % supera el 30%, revisa si puedes extender el plazo del crédito para reducir la cuota mensual, o busca otra fuente de financiamiento.</div>
+  </div>
+
+  <!-- CASOS -->
+  <div class="section-title">Los 2 casos de esta sesión — practica aquí</div>
+  <p class="section-sub">Expande cada caso, analiza los datos y resuelve antes de ver el solucionario.</p>
+
+  <!-- CASO 1 -->
+  <div class="caso-card">
+    <div class="caso-header" onclick="toggleCaso('c1')">
+      Hostal Baños del Inca — Renovación de 4 habitaciones
+      <span class="tipo">Resolución en vivo</span>
+    </div>
+    <div class="caso-body" id="c1">
+      <div class="caso-dato"><strong>Situación:</strong> Doña Patricia necesita S/ 24,000 para renovar 4 habitaciones antes del Carnaval.</div>
+      <div class="caso-dato"><strong>Opción A — CMAC Cajamarca:</strong> S/ 24,000 | 18 meses | 2.33% mensual (28% anual) | Comisión S/ 300 | Seguro S/ 45/mes | Cuotas iguales</div>
+      <div class="caso-dato"><strong>Opción B — Prestamista informal:</strong> S/ 24,000 | 12 meses | 8% mensual | Sin comisiones | Cuota estimada: S/ 2,605/mes</div>
+      <div class="caso-dato"><strong>Entradas mensuales en temporada baja:</strong> S/ 8,500</div>
+
+      <div class="caso-preguntas">
+        <div class="pregunta-item"><span class="pregunta-num">1.</span>¿Cuál es la cuota total mensual con la CMAC (base + seguro)?</div>
+        <button class="respuesta-toggle" onclick="toggleResp('r1a')">Ver respuesta</button>
+        <div class="respuesta-box" id="r1a">
+          Cuota base ≈ S/ 1,700 | + Seguro S/ 45 = <span class="num">Cuota total: ~S/ 1,745/mes</span><br>
+          Total pagado en 18 meses: S/ 1,745 × 18 = <span class="num">S/ 31,410</span> | Costo del dinero: ~S/ 7,710
+        </div>
+
+        <div class="pregunta-item"><span class="pregunta-num">2.</span>¿Cuánto paga en total con el prestamista informal? ¿Y cuánto le cuesta el dinero?</div>
+        <button class="respuesta-toggle" onclick="toggleResp('r1b')">Ver respuesta</button>
+        <div class="respuesta-box" id="r1b">
+          Total pagado: S/ 2,605 × 12 = <span class="num">S/ 31,260</span><br>
+          Costo del dinero: S/ 31,260 − S/ 24,000 = <span class="num">S/ 7,260 en intereses</span><br>
+          Aparentemente similar al costo de la CMAC — pero en 12 meses en lugar de 18. La cuota mensual es 49% más alta.
+        </div>
+
+        <div class="pregunta-item"><span class="pregunta-num">3.</span>¿Qué porcentaje de las entradas mensuales representa cada cuota? ¿Cuál es la opción más viable?</div>
+        <button class="respuesta-toggle" onclick="toggleResp('r1c')">Ver respuesta</button>
+        <div class="respuesta-box" id="r1c">
+          CMAC: S/ 1,745 / S/ 8,500 = <span class="num">20.5% ✅ — dentro del límite saludable</span><br>
+          Prestamista: S/ 2,605 / S/ 8,500 = <span class="num">30.6% ⚠️ — en el límite máximo, sin margen de error</span><br>
+          La CMAC deja S/ 6,755 libres por mes. El prestamista deja solo S/ 5,895. Ante cualquier imprevisto, el prestamista es mucho más riesgoso.
+        </div>
+
+        <div class="pregunta-item"><span class="pregunta-num">4.</span>Además del costo, ¿qué otros factores favorecen la opción formal?</div>
+        <button class="respuesta-toggle" onclick="toggleResp('r1d')">Ver respuesta</button>
+        <div class="respuesta-box" id="r1d">
+          <span class="num">✅ Recomendación: CMAC Cajamarca (Opción A)</span><br><br>
+          Razones adicionales más allá del costo:<br>
+          • Contrato escrito con condiciones fijas — el prestamista puede cambiarlas en cualquier momento.<br>
+          • Construye historial crediticio → permite acceder a créditos mayores en el futuro.<br>
+          • Menor cuota mensual → mayor colchón financiero ante imprevistos.<br>
+          • La diferencia de costo total es mínima (S/ 450) pero los beneficios adicionales son enormes.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 2 -->
+  <div class="caso-card">
+    <div class="caso-header" onclick="toggleCaso('c2')">
+      EcoAndes Tours — Adquisición de minibús para Carnaval
+      <span class="tipo">Trabajo grupal</span>
+    </div>
+    <div class="caso-body" id="c2">
+      <div class="caso-dato"><strong>Situación:</strong> Don Rodrigo quiere adquirir un minibús de 15 pasajeros (S/ 85,000). Cuota inicial: S/ 15,000. Monto a financiar: S/ 70,000.</div>
+      <div class="caso-dato"><strong>Opción A — Leasing BCP (18 meses):</strong> TCEA 22% anual | Cuota total estimada: S/ 4,580/mes | Vehículo del banco hasta el pago final.</div>
+      <div class="caso-dato"><strong>Opción B — Préstamo vehicular MiBanco (24 meses):</strong> TCEA 18% anual | Cuota base: S/ 3,520 | + Seguro S/ 120/mes | + Comisión S/ 500 (prorrateada). Vehículo a nombre de EcoAndes desde el inicio.</div>
+      <div class="caso-dato"><strong>Ingresos mensuales EcoAndes:</strong> S/ 22,000 (normal) | S/ 38,000 (Carnaval/Semana Santa)</div>
+      <div class="caso-dato"><strong>Gastos fijos sin crédito:</strong> S/ 14,500/mes</div>
+      <div class="caso-dato"><strong>Ingreso adicional del minibús:</strong> S/ 4,800/mes estimados</div>
+
+      <div class="caso-preguntas">
+        <div class="pregunta-item"><span class="pregunta-num">1.</span>¿Cuál es la cuota real mensual de la Opción B incluyendo comisión prorrateada y seguro?</div>
+        <button class="respuesta-toggle" onclick="toggleResp('r2a')">Ver respuesta</button>
+        <div class="respuesta-box" id="r2a">
+          Cuota base: S/ 3,520 | + Seguro: S/ 120 | + Comisión prorrateada (S/ 500 / 24 meses): S/ 21<br>
+          <span class="num">Cuota real mensual Opción B: S/ 3,661/mes</span>
+        </div>
+
+        <div class="pregunta-item"><span class="pregunta-num">2.</span>Con los ingresos actuales de S/ 22,000, ¿puede EcoAndes asumir ambas opciones sin superar el 30%?</div>
+        <button class="respuesta-toggle" onclick="toggleResp('r2b')">Ver respuesta</button>
+        <div class="respuesta-box" id="r2b">
+          Opción A: S/ 4,580 / S/ 22,000 = <span class="num">20.8% ✅ viable</span><br>
+          Opción B: S/ 3,661 / S/ 22,000 = <span class="num">16.6% ✅ muy viable</span><br>
+          Ambas son manejables con los ingresos actuales.
+        </div>
+
+        <div class="pregunta-item"><span class="pregunta-num">3.</span>Considerando los S/ 4,800 adicionales del minibús, ¿qué pasa con el análisis?</div>
+        <button class="respuesta-toggle" onclick="toggleResp('r2c')">Ver respuesta</button>
+        <div class="respuesta-box" id="r2c">
+          Ingresos totales: S/ 22,000 + S/ 4,800 = S/ 26,800<br>
+          Opción A: S/ 4,580 / S/ 26,800 = <span class="num">17.1% — más holgada ✅</span><br>
+          Opción B: S/ 3,661 / S/ 26,800 = <span class="num">13.7% — muy cómoda ✅</span><br>
+          <strong>El minibús prácticamente se financia solo con el ingreso que genera.</strong>
+        </div>
+
+        <div class="pregunta-item"><span class="pregunta-num">4.</span>¿Qué opción recomendarían y por qué? Argumenten con números.</div>
+        <button class="respuesta-toggle" onclick="toggleResp('r2d')">Ver respuesta</button>
+        <div class="respuesta-box" id="r2d">
+          Total pagado Opción A: S/ 4,580 × 18 = <span class="num">S/ 82,440 — menos costo total</span><br>
+          Total pagado Opción B: S/ 3,661 × 24 = <span class="num">S/ 87,864 — más costo total</span><br><br>
+          Si prioriza <strong>menor cuota mensual</strong> → Opción B (ahorra S/ 919/mes, más caja disponible)<br>
+          Si prioriza <strong>menor costo total</strong> → Opción A (ahorra ~S/ 5,424 en el período total)<br>
+          Si quiere <strong>el vehículo a su nombre desde el inicio</strong> → Opción B (leasing = banco es dueño)<br><br>
+          <span class="num">No hay una única respuesta correcta. El análisis financiero abre las opciones; la decisión depende de las prioridades del empresario.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="section-title">Quiz de comprensión — 5 preguntas</div>
+
+  <div class="quiz-card">
+    <div class="quiz-pregunta">1. Un prestamista informal cobra 8% mensual. ¿A cuánto equivale eso anual aproximadamente (interés simple)?</div>
+    <div class="quiz-opciones">
+      <button class="quiz-opcion" onclick="responder(this,'q1','a')">a) 8% anual</button>
+      <button class="quiz-opcion" onclick="responder(this,'q1','b')">b) 48% anual</button>
+      <button class="quiz-opcion" onclick="responder(this,'q1','c')">c) 96% anual</button>
+      <button class="quiz-opcion" onclick="responder(this,'q1','d')">d) 16% anual</button>
+    </div>
+    <div class="quiz-feedback" id="q1-fb"></div>
+  </div>
+
+  <div class="quiz-card">
+    <div class="quiz-pregunta">2. ¿Qué es el TCEA?</div>
+    <div class="quiz-opciones">
+      <button class="quiz-opcion" onclick="responder(this,'q2','a')">a) La tasa nominal que anuncia el banco</button>
+      <button class="quiz-opcion" onclick="responder(this,'q2','b')">b) La Tasa de Costo Efectivo Anual — incluye tasa, comisiones y seguros</button>
+      <button class="quiz-opcion" onclick="responder(this,'q2','c')">c) El plazo máximo de un crédito</button>
+      <button class="quiz-opcion" onclick="responder(this,'q2','d')">d) El tipo de cambio del día</button>
+    </div>
+    <div class="quiz-feedback" id="q2-fb"></div>
+  </div>
+
+  <div class="quiz-card">
+    <div class="quiz-pregunta">3. Un hostal tiene entradas de caja de S/ 15,000/mes. ¿Cuál es el máximo recomendable para la cuota mensual de un crédito?</div>
+    <div class="quiz-opciones">
+      <button class="quiz-opcion" onclick="responder(this,'q3','a')">a) S/ 7,500 (50%)</button>
+      <button class="quiz-opcion" onclick="responder(this,'q3','b')">b) S/ 4,500 (30%)</button>
+      <button class="quiz-opcion" onclick="responder(this,'q3','c')">c) S/ 1,500 (10%)</button>
+      <button class="quiz-opcion" onclick="responder(this,'q3','d')">d) No hay límite recomendado</button>
+    </div>
+    <div class="quiz-feedback" id="q3-fb"></div>
+  </div>
+
+  <div class="quiz-card">
+    <div class="quiz-pregunta">4. ¿Cuál de estos productos financieros es más adecuado para adquirir un vehículo para tours SIN desembolsar el total del precio?</div>
+    <div class="quiz-opciones">
+      <button class="quiz-opcion" onclick="responder(this,'q4','a')">a) Factoring</button>
+      <button class="quiz-opcion" onclick="responder(this,'q4','b')">b) Capital de trabajo</button>
+      <button class="quiz-opcion" onclick="responder(this,'q4','c')">c) Leasing</button>
+      <button class="quiz-opcion" onclick="responder(this,'q4','d')">d) Descuento de letras</button>
+    </div>
+    <div class="quiz-feedback" id="q4-fb"></div>
+  </div>
+
+  <div class="quiz-card">
+    <div class="quiz-pregunta">5. Una agencia vende tours a agencias corporativas que pagan a 60 días. ¿Qué producto financiero le permite recibir el dinero de esas facturas de inmediato?</div>
+    <div class="quiz-opciones">
+      <button class="quiz-opcion" onclick="responder(this,'q5','a')">a) Leasing</button>
+      <button class="quiz-opcion" onclick="responder(this,'q5','b')">b) Factoring</button>
+      <button class="quiz-opcion" onclick="responder(this,'q5','c')">c) Préstamo hipotecario</button>
+      <button class="quiz-opcion" onclick="responder(this,'q5','d')">d) Línea de sobregiro</button>
+    </div>
+    <div class="quiz-feedback" id="q5-fb"></div>
+  </div>
+
+  <div class="puntaje-final" id="puntaje-bloque">
+    <div class="puntaje-num" id="puntaje-num">0/5</div>
+    <div class="puntaje-msg" id="puntaje-msg"></div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-block">
+    <h3>¿Listo para la Sesión 7?</h3>
+    <p>Aprendiste a evaluar créditos con criterio. En la Sesión 7 vemos los estados financieros: balance general y estado de resultados. Son los documentos que los bancos analizan cuando pides un préstamo. Entenderlos te da ventaja en la negociación.</p>
+    <div class="cta-btns">
+      <a href="https://wa.me/51925825254?text=Hola%20M.Sc.%20Daniel%2C%20quisiera%20recibir%20la%20guía%20de%20productos%20financieros%20del%20curso%20CENFOTUR%20Cajamarca%202026." class="cta-btn cta-btn-primary" style="background:#25D366;">📲 Solicitar guía — WhatsApp</a>
+      <a onclick="window.open('sesion7_landing.html','_blank')" class="cta-btn cta-btn-secondary" style="cursor:pointer;">📅 Sesión 7 — Estados Financieros</a>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer" style="text-align:center;font-size:12px;color:#888;padding:2rem 1rem;border-top:1px solid #e8e4dd;margin-top:0;background:#f8f9fa;">
+  <strong style="color:#0c1e38;font-size:13px;">M.Sc. Daniel González Hernández</strong><br>
+  <span>CENFOTUR Cajamarca · Costos, Presupuesto y Principios Financieros en Turismo · Sesión 6 de 8 · 2026</span>
+</div>
+
+<script>
+  // ── TABS ──
+  function mostrarSim(id,btn){
+    document.querySelectorAll('.sim-panel').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById('sim-'+id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // ── CASOS ──
+  function toggleCaso(id){ document.getElementById(id).classList.toggle('open'); }
+  function toggleResp(id){ document.getElementById(id).classList.toggle('show'); }
+
+  // ── FORMATO ──
+  function fmt(n){ return 'S/ '+n.toLocaleString('es-PE',{minimumFractionDigits:0,maximumFractionDigits:0}); }
+
+  // ── SIMULADOR CUOTA ──
+  function calcCuota(){
+    const M=+document.getElementById('cu-monto').value||0;
+    const r=(+document.getElementById('cu-tasa').value||0)/100;
+    const n=+document.getElementById('cu-plazo').value||1;
+    const s=+document.getElementById('cu-seguro').value||0;
+    let cuota=0;
+    if(r>0) cuota=M*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1);
+    else cuota=M/n;
+    const totalCuota=cuota+s;
+    const totalPagado=totalCuota*n;
+    const costo=totalPagado-M;
+    document.getElementById('cu-cuota').textContent=fmt(Math.round(cuota));
+    document.getElementById('cu-total-cuota').textContent=fmt(Math.round(totalCuota));
+    document.getElementById('cu-total').textContent=fmt(Math.round(totalPagado));
+    document.getElementById('cu-costo').textContent=fmt(Math.round(costo));
+  }
+
+  // ── SIMULADOR COMPARAR ──
+  function calcComparar(){
+    const M=+document.getElementById('c-monto').value||0;
+    const calcC=(tPct,n,seg,com)=>{
+      const r=tPct/100;
+      let cuota=0;
+      if(r>0) cuota=M*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1); else cuota=M/n;
+      return {cuota:cuota+seg, total:(cuota+seg)*n+com};
+    };
+    const A=calcC(+document.getElementById('cA-tasa').value||0,+document.getElementById('cA-plazo').value||1,+document.getElementById('cA-seguro').value||0,+document.getElementById('cA-com').value||0);
+    const B=calcC(+document.getElementById('cB-tasa').value||0,+document.getElementById('cB-plazo').value||1,+document.getElementById('cB-seguro').value||0,+document.getElementById('cB-com').value||0);
+    document.getElementById('cA-cuota').textContent=fmt(Math.round(A.cuota));
+    document.getElementById('cA-costo').textContent=fmt(Math.round(A.total));
+    document.getElementById('cB-cuota').textContent=fmt(Math.round(B.cuota));
+    document.getElementById('cB-costo').textContent=fmt(Math.round(B.total));
+    const res=document.getElementById('comp-resultado');
+    if(A.total<B.total){
+      const dif=B.total-A.total;
+      res.innerHTML='💡 <strong>Opción A es más barata en total</strong> — ahorrarías '+fmt(Math.round(dif))+' aunque la cuota mensual sea mayor. Evalúa si tu flujo de caja puede cubrir esa cuota.';
+    } else if(B.total<A.total){
+      const dif=A.total-B.total;
+      res.innerHTML='💡 <strong>Opción B es más barata en total</strong> — ahorrarías '+fmt(Math.round(dif))+' con menor cuota mensual. Verifica también la tasa efectiva real (TCEA).';
+    } else {
+      res.innerHTML='💡 Ambas opciones tienen costo similar. Evalúa otros factores: plazo, garantías, historial crediticio.';
+    }
+  }
+
+  // ── SIMULADOR VIABILIDAD ──
+  function calcViabilidad(){
+    const entradas=+document.getElementById('vi-entradas').value||0;
+    const cuota=+document.getElementById('vi-cuota').value||0;
+    const gastos=+document.getElementById('vi-gastos').value||0;
+    const pct=entradas>0?cuota/entradas*100:0;
+    const margen=entradas-gastos-cuota;
+    const pctEl=document.getElementById('vi-pct');
+    pctEl.textContent=pct.toFixed(1)+'%';
+    document.getElementById('vi-margen').textContent=fmt(Math.round(margen));
+    const diagEl=document.getElementById('vi-diag');
+    const semEl=document.getElementById('vi-semaforo');
+    if(pct<=20){
+      pctEl.className='result-value good';
+      diagEl.textContent='Cómodo ✅';
+      diagEl.className='result-value good';
+      semEl.innerHTML='<span class="sem-item sem-verde">✅ Cuota saludable — menos del 20% de entradas</span>';
+    } else if(pct<=30){
+      pctEl.className='result-value warn';
+      diagEl.textContent='Manejable ⚠️';
+      diagEl.className='result-value warn';
+      semEl.innerHTML='<span class="sem-item sem-amarillo">⚠️ En rango aceptable — vigila el flujo mes a mes</span>';
+    } else {
+      pctEl.className='result-value bad';
+      diagEl.textContent='Riesgo alto 🔴';
+      diagEl.className='result-value bad';
+      semEl.innerHTML='<span class="sem-item sem-rojo">🔴 Supera el 30% — busca ampliar el plazo o reducir el monto</span>';
+    }
+  }
+
+  // ── QUIZ ──
+  const respuestas={
+    q1:{correcta:'c',feedback:{ok:'✅ Correcto. 8% mensual × 12 meses = 96% anual en interés simple. Eso es casi duplicar el dinero prestado en un año. El crédito informal es devastador para el flujo de caja.',ko:'❌ 8% mensual × 12 = 96% anual. Si pedías S/ 10,000 en enero, al año siguiente habrías pagado S/ 19,600. Compare con el 28-32% anual de una caja municipal.'}},
+    q2:{correcta:'b',feedback:{ok:'✅ Correcto. El TCEA es el número honesto: incluye todo lo que te cobra la institución. Siempre pídelo antes de firmar cualquier crédito.',ko:'❌ El TCEA (Tasa de Costo Efectivo Anual) es el costo real del crédito, incluyendo tasa, comisiones y seguros. La tasa nominal es solo parte del costo.'}},
+    q3:{correcta:'b',feedback:{ok:'✅ Correcto. 30% de S/ 15,000 = S/ 4,500. Esa es la cuota máxima recomendable para no poner en riesgo la operación del negocio.',ko:'❌ La regla general es que la cuota mensual no supere el 30% de tus entradas. 30% de S/ 15,000 = S/ 4,500.'}},
+    q4:{correcta:'c',feedback:{ok:'✅ Correcto. El leasing es exactamente para esto: usas el bien pagando cuotas y al final lo compras. No necesitas desembolsar el precio completo de inmediato.',ko:'❌ El producto correcto es el leasing. Permite adquirir equipos y vehículos mediante el pago de cuotas periódicas, sin comprometer todo el capital de una vez.'}},
+    q5:{correcta:'b',feedback:{ok:'✅ Correcto. El factoring permite ceder las facturas a una entidad financiera y recibir el dinero inmediatamente, sin esperar los 30 o 60 días del plazo de cobro.',ko:'❌ El factoring es el producto diseñado para esto. Cedes tu derecho de cobro a un banco o financiera y recibes el dinero de inmediato, menos una comisión.'}}
+  };
+
+  let respondidas={}, puntaje=0;
+  function responder(btn,pregId,opcion){
+    if(respondidas[pregId]) return;
+    respondidas[pregId]=true;
+    const datos=respuestas[pregId];
+    const fb=document.getElementById(pregId+'-fb');
+    const opciones=btn.parentElement.querySelectorAll('.quiz-opcion');
+    opciones.forEach(op=>op.disabled=true);
+    if(opcion===datos.correcta){
+      btn.classList.add('correcta');
+      fb.textContent=datos.feedback.ok;
+      fb.className='quiz-feedback show ok';
+      puntaje++;
+    } else {
+      btn.classList.add('incorrecta');
+      opciones.forEach(op=>{if(op.textContent.startsWith(datos.correcta)) op.classList.add('correcta');});
+      fb.textContent=datos.feedback.ko;
+      fb.className='quiz-feedback show ko';
+    }
+    if(Object.keys(respondidas).length===5){
+      const bloque=document.getElementById('puntaje-bloque');
+      const num=document.getElementById('puntaje-num');
+      const msg=document.getElementById('puntaje-msg');
+      bloque.classList.add('show');
+      num.textContent=puntaje+'/5';
+      if(puntaje===5) msg.innerHTML='🎉 <strong>¡Perfecto! Manejas el sistema financiero con criterio.</strong><br><br><a onclick="window.open(\'sesion7_landing.html\',\'_blank\')" style="display:inline-block;margin-top:8px;padding:10px 22px;background:#c8922a;color:#fff;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;">📅 Ir a Sesión 7 — Estados Financieros →</a>';
+      else if(puntaje>=3) msg.textContent='Bien. Repasa los conceptos de TCEA y leasing con los simuladores.';
+      else msg.textContent='Practica con los simuladores usando datos reales de tu negocio antes de la próxima sesión.';
+    }
+  }
+
+  // Inicializar
+  calcCuota();
+  calcComparar();
+  calcViabilidad();
+</script>
+</body>
+</html>

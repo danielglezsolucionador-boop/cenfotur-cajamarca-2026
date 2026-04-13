@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sesión 2 | Costos, Precio y Punto de Equilibrio — CENFOTUR Cajamarca</title>
+<style>
+  :root {
+    --azul: #1D5FA0;
+    --azul-claro: #D6E8F7;
+    --azul-oscuro: #0D3A6B;
+    --dorado: #B8860B;
+    --dorado-claro: #FFF8E1;
+    --verde: #1B5E20;
+    --verde-claro: #E8F5E9;
+    --gris: #F5F5F5;
+    --gris-borde: #E0E0E0;
+    --texto: #1A1A1A;
+    --texto-secundario: #555;
+    --blanco: #FFFFFF;
+    --rojo: #C62828;
+    --rojo-claro: #FFEBEE;
+    --naranja: #E65100;
+    --naranja-claro: #FFF3E0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #F8F9FA; color: var(--texto); line-height: 1.6; }
+
+  /* HEADER */
+  .header { background: var(--azul-oscuro); color: white; padding: 1.5rem 1rem; text-align: center; }
+  .header .badge { display: inline-block; background: var(--dorado); color: white; font-size: 11px; font-weight: 700; padding: 3px 12px; border-radius: 20px; margin-bottom: 10px; letter-spacing: .06em; text-transform: uppercase; }
+  .header h1 { font-size: clamp(1.4rem, 4vw, 2.2rem); font-weight: 700; margin-bottom: 8px; }
+  .header p { font-size: 14px; opacity: .85; max-width: 560px; margin: 0 auto; }
+
+  /* PROGRESO */
+  .progreso { background: var(--azul); padding: .75rem 1rem; }
+  .prog-inner { max-width: 720px; margin: 0 auto; display: flex; align-items: center; gap: 12px; }
+  .prog-label { font-size: 12px; color: rgba(255,255,255,.75); white-space: nowrap; }
+  .prog-bar { flex: 1; height: 6px; background: rgba(255,255,255,.2); border-radius: 3px; }
+  .prog-fill { height: 100%; width: 25%; background: var(--dorado); border-radius: 3px; }
+  .prog-num { font-size: 12px; color: white; font-weight: 700; white-space: nowrap; }
+
+  /* MAIN */
+  .main { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+
+  /* SECCIONES */
+  .section-title { font-size: 18px; font-weight: 700; color: var(--azul); margin: 2rem 0 1rem; padding-bottom: 8px; border-bottom: 2px solid var(--azul-claro); }
+  .section-sub { font-size: 13px; color: var(--texto-secundario); margin-bottom: 1rem; }
+
+  /* FORMULAS */
+  .formulas-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 1.5rem; }
+  .formula-card { background: var(--dorado-claro); border: 1.5px solid var(--dorado); border-radius: 10px; padding: 1rem 1.25rem; }
+  .formula-label { font-size: 11px; font-weight: 700; color: var(--dorado); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+  .formula-text { font-family: 'Courier New', monospace; font-size: 15px; font-weight: 700; color: var(--texto); margin-bottom: 8px; }
+  .formula-ejemplo { font-size: 12px; color: var(--texto-secundario); background: white; padding: 6px 10px; border-radius: 6px; }
+  .formula-ejemplo span { color: var(--verde); font-weight: 700; }
+
+  /* TABS DE SIMULADORES */
+  .tabs { display: flex; gap: 6px; margin-bottom: 1rem; flex-wrap: wrap; }
+  .tab-btn { padding: 8px 16px; border: 1.5px solid var(--gris-borde); border-radius: 20px; background: var(--blanco); font-size: 13px; color: var(--texto-secundario); cursor: pointer; transition: all .15s; }
+  .tab-btn.active { background: var(--azul); color: white; border-color: var(--azul); }
+
+  /* SIMULADORES */
+  .sim-panel { background: var(--blanco); border: 1px solid var(--gris-borde); border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; display: none; }
+  .sim-panel.active { display: block; }
+  .sim-title { font-size: 14px; font-weight: 700; color: var(--azul); margin-bottom: 14px; }
+  .input-group { margin-bottom: 12px; }
+  .input-group label { display: block; font-size: 12px; color: var(--texto-secundario); margin-bottom: 4px; font-weight: 500; }
+  .input-group input { width: 100%; height: 38px; border: 1px solid var(--gris-borde); border-radius: 8px; padding: 0 12px; font-size: 14px; color: var(--texto); background: var(--gris); transition: border .15s; }
+  .input-group input:focus { outline: none; border-color: var(--azul); background: white; }
+  .results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-top: 14px; }
+  .result-card { background: var(--gris); border-radius: 8px; padding: 10px 12px; }
+  .result-label { font-size: 11px; color: var(--texto-secundario); margin-bottom: 4px; }
+  .result-value { font-size: 20px; font-weight: 700; color: var(--texto); }
+  .result-value.good { color: var(--verde); }
+  .result-value.warn { color: var(--naranja); }
+  .result-value.bad { color: var(--rojo); }
+  .semaforo { display: flex; gap: 6px; margin-top: 10px; align-items: center; flex-wrap: wrap; }
+  .sem-item { font-size: 12px; padding: 3px 10px; border-radius: 12px; font-weight: 600; }
+  .sem-verde { background: var(--verde-claro); color: var(--verde); }
+  .sem-amarillo { background: #FFFDE7; color: #F57F17; }
+  .sem-rojo { background: var(--rojo-claro); color: var(--rojo); }
+
+  /* CASOS */
+  .caso-card { background: var(--blanco); border: 1px solid var(--gris-borde); border-radius: 12px; overflow: hidden; margin-bottom: 1.2rem; }
+  .caso-header { background: var(--azul); color: white; padding: .75rem 1.25rem; font-size: 14px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+  .caso-header .tipo { font-size: 11px; background: rgba(255,255,255,.2); padding: 2px 8px; border-radius: 10px; font-weight: 400; }
+  .caso-body { padding: 1.25rem; display: none; }
+  .caso-body.open { display: block; }
+  .caso-dato { font-size: 13px; color: var(--texto-secundario); margin-bottom: 4px; }
+  .caso-dato strong { color: var(--texto); }
+  .caso-preguntas { margin-top: 14px; }
+  .pregunta-item { background: var(--azul-claro); border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; font-size: 13px; color: var(--azul-oscuro); }
+  .pregunta-num { font-weight: 700; margin-right: 6px; }
+  .respuesta-toggle { background: none; border: 1.5px solid var(--azul); color: var(--azul); padding: 4px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; margin-top: 8px; }
+  .respuesta-toggle:hover { background: var(--azul-claro); }
+  .respuesta-box { background: var(--verde-claro); border-left: 3px solid var(--verde); border-radius: 0 8px 8px 0; padding: 10px 14px; margin-top: 8px; font-size: 13px; color: var(--verde); display: none; line-height: 1.6; }
+  .respuesta-box.show { display: block; }
+  .respuesta-box .num { font-weight: 700; color: var(--verde); }
+
+  /* QUIZ */
+  .quiz-card { background: var(--blanco); border: 1px solid var(--gris-borde); border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
+  .quiz-pregunta { font-size: 14px; color: var(--texto); margin-bottom: 12px; line-height: 1.5; }
+  .quiz-opciones { display: grid; gap: 8px; }
+  .quiz-opcion { padding: 10px 14px; border: 1.5px solid var(--gris-borde); border-radius: 8px; font-size: 13px; color: var(--texto); cursor: pointer; transition: all .15s; background: var(--blanco); }
+  .quiz-opcion:hover { border-color: var(--azul); background: var(--azul-claro); }
+  .quiz-opcion.correcta { background: var(--verde-claro); border-color: var(--verde); color: var(--verde); }
+  .quiz-opcion.incorrecta { background: var(--rojo-claro); border-color: var(--rojo); color: var(--rojo); }
+  .quiz-feedback { font-size: 12px; margin-top: 10px; padding: 8px 12px; border-radius: 8px; display: none; line-height: 1.5; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.ok { background: var(--verde-claro); color: var(--verde); }
+  .quiz-feedback.ko { background: var(--rojo-claro); color: var(--rojo); }
+  .puntaje-final { background: var(--gris); border-radius: 12px; padding: 1.5rem; text-align: center; margin-top: 1rem; display: none; }
+  .puntaje-final.show { display: block; }
+  .puntaje-num { font-size: 40px; font-weight: 700; color: var(--azul); }
+  .puntaje-msg { font-size: 14px; color: var(--texto-secundario); margin-top: 6px; }
+
+  /* CTA */
+  .cta-block { background: var(--azul-oscuro); border-radius: 12px; padding: 1.5rem; text-align: center; margin-top: 2rem; color: white; }
+  .cta-block h3 { font-size: 17px; margin-bottom: 8px; }
+  .cta-block p { font-size: 13px; opacity: .85; line-height: 1.6; margin-bottom: 16px; }
+  .cta-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .cta-btn { padding: 10px 20px; border-radius: 8px; font-size: 13px; cursor: pointer; font-weight: 600; text-decoration: none; }
+  .cta-btn-primary { background: var(--dorado); color: white; border: none; }
+  .cta-btn-secondary { background: transparent; color: white; border: 1.5px solid rgba(255,255,255,.5); }
+  .cta-btn:hover { opacity: .88; }
+
+  /* FOOTER */
+  .footer { text-align: center; font-size: 12px; color: #999; padding: 1.5rem 1rem; border-top: 1px solid var(--gris-borde); margin-top: 2rem; }
+</style>
+</head>
+<body>
+<div id="cenfotur-topbar" style="
+  position:fixed;top:0;left:0;right:0;z-index:9999;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 20px;
+  background:rgba(6,13,26,0.95);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(200,146,42,0.2);
+  font-family:'Segoe UI',Arial,sans-serif;
+">
+  <span style="font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#e8b84b;">CENFOTUR · CAJAMARCA 2026</span>
+  <a href="index.html" style="
+    display:flex;align-items:center;gap:7px;
+    font-size:11px;font-weight:600;color:rgba(255,255,255,.7);
+    text-decoration:none;
+    padding:6px 14px;border-radius:100px;
+    border:1px solid rgba(255,255,255,.12);
+    background:rgba(255,255,255,.04);
+    transition:all .2s;
+  " onmouseover="this.style.background='rgba(255,255,255,.1)';this.style.color='#fff'"
+     onmouseout="this.style.background='rgba(255,255,255,.04)';this.style.color='rgba(255,255,255,.7)'">
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="7 2 3 6 7 10"/></svg>
+    Volver al HUB
+  </a>
+</div>
+<div style="height:44px;"></div>
+
+
+<div class="header">
+  <div class="badge">CENFOTUR Cajamarca</div>
+  <h1>Sesión 2 — Práctica y Trabajo Grupal</h1>
+  <p>Costos, precio y punto de equilibrio aplicados a negocios turísticos de Cajamarca</p>
+</div>
+
+<div class="progreso">
+  <div class="prog-inner">
+    <span class="prog-label">Progreso del curso</span>
+    <div class="prog-bar"><div class="prog-fill"></div></div>
+    <span class="prog-num">Sesión 2 de 8</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- FORMULAS -->
+  <div class="section-title">Las 3 fórmulas de esta unidad</div>
+  <p class="section-sub">Repasa las fórmulas de la Sesión 1 antes de practicar con los simuladores.</p>
+
+  <div class="formulas-grid">
+    <div class="formula-card">
+      <div class="formula-label">Fórmula 1 · Margen de ganancia bruta</div>
+      <div class="formula-text">Margen = (Ventas − Costo) / Ventas × 100</div>
+      <div class="formula-ejemplo">Ejemplo: venta S/ 30, costo S/ 12 → Margen = <span>60%</span></div>
+    </div>
+    <div class="formula-card">
+      <div class="formula-label">Fórmula 2 · Precio de venta por margen deseado</div>
+      <div class="formula-text">Precio = Costo / (1 − Margen deseado)</div>
+      <div class="formula-ejemplo">Ejemplo: costo S/ 65, margen 38% → Precio = 65/0.62 = <span>S/ 105</span></div>
+    </div>
+    <div class="formula-card">
+      <div class="formula-label">Fórmula 3 · Punto de equilibrio</div>
+      <div class="formula-text">PE = Costos Fijos / (PVU − CVU)</div>
+      <div class="formula-ejemplo">PVU − CVU = Margen de Contribución. Resultado en <span>unidades/mes</span></div>
+    </div>
+  </div>
+
+  <!-- SIMULADORES -->
+  <div class="section-title">Simuladores — usa los números de tu negocio</div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="mostrarSim('margen',this)">Margen bruto</button>
+    <button class="tab-btn" onclick="mostrarSim('precio',this)">Precio por margen</button>
+    <button class="tab-btn" onclick="mostrarSim('pe',this)">Punto de equilibrio</button>
+  </div>
+
+  <div id="sim-margen" class="sim-panel active">
+    <div class="sim-title">¿Cuál es el margen real de tu producto estrella?</div>
+    <div class="input-group"><label>Precio de venta (S/)</label><input type="number" id="mg-v" value="28" min="0" oninput="calcMG()"></div>
+    <div class="input-group"><label>Costo de producción (S/)</label><input type="number" id="mg-c" value="12" min="0" oninput="calcMG()"></div>
+    <div class="results-grid">
+      <div class="result-card"><div class="result-label">Ganancia bruta</div><div class="result-value" id="mg-gan">S/ 0</div></div>
+      <div class="result-card"><div class="result-label">Margen bruto</div><div class="result-value" id="mg-pct">0%</div></div>
+      <div class="result-card"><div class="result-label">Diagnóstico</div><div class="result-value" id="mg-diag">—</div></div>
+    </div>
+    <div class="semaforo">
+      <span class="sem-verde">Saludable &gt;40%</span>
+      <span class="sem-amarillo">Revisar 20–40%</span>
+      <span class="sem-rojo">Riesgo &lt;20%</span>
+    </div>
+  </div>
+
+  <div id="sim-precio" class="sim-panel">
+    <div class="sim-title">¿A qué precio debo vender para lograr el margen que quiero?</div>
+    <div class="input-group"><label>Costo del producto/servicio (S/)</label><input type="number" id="fp-c" value="62" min="0" oninput="calcPrecio()"></div>
+    <div class="input-group"><label>Margen deseado (%)</label><input type="number" id="fp-m" value="35" min="1" max="99" oninput="calcPrecio()"></div>
+    <div class="results-grid">
+      <div class="result-card"><div class="result-label">Precio de venta</div><div class="result-value" id="fp-precio">S/ 0</div></div>
+      <div class="result-card"><div class="result-label">Ganancia por unidad</div><div class="result-value" id="fp-gan">S/ 0</div></div>
+      <div class="result-card"><div class="result-label">Margen verificado</div><div class="result-value good" id="fp-ver">—</div></div>
+    </div>
+  </div>
+
+  <div id="sim-pe" class="sim-panel">
+    <div class="sim-title">¿Cuánto debo vender cada mes para no perder dinero?</div>
+    <div class="input-group"><label>Costos fijos totales del mes (S/)</label><input type="number" id="pe-cf" value="4120" min="0" oninput="calcPE()"></div>
+    <div class="input-group"><label>Precio de venta unitario (S/)</label><input type="number" id="pe-pvu" value="28" min="0" oninput="calcPE()"></div>
+    <div class="input-group"><label>Costo variable unitario (S/)</label><input type="number" id="pe-cvu" value="12" min="0" oninput="calcPE()"></div>
+    <div class="input-group"><label>Días laborables del mes</label><input type="number" id="pe-dias" value="26" min="1" max="31" oninput="calcPE()"></div>
+    <div class="input-group"><label>Meta de utilidad mensual (S/) — opcional</label><input type="number" id="pe-meta" value="2200" min="0" oninput="calcPE()"></div>
+    <div class="results-grid">
+      <div class="result-card"><div class="result-label">Margen de contribución</div><div class="result-value" id="pe-mc">S/ 0</div></div>
+      <div class="result-card"><div class="result-label">Unidades para equilibrio</div><div class="result-value" id="pe-eq">0</div></div>
+      <div class="result-card"><div class="result-label">Ventas diarias mínimas</div><div class="result-value" id="pe-dia">0</div></div>
+      <div class="result-card"><div class="result-label">Para tu meta</div><div class="result-value good" id="pe-mt">0</div></div>
+    </div>
+  </div>
+
+  <!-- CASOS DE CAJAMARCA -->
+  <div class="section-title">Los 3 casos del trabajo grupal — practica aquí</div>
+  <p class="section-sub">Expande cada caso, lee los datos y resuelve las 4 preguntas antes de ver la respuesta.</p>
+
+  <!-- CASO 1 -->
+  <div class="caso-card">
+    <div class="caso-header" onclick="toggleCaso('c1')">
+      Cevichería El Cuarto — Jr. Del Comercio, Cajamarca
+      <span class="tipo">Restaurante</span>
+    </div>
+    <div class="caso-body" id="c1">
+      <div class="caso-dato"><strong>Producto estrella:</strong> Ceviche de trucha cajamarquina — S/ 28 por porción</div>
+      <div class="caso-dato"><strong>Costo variable por plato:</strong> S/ 12 (trucha S/9 + ingredientes S/1.50 + guarnición S/1.20 + gas S/0.30)</div>
+      <div class="caso-dato"><strong>Costos fijos mensuales:</strong> S/ 4,120 (alquiler S/1,500 + cocinero S/1,300 + mozo S/950 + servicios S/370)</div>
+      <div class="caso-preguntas">
+        <div class="pregunta-item"><span class="pregunta-num">1.</span>¿Cuánto es el margen de ganancia bruta por plato?</div>
+        <button class="respuesta-toggle" onclick="toggleResp('r1a')">Ver respuesta</button>
+        <div class="respuesta-box" id="r1a"><span class="num">Margen = (28 − 12) / 28 × 100 = 57.1%</span> — Saludable para un restaurante de este tipo.</div>
+
+        <div class="pregunta-item"><span class="pregunta-num">2.</span>¿A cuánto debería vender si quisiera un margen del 60%?</div>
+        <button class="respuesta-toggle" onclick="toggleResp('r1b')">Ver respuesta</button>
+        <div class="respuesta-box" id="r1b"><span class="num">Precio = 12 / (1 − 0.60) = 12 / 0.40 = S/ 30</span> — Solo S/2 más que el precio actual. Son S/600 adicionales al mes en 300 platos.</div>
+
+        <div class="pregunta-item"><span class="pregunta-num">3.</span>¿Cuántos platos necesita vender al mes para el punto de equilibrio?</div>
+        <button class="respuesta-toggle" onclick="toggleResp('r1c')">Ver respuesta</button>
+        <div class="respuesta-box" id="r1c"><span class="num">MC = S/ 16 | PE = 4,120 / 16 = 258 platos/mes = 10 platos/día</span> (26 días laborables). Con solo 10 platos diarios cubre todos sus costos.</div>
+
+        <div class="pregunta-item"><span class="pregunta-num">4.</span>Para ganar S/ 2,200 de utilidad mensual, ¿cuántos platos necesita? ¿Es alcanzable?</div>
+        <button class="respuesta-toggle" onclick="toggleResp('r1d')">Ver respuesta</button>
+        <div class="respuesta-box" id="r1d"><span class="num">(4,120 + 2,200) / 16 = 395 platos/mes = 16 platos/día</span> — Sí es alcanzable: 4 platos por hora en 4 horas de servicio. Con buena operación es perfectamente factible.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 2 -->
+  <div class="caso-card">
+    <div class="caso-header" onclick="toggleCaso('c2')">
+      Hostal La Ruta de los Frailones — carretera a Cumbe Mayo
+      <span class="tipo">Hospedaje</span>
+    </div>
+    <div class="caso-body" id="c2">
+      <div class="caso-dato"><strong>Producto:</strong> Habitación doble con desayuno — S/ 110 por noche</div>
+      <div class="caso-dato"><strong>Costo variable por noche:</strong> S/ 30 (limpieza S/15 + desayuno S/12 + agua caliente S/3)</div>
+      <div class="caso-dato"><strong>Costos fijos mensuales:</strong> S/ 4,000 (hipoteca S/1,400 + recepcionista S/1,100 + limpieza S/800 + servicios S/470 + mant. S/230)</div>
+      <div class="caso-dato"><strong>Capacidad:</strong> 10 habitaciones × 30 días = 300 noches disponibles/mes</div>
+      <div class="caso-preguntas">
+        <div class="pregunta-item"><span class="pregunta-num">1.</span>¿Cuánto es el margen de contribución por noche?</div>
+        <button class="respuesta-toggle" onclick="toggleResp('r2a')">Ver respuesta</button>
+        <div class="respuesta-box" id="r2a"><span class="num">MC = 110 − 30 = S/ 80 por noche</span></div>
+
+        <div class="pregunta-item"><span class="pregunta-num">2.</span>¿Cuántas noches necesita vender al mes para el punto de equilibrio?</div>
+        <button class="respuesta-toggle" onclick="toggleResp('r2b')">Ver respuesta</button>
+        <div class="respuesta-box" id="r2b"><span class="num">PE = 4,000 / 80 = 50 noches al mes</span></div>
+
+        <div class="pregunta-item"><span class="pregunta-num">3.</span>¿Qué porcentaje de ocupación mínima necesita? (300 noches disponibles)</div>
+        <button class="respuesta-toggle" onclick="toggleResp('r2c')">Ver respuesta</button>
+        <div class="respuesta-box" id="r2c"><span class="num">50 / 300 = 16.7% de ocupación mínima</span> — Solo 1 de cada 6 habitaciones debe estar ocupada para no perder. Al 50% de ocupación ganaría S/ 8,000/mes.</div>
+
+        <div class="pregunta-item"><span class="pregunta-num">4.</span>Si baja el precio a S/ 85 en temporada baja, ¿cómo cambia el PE? ¿Le conviene?</div>
+        <button class="respuesta-toggle" onclick="toggleResp('r2d')">Ver respuesta</button>
+        <div class="respuesta-box" id="r2d"><span class="num">Nuevo MC = 85 − 30 = S/55 | Nuevo PE = 4,000/55 = 73 noches</span> — Antes necesitaba 50 noches, ahora 73. Bajar S/25 le exige vender 23 noches más solo para equilibrarse. <strong>No conviene bajar precio</strong> — mejor diferenciarse con valor agregado.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 3 -->
+  <div class="caso-card">
+    <div class="caso-header" onclick="toggleCaso('c3')">
+      EcoAndes Tours — tours a Cumbemayo y Ventanillas de Otuzco
+      <span class="tipo">Agencia de viajes</span>
+    </div>
+    <div class="caso-body" id="c3">
+      <div class="caso-dato"><strong>Producto:</strong> Tour Mágico Cajamarca (Ventanillas + Cumbe Mayo + almuerzo) — S/ 95 por persona</div>
+      <div class="caso-dato"><strong>Costo variable por turista:</strong> S/ 62 (transporte S/18 + guía S/12 + entradas S/10 + almuerzo S/18 + seguro S/4)</div>
+      <div class="caso-dato"><strong>Costos fijos mensuales:</strong> S/ 2,600 (oficina S/600 + asistente S/1,200 + vehículo S/400 + publicidad S/250 + permisos S/150)</div>
+      <div class="caso-preguntas">
+        <div class="pregunta-item"><span class="pregunta-num">1.</span>¿Cuánto es el margen de contribución por turista?</div>
+        <button class="respuesta-toggle" onclick="toggleResp('r3a')">Ver respuesta</button>
+        <div class="respuesta-box" id="r3a"><span class="num">MC = 95 − 62 = S/ 33 por turista</span></div>
+
+        <div class="pregunta-item"><span class="pregunta-num">2.</span>¿Cuántos turistas necesita llevar al mes para el punto de equilibrio?</div>
+        <button class="respuesta-toggle" onclick="toggleResp('r3b')">Ver respuesta</button>
+        <div class="respuesta-box" id="r3b"><span class="num">PE = 2,600 / 33 = 79 turistas al mes</span></div>
+
+        <div class="pregunta-item"><span class="pregunta-num">3.</span>Con grupos de 6 personas promedio y 24 días operativos, ¿cuántos tours debe operar?</div>
+        <button class="respuesta-toggle" onclick="toggleResp('r3c')">Ver respuesta</button>
+        <div class="respuesta-box" id="r3c"><span class="num">79 / 6 = 14 tours al mes = 3–4 tours por semana</span> — Muy manejable para una agencia activa en Cajamarca.</div>
+
+        <div class="pregunta-item"><span class="pregunta-num">4.</span>Un competidor cobra S/ 75. Si Carlos baja a S/ 75, ¿cuántos turistas adicionales necesita?</div>
+        <button class="respuesta-toggle" onclick="toggleResp('r3d')">Ver respuesta</button>
+        <div class="respuesta-box" id="r3d"><span class="num">Nuevo MC = 75 − 62 = S/13 | Nuevo PE = 2,600/13 = 200 turistas</span> — Antes 79, ahora 200. Bajar S/20 el precio exige 121 turistas más al mes. <strong>Imposible para una agencia pequeña</strong>. La clave es diferenciarse, no competir en precio.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="section-title">Quiz de autoevaluación — 5 preguntas</div>
+  <p class="section-sub">Responde sin ver las soluciones. Cada pregunta está basada en los casos de esta sesión.</p>
+
+  <div class="quiz-card">
+    <div class="quiz-pregunta">1. La cevichería cobra S/ 28 y tiene un costo variable de S/ 12. ¿Cuántos platos necesita vender al mes si sus costos fijos son S/ 4,120?</div>
+    <div class="quiz-opciones">
+      <div class="quiz-opcion" onclick="responder(this,'q1','a')">a) 200 platos/mes</div>
+      <div class="quiz-opcion" onclick="responder(this,'q1','b')">b) 258 platos/mes</div>
+      <div class="quiz-opcion" onclick="responder(this,'q1','c')">c) 343 platos/mes</div>
+      <div class="quiz-opcion" onclick="responder(this,'q1','d')">d) 147 platos/mes</div>
+    </div>
+    <div class="quiz-feedback" id="q1-fb"></div>
+  </div>
+
+  <div class="quiz-card">
+    <div class="quiz-pregunta">2. El hostal tiene costos fijos de S/ 4,000, precio S/ 110 y costo variable S/ 30. Si baja el precio a S/ 85, ¿cuál es el nuevo punto de equilibrio?</div>
+    <div class="quiz-opciones">
+      <div class="quiz-opcion" onclick="responder(this,'q2','a')">a) 50 noches/mes</div>
+      <div class="quiz-opcion" onclick="responder(this,'q2','b')">b) 60 noches/mes</div>
+      <div class="quiz-opcion" onclick="responder(this,'q2','c')">c) 73 noches/mes</div>
+      <div class="quiz-opcion" onclick="responder(this,'q2','d')">d) 80 noches/mes</div>
+    </div>
+    <div class="quiz-feedback" id="q2-fb"></div>
+  </div>
+
+  <div class="quiz-card">
+    <div class="quiz-pregunta">3. EcoAndes Tours cobra S/ 95 y tiene un costo variable de S/ 62. ¿Cuánto es el margen de contribución por turista?</div>
+    <div class="quiz-opciones">
+      <div class="quiz-opcion" onclick="responder(this,'q3','a')">a) S/ 22</div>
+      <div class="quiz-opcion" onclick="responder(this,'q3','b')">b) S/ 33</div>
+      <div class="quiz-opcion" onclick="responder(this,'q3','c')">c) S/ 45</div>
+      <div class="quiz-opcion" onclick="responder(this,'q3','d')">d) S/ 28</div>
+    </div>
+    <div class="quiz-feedback" id="q3-fb"></div>
+  </div>
+
+  <div class="quiz-card">
+    <div class="quiz-pregunta">4. Si la cevichería quiere ganar S/ 2,200 adicionales al mes (sobre el punto de equilibrio), ¿cuántos platos más necesita vender?</div>
+    <div class="quiz-opciones">
+      <div class="quiz-opcion" onclick="responder(this,'q4','a')">a) 100 platos más</div>
+      <div class="quiz-opcion" onclick="responder(this,'q4','b')">b) 138 platos más</div>
+      <div class="quiz-opcion" onclick="responder(this,'q4','c')">c) 175 platos más</div>
+      <div class="quiz-opcion" onclick="responder(this,'q4','d')">d) 220 platos más</div>
+    </div>
+    <div class="quiz-feedback" id="q4-fb"></div>
+  </div>
+
+  <div class="quiz-card">
+    <div class="quiz-pregunta">5. ¿Por qué bajar el precio para competir es peligroso para una agencia de viajes pequeña como EcoAndes?</div>
+    <div class="quiz-opciones">
+      <div class="quiz-opcion" onclick="responder(this,'q5','a')">a) Porque los turistas sospechan de precios bajos</div>
+      <div class="quiz-opcion" onclick="responder(this,'q5','b')">b) Porque el margen de contribución cae y el punto de equilibrio sube drásticamente</div>
+      <div class="quiz-opcion" onclick="responder(this,'q5','c')">c) Porque los costos fijos aumentan con el volumen</div>
+      <div class="quiz-opcion" onclick="responder(this,'q5','d')">d) Porque la regulación peruana prohíbe precios por debajo del mercado</div>
+    </div>
+    <div class="quiz-feedback" id="q5-fb"></div>
+  </div>
+
+  <div class="puntaje-final" id="puntaje-final">
+    <div class="puntaje-num" id="puntaje-num">0/5</div>
+    <div class="puntaje-msg" id="puntaje-msg"></div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-block">
+    <h3>¿Quieres que estos cálculos se hagan solos?</h3>
+    <p>Lo que calculaste a mano hoy se puede automatizar conectando la información real de tu negocio. En las próximas sesiones te mostramos cómo funciona eso.</p>
+    <div class="cta-btns">
+      <a href="index.html" class="cta-btn cta-btn-primary" style="background:#c8922a;">🏠 Volver al HUB</a>
+      <a onclick="window.open('sesion3_landing.html','_blank')" class="cta-btn cta-btn-secondary" style="cursor:pointer;">📅 Sesión 3 — Presupuestos</a>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer" style="text-align:center;font-size:12px;color:#888;padding:2rem 1rem;border-top:1px solid #e8e4dd;margin-top:0;background:#f8f9fa;">
+  <strong style="color:#0c1e38;font-size:13px;">M.Sc. Daniel González Hernández</strong><br>
+  <span>CENFOTUR Cajamarca · Costos, Presupuesto y Principios Financieros en Turismo · Sesión 2 de 8 · 2026</span>
+</div>
+
+<script>
+// Tabs
+function mostrarSim(id, btn) {
+  document.querySelectorAll('.sim-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sim-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// Casos
+function toggleCaso(id) {
+  const body = document.getElementById(id);
+  body.classList.toggle('open');
+}
+
+// Respuestas casos
+function toggleResp(id) {
+  const box = document.getElementById(id);
+  box.classList.toggle('show');
+}
+
+// Simuladores
+function calcMG() {
+  const v = parseFloat(document.getElementById('mg-v').value) || 0;
+  const c = parseFloat(document.getElementById('mg-c').value) || 0;
+  const gan = v - c;
+  const pct = v > 0 ? (gan / v * 100) : 0;
+  document.getElementById('mg-gan').textContent = 'S/ ' + gan.toFixed(2);
+  const pEl = document.getElementById('mg-pct');
+  const dEl = document.getElementById('mg-diag');
+  pEl.textContent = pct.toFixed(1) + '%';
+  if (pct >= 40) { pEl.className = 'result-value good'; dEl.textContent = 'Saludable'; dEl.className = 'result-value good'; }
+  else if (pct >= 20) { pEl.className = 'result-value warn'; dEl.textContent = 'Revisar'; dEl.className = 'result-value warn'; }
+  else { pEl.className = 'result-value bad'; dEl.textContent = 'Riesgo'; dEl.className = 'result-value bad'; }
+}
+
+function calcPrecio() {
+  const c = parseFloat(document.getElementById('fp-c').value) || 0;
+  const m = (parseFloat(document.getElementById('fp-m').value) || 0) / 100;
+  if (m >= 1) return;
+  const p = c / (1 - m);
+  const g = p - c;
+  const ver = (g / p * 100).toFixed(1);
+  document.getElementById('fp-precio').textContent = 'S/ ' + p.toFixed(2);
+  document.getElementById('fp-gan').textContent = 'S/ ' + g.toFixed(2);
+  document.getElementById('fp-ver').textContent = ver + '% ✓';
+}
+
+function calcPE() {
+  const cf = parseFloat(document.getElementById('pe-cf').value) || 0;
+  const pvu = parseFloat(document.getElementById('pe-pvu').value) || 0;
+  const cvu = parseFloat(document.getElementById('pe-cvu').value) || 0;
+  const dias = parseFloat(document.getElementById('pe-dias').value) || 26;
+  const meta = parseFloat(document.getElementById('pe-meta').value) || 0;
+  const mc = pvu - cvu;
+  document.getElementById('pe-mc').textContent = 'S/ ' + mc.toFixed(2);
+  if (mc <= 0) { document.getElementById('pe-eq').textContent = 'Error'; return; }
+  const eq = Math.ceil(cf / mc);
+  const porDia = Math.ceil(eq / dias);
+  const mt = Math.ceil((cf + meta) / mc);
+  document.getElementById('pe-eq').textContent = eq + ' unidades';
+  document.getElementById('pe-dia').textContent = porDia + ' / día';
+  document.getElementById('pe-mt').textContent = mt + ' unidades';
+}
+
+// Quiz
+const correctas = { q1: 'b', q2: 'c', q3: 'b', q4: 'b', q5: 'b' };
+const explicaciones = {
+  q1: 'MC = 28 − 12 = S/16. PE = 4,120 / 16 = 257.5 → 258 platos al mes.',
+  q2: 'Nuevo MC = 85 − 30 = S/55. Nuevo PE = 4,000 / 55 = 72.7 → 73 noches.',
+  q3: 'MC = 95 − 62 = S/33 por turista.',
+  q4: 'Platos adicionales = 2,200 / 16 = 137.5 → 138 platos más sobre los 258 del equilibrio.',
+  q5: 'Bajar el precio reduce el margen de contribución. Con precio S/75, el MC cae a S/13 y el PE sube a 200 turistas (antes era 79). El volumen adicional requerido es inalcanzable.'
+};
+const respondidas = {};
+let puntaje = 0;
+
+function responder(el, qid, opt) {
+  if (respondidas[qid]) return;
+  respondidas[qid] = true;
+  const correcta = correctas[qid];
+  el.parentNode.querySelectorAll('.quiz-opcion').forEach(o => {
+    if (o.getAttribute('onclick').includes("'" + correcta + "'")) o.classList.add('correcta');
+    else if (o === el && opt !== correcta) o.classList.add('incorrecta');
+  });
+  const fb = document.getElementById(qid + '-fb');
+  fb.textContent = explicaciones[qid];
+  fb.classList.add('show', opt === correcta ? 'ok' : 'ko');
+  if (opt === correcta) puntaje++;
+  if (Object.keys(respondidas).length === 5) {
+    const pf = document.getElementById('puntaje-final');
+    pf.classList.add('show');
+    document.getElementById('puntaje-num').textContent = puntaje + '/5';
+    const msgs = ['Repasa los simuladores de arriba con tus números reales.', 'Buen intento. Revisa las explicaciones de las respuestas incorrectas.', 'Vas bien. Practica un caso más con tus datos reales.', 'Muy bien. Estás dominando los conceptos.', ''];
+    if(puntaje === 5){
+      document.getElementById('puntaje-msg').innerHTML = '🎉 <strong>¡Perfecto! Dominas los costos y precios.</strong><br><br><a onclick="window.open(\'sesion3_landing.html\',\'_blank\')" style="display:inline-block;margin-top:8px;padding:10px 22px;background:#c8922a;color:#fff;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;">📅 Ir a Sesión 3 — Presupuestos →</a>';
+    } else {
+      document.getElementById('puntaje-msg').textContent = msgs[puntaje];
+    }
+  }
+}
+
+// Inicializar simuladores
+calcMG(); calcPrecio(); calcPE();
+</script>
+</body>
+</html>

@@ -164,6 +164,33 @@
 </style>
 </head>
 <body>
+<div id="cenfotur-topbar" style="
+  position:fixed;top:0;left:0;right:0;z-index:9999;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 20px;
+  background:rgba(6,13,26,0.95);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(200,146,42,0.2);
+  font-family:'Segoe UI',Arial,sans-serif;
+">
+  <span style="font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#e8b84b;">CENFOTUR · CAJAMARCA 2026</span>
+  <a href="index.html" style="
+    display:flex;align-items:center;gap:7px;
+    font-size:11px;font-weight:600;color:rgba(255,255,255,.7);
+    text-decoration:none;
+    padding:6px 14px;border-radius:100px;
+    border:1px solid rgba(255,255,255,.12);
+    background:rgba(255,255,255,.04);
+    transition:all .2s;
+  " onmouseover="this.style.background='rgba(255,255,255,.1)';this.style.color='#fff'"
+     onmouseout="this.style.background='rgba(255,255,255,.04)';this.style.color='rgba(255,255,255,.7)'">
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="7 2 3 6 7 10"/></svg>
+    Volver al HUB
+  </a>
+</div>
+<div style="height:44px;"></div>
+
 
 <div class="header">
   <div class="badge">CENFOTUR Cajamarca</div>
@@ -561,16 +588,16 @@
     <h3>¿Listo para practicar con tu propio negocio?</h3>
     <p>Usa los simuladores de arriba con los números reales de tu restaurante, hostal o agencia de viajes. En la Sesión 4 vemos Flujo de Caja y Liquidez — el siguiente nivel.</p>
     <div class="cta-btns">
-      <a class="cta-btn cta-btn-primary" href="#">📋 Plantilla Excel de presupuestos</a>
-      <a class="cta-btn cta-btn-secondary" href="#">📅 Sesión 4 — Flujo de Caja</a>
+      <a href="https://wa.me/51925825254?text=Hola%20M.Sc.%20Daniel%2C%20quisiera%20recibir%20la%20plantilla%20Excel%20de%20presupuestos%20del%20curso%20CENFOTUR%20Cajamarca%202026." class="cta-btn cta-btn-primary" style="background:#25D366;">📲 Solicitar plantilla — WhatsApp</a>
+      <a onclick="window.open('sesion4_landing.html','_blank')" class="cta-btn cta-btn-secondary" style="cursor:pointer;">📅 Sesión 4 — Flujo de Caja</a>
     </div>
   </div>
 
 </div>
 
-<div class="footer">
-  CENFOTUR Cajamarca &nbsp;·&nbsp; Costos, Presupuesto y Principios Financieros en Turismo &nbsp;·&nbsp; Sesión 3 de 8<br>
-  Documento preparado con Claude AI &nbsp;·&nbsp; Uso exclusivo del facilitador y participantes del curso
+<div class="footer" style="text-align:center;font-size:12px;color:#888;padding:2rem 1rem;border-top:1px solid #e8e4dd;margin-top:0;background:#f8f9fa;">
+  <strong style="color:#0c1e38;font-size:13px;">M.Sc. Daniel González Hernández</strong><br>
+  <span>CENFOTUR Cajamarca · Costos, Presupuesto y Principios Financieros en Turismo · Sesión 3 de 8 · 2026</span>
 </div>
 
 <script>
@@ -718,7 +745,9 @@
       const msg = document.getElementById('puntaje-msg');
       bloque.classList.add('show');
       num.textContent = puntaje + '/5';
-      if (puntaje === 5) msg.textContent = '¡Perfecto! Dominas los presupuestos básicos. Estás listo para la Sesión 4.';
+      if (puntaje === 5) {
+        msg.innerHTML = '🎉 <strong>¡Perfecto! Dominas los presupuestos básicos.</strong><br><br><a onclick="window.open(\'sesion4_landing.html\',\'_blank\')" style="display:inline-block;margin-top:8px;padding:10px 22px;background:#c8922a;color:#fff;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;">📅 Ir a Sesión 4 — Flujo de Caja →</a>';
+      }
       else if (puntaje >= 3) msg.textContent = 'Bien. Repasa las fórmulas de compras y caja con los simuladores.';
       else msg.textContent = 'Practica con los simuladores usando los datos de tu negocio antes de la próxima sesión.';
     }

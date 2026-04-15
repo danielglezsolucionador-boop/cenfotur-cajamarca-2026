@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sesión 6 — Sistema Financiero y Acceso al Crédito · CENFOTUR Cajamarca 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#060d1a;--navy2:#0c1e38;--navy3:#142d52;
+  --gold:#c8922a;--gold2:#e8b84b;--gold3:#f5d98a;
+  --verde:#1a7a4a;--verde2:#22a863;
+  --glass:rgba(255,255,255,0.04);--glass2:rgba(255,255,255,0.08);
+  --border:rgba(200,146,42,0.18);--border2:rgba(255,255,255,0.07);
+  --txt:rgba(255,255,255,0.9);--txt2:rgba(255,255,255,0.55);--txt3:rgba(255,255,255,0.25);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Manrope',sans-serif;background:var(--navy);color:var(--txt);line-height:1.6;min-height:100vh;}
+
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(6,13,26,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 24px;gap:16px;
+}
+.topbar-info{display:flex;flex-direction:column;gap:2px;}
+.topbar-unit{font-family:'Space Grotesk',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold2);}
+.topbar-title{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:#fff;}
+.topbar-nav{display:flex;align-items:center;gap:8px;}
+.nav-btn{
+  padding:6px 14px;border-radius:100px;
+  font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;
+  border:1px solid var(--border2);background:var(--glass2);color:var(--txt2);
+  cursor:pointer;transition:all 0.2s;white-space:nowrap;
+}
+.nav-btn:hover{background:rgba(255,255,255,0.1);color:#fff;}
+.nav-btn.active-btn{background:var(--gold);border-color:var(--gold);color:#0c0800;}
+.slide-counter{font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--txt3);white-space:nowrap;}
+
+.slides-container{max-width:900px;margin:0 auto;padding:32px 24px 80px;}
+
+.slide{
+  display:none;
+  background:rgba(255,255,255,0.03);
+  border:1px solid var(--border2);
+  border-radius:20px;
+  padding:48px 48px 40px;
+  min-height:420px;
+  position:relative;
+  animation:fadeSlide 0.35s ease;
+}
+.slide.active{display:flex;flex-direction:column;gap:20px;}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+.slide-num-badge{
+  position:absolute;top:20px;right:24px;
+  font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:0.15em;text-transform:uppercase;color:var(--txt3);
+}
+
+.slide-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(20px,3vw,32px);
+  font-weight:700;color:#fff;line-height:1.2;letter-spacing:-0.02em;
+  border-left:3px solid var(--gold);
+  padding-left:16px;
+}
+.slide-title.cover-title{
+  font-size:clamp(28px,4vw,48px);
+  border-left:none;padding-left:0;
+  background:linear-gradient(120deg,var(--gold) 20%,var(--gold3) 80%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  text-align:center;margin:auto 0;
+}
+
+.slide-body{flex:1;display:flex;flex-direction:column;gap:16px;}
+
+.slide-subtitle{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--txt3);text-align:center;}
+
+.formula-box{
+  font-family:'Space Grotesk',monospace;
+  background:rgba(200,146,42,0.08);border:1px solid rgba(200,146,42,0.25);
+  border-radius:12px;padding:16px 20px;
+  font-size:clamp(13px,1.8vw,16px);font-weight:600;color:var(--gold2);
+  text-align:center;line-height:1.5;
+}
+
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;}
+.card{
+  background:var(--glass2);border:1px solid var(--border2);border-radius:12px;
+  padding:16px;display:flex;flex-direction:column;gap:8px;
+}
+.card-icon{font-size:22px;}
+.card-head{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:var(--gold2);}
+.card-body{font-size:12px;color:var(--txt2);line-height:1.5;}
+
+.table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border2);}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{background:rgba(200,146,42,0.1);color:var(--gold2);font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:10px 14px;text-align:left;}
+td{padding:10px 14px;border-top:1px solid var(--border2);color:var(--txt2);line-height:1.4;}
+tr:last-child td{color:var(--txt);font-weight:600;}
+
+.checklist{display:flex;flex-direction:column;gap:8px;}
+.check-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--txt2);line-height:1.5;}
+.check-item::before{content:'✦';color:var(--gold);flex-shrink:0;margin-top:2px;}
+
+.highlight-box{
+  background:rgba(26,122,74,0.08);border:1px solid rgba(34,168,99,0.2);
+  border-radius:10px;padding:14px 18px;font-size:13px;color:var(--txt2);line-height:1.6;
+}
+.highlight-box strong{color:var(--verde2);}
+
+.cover-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid var(--border);background:rgba(200,146,42,0.08);
+  padding:6px 18px;border-radius:100px;
+  font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:600;
+  letter-spacing:0.2em;text-transform:uppercase;color:var(--gold2);
+  margin:0 auto;
+}
+.cover-meta{font-size:13px;color:var(--txt3);text-align:center;margin-top:8px;}
+
+.vs-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:start;}
+.vs-label{background:rgba(200,146,42,0.12);border:1px solid rgba(200,146,42,0.3);border-radius:100px;padding:4px 14px;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;color:var(--gold2);text-align:center;align-self:start;margin-top:4px;}
+
+.steps-list{display:flex;flex-direction:column;gap:10px;}
+.step{display:flex;gap:12px;align-items:flex-start;}
+.step-num{
+  width:28px;height:28px;border-radius:50%;background:var(--gold);color:#0c0800;
+  font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;
+}
+.step-text{font-size:13px;color:var(--txt2);line-height:1.5;}
+.step-text strong{color:var(--txt);}
+
+.tag-row{display:flex;flex-wrap:wrap;gap:8px;}
+.tag{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(255,255,255,0.04);border:1px solid var(--border2);
+  border-radius:100px;padding:4px 12px;font-size:11px;color:var(--txt2);
+}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.col-section{display:flex;flex-direction:column;gap:10px;}
+.col-head{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold2);margin-bottom:4px;}
+
+.progress-dots{display:flex;gap:6px;justify-content:center;padding:8px 0;}
+.pdot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.1);cursor:pointer;transition:all 0.2s;}
+.pdot.done{background:var(--gold);}
+.pdot:hover{background:var(--gold2);}
+
+@media(max-width:600px){
+  .topbar{padding:10px 14px;}
+  .topbar-title{font-size:12px;}
+  .slide{padding:28px 20px 28px;}
+  .slides-container{padding:16px 12px 60px;}
+  .cards-grid{grid-template-columns:1fr;}
+  .two-col{grid-template-columns:1fr;}
+  .vs-grid{grid-template-columns:1fr;gap:8px;}
+  .vs-label{display:none;}
+}
+
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-info">
+    <div class="topbar-unit">Sesión 6 de 8 · CENFOTUR Cajamarca 2026</div>
+    <div class="topbar-title">Sistema Financiero y Acceso al Crédito</div>
+  </div>
+  <div class="topbar-nav">
+    <button class="nav-btn" id="prev-btn" onclick="prevSlide()">← Anterior</button>
+    <span class="slide-counter" id="counter">1 / 12</span>
+    <button class="nav-btn" id="next-btn" onclick="nextSlide()">Siguiente →</button>
+  </div>
+</div>
+
+<div class="slides-container">
+  <div class="progress-dots" id="dots"></div>
+  
+    <div class="slide active" data-slide="0">
+      <div class="slide-num-badge">01 / 12</div>
+      <div class="slide-body" style="align-items:center;justify-content:center;text-align:center;gap:24px;min-height:360px;">
+        <span class="cover-badge">Sesión 6 de 8</span>
+        <div class="slide-title cover-title">Sistema Financiero<br>y Acceso al Crédito</div>
+        <p class="slide-subtitle">Unidad III · Finanzas Aplicadas</p>
+        <p style="font-size:14px;color:var(--txt2);">Aprende a usar el crédito como herramienta de crecimiento — no como trampa.</p>
+        <p class="cover-meta">CENFOTUR · Cajamarca, Perú · 2026</p>
+      </div>
+    </div>
+<div class="slide" data-slide="1"><div class="slide-num-badge">02 / 12</div><div class="slide-title ">Agenda de la Sesión</div><div class="slide-body">
+  <div class="steps-list">
+    <div class="step"><div class="step-num">0–10</div><div class="step-text"><strong>Repaso Sesión 5</strong> — Rentabilidad, riesgo y liquidez.</div></div>
+    <div class="step"><div class="step-num">10–40</div><div class="step-text"><strong>Bloque 1: Sistema Financiero</strong> — Características y tipos de crédito.</div></div>
+    <div class="step"><div class="step-num">40–65</div><div class="step-text"><strong>Bloque 2: Productos y Costos</strong> — Tasa nominal vs. tasa efectiva real.</div></div>
+    <div class="step"><div class="step-num">65–85</div><div class="step-text"><strong>Bloque 3: Formas de Pago</strong> — Cómo elegir el crédito que conviene.</div></div>
+    <div class="step"><div class="step-num">85–115</div><div class="step-text"><strong>Trabajo Grupal</strong> — Caso EcoAndes Tours – Cajamarca.</div></div>
+    <div class="step"><div class="step-num">115–120</div><div class="step-text"><strong>Cierre</strong> — Próximos pasos y sesión 7.</div></div>
+  </div>
+</div></div>
+<div class="slide" data-slide="2"><div class="slide-num-badge">03 / 12</div><div class="slide-title ">Repaso Sesión 5 — La Tríada Financiera</div><div class="slide-body">
+  <div class="cards-grid">
+    <div class="card"><div class="card-icon">📈</div><div class="card-head">RENTABILIDAD</div><div class="card-body">Capacidad de generar ganancias. ↑ Rentabilidad → ↑ Riesgo</div></div>
+    <div class="card"><div class="card-icon">⚠️</div><div class="card-head">RIESGO</div><div class="card-body">Posibilidad de perder la inversión. ↑ Liquidez → ↓ Riesgo</div></div>
+    <div class="card"><div class="card-icon">💧</div><div class="card-head">LIQUIDEZ</div><div class="card-body">Convertir activos en efectivo. ↑ Liquidez → ↓ Rentabilidad</div></div>
+  </div>
+  <div class="highlight-box">💡 Hoy aprendes a usar el crédito manteniendo el equilibrio entre los tres.</div>
+</div></div>
+<div class="slide" data-slide="3"><div class="slide-num-badge">04 / 12</div><div class="slide-title ">El Sistema Financiero Peruano</div><div class="slide-body">
+  <div class="cards-grid">
+    <div class="card"><div class="card-icon">🔀</div><div class="card-head">Diversificación</div><div class="card-body">Fondos mutuos, seguros, leasing, créditos empresariales y más productos.</div></div>
+    <div class="card"><div class="card-icon">🏛️</div><div class="card-head">Regulación sólida (SBS)</div><div class="card-body">La SBS garantiza transparencia y estabilidad del sistema.</div></div>
+    <div class="card"><div class="card-icon">💪</div><div class="card-head">Solvencia</div><div class="card-body">Bancos y cajas con reservas adecuadas ante situaciones de estrés.</div></div>
+    <div class="card"><div class="card-icon">📡</div><div class="card-head">Acceso extendido</div><div class="card-body">Sucursales, agentes bancarios y banca digital en todo el Perú.</div></div>
+    <div class="card"><div class="card-icon">🌍</div><div class="card-head">Integración internacional</div><div class="card-body">Bancos extranjeros y acuerdos de cooperación financiera.</div></div>
+    <div class="card"><div class="card-icon">📱</div><div class="card-head">Inclusión financiera</div><div class="card-body">Cuenta DNI: abre una cuenta desde tu celular, sin ir al banco.</div></div>
+  </div>
+</div></div>
+<div class="slide" data-slide="4"><div class="slide-num-badge">05 / 12</div><div class="slide-title ">Crédito Formal vs. Informal</div><div class="slide-body">
+  <div class="two-col">
+    <div class="col-section">
+      <div class="col-head">✅ Crédito Formal (SBS)</div>
+      <div class="checklist">
+        <div class="check-item">Bancos, Cajas, Financieras regulados por SBS</div>
+        <div class="check-item">Tasas de interés más bajas</div>
+        <div class="check-item">Condiciones claras en contrato</div>
+        <div class="check-item">Historial crediticio requerido</div>
+        <div class="check-item">Más requisitos → más seguridad</div>
+      </div>
+    </div>
+    <div class="col-section">
+      <div class="col-head">⚠️ Crédito Informal</div>
+      <div class="checklist">
+        <div class="check-item">Prestamistas no regulados ('gota a gota')</div>
+        <div class="check-item">Tasas de interés MUY ALTAS</div>
+        <div class="check-item">Condiciones poco claras</div>
+        <div class="check-item">Sin historial requerido (pero más riesgo)</div>
+        <div class="check-item">Riesgo de problemas financieros a largo plazo</div>
+      </div>
+    </div>
+  </div>
+  <div class="highlight-box">💡 Ejemplo Cajamarca: Don Efraín (bodega de quesos en Ventanillas de Otuzco) prefirió la Caja Cajamarca — tasas más bajas y cuotas flexibles.</div>
+</div></div>
+<div class="slide" data-slide="5"><div class="slide-num-badge">06 / 12</div><div class="slide-title ">Productos Financieros para tu Negocio Turístico</div><div class="slide-body">
+  <div class="cards-grid">
+    <div class="card"><div class="card-icon">💼</div><div class="card-head">Capital de Trabajo</div><div class="card-body">Financia operaciones del mes: insumos, planilla, servicios. Hasta 12 meses.</div></div>
+    <div class="card"><div class="card-icon">🏢</div><div class="card-head">Crédito MYPE</div><div class="card-body">Para micro y pequeñas empresas. Tasas preferenciales. Negocios formalizados.</div></div>
+    <div class="card"><div class="card-icon">🔄</div><div class="card-head">Línea Revolvente</div><div class="card-body">Cupo aprobado que usas cuando necesitas y repones al cobrar. Ideal estacionalidad.</div></div>
+    <div class="card"><div class="card-icon">🚗</div><div class="card-head">Leasing</div><div class="card-body">Equipos: cocinas, vehículos, mobiliario hotelero. Pagas cuotas + opción compra.</div></div>
+    <div class="card"><div class="card-icon">🧾</div><div class="card-head">Factoring</div><div class="card-body">Vende tus facturas y recibe dinero inmediato. Ideal con clientes corporativos.</div></div>
+    <div class="card"><div class="card-icon">📜</div><div class="card-head">Descuento de Letras</div><div class="card-body">El banco adelanta el importe de letras de cambio.</div></div>
+  </div>
+</div></div>
+<div class="slide" data-slide="6"><div class="slide-num-badge">07 / 12</div><div class="slide-title ">Lo que el Banco Anuncia ≠ Lo que Realmente Pagas</div><div class="slide-body">
+  <div class="two-col">
+    <div class="col-section">
+      <div class="col-head">Tasa Nominal</div>
+      <div class="formula-box">24% anual = 2% mensual (lo que anuncia)</div>
+    </div>
+    <div class="col-section">
+      <div class="col-head">Tasa Efectiva (TCEA)</div>
+      <div class="formula-box">31%+ (comisiones + seguros incluidos)</div>
+    </div>
+  </div>
+  <div class="highlight-box"><strong>Caso Real — Hostal Baños del Inca, Cajamarca:</strong> Solicita S/ 20,000 a 12 meses | Tasa anunciada: 24% anual (~S/ 400/mes) | Comisión: S/ 200 desembolso + S/ 35/mes seguro. Cuota real: ~S/ 470/mes → Costo efectivo: ~31% | Recibe: S/ 19,800 (no S/ 20,000). 💡 Siempre pide la TCEA antes de firmar.</div>
+</div></div>
+<div class="slide" data-slide="7"><div class="slide-num-badge">08 / 12</div><div class="slide-title ">¿Cómo se Paga la Deuda?</div><div class="slide-body">
+  <div class="cards-grid">
+    <div class="card"><div class="card-icon">📊</div><div class="card-head">Cuotas Iguales (Sistema Francés)</div><div class="card-body">Cuota mensual siempre igual. La más común. Fácil de planificar. Ideal para ingresos estables.</div></div>
+    <div class="card"><div class="card-icon">📉</div><div class="card-head">Cuotas Decrecientes (Sistema Alemán)</div><div class="card-body">Cuotas empiezan altas y bajan. Pagas MENOS interés en total. Ideal si tienes flujo alto al inicio.</div></div>
+    <div class="card"><div class="card-icon">📈</div><div class="card-head">Cuotas Crecientes</div><div class="card-body">Cuotas empiezan bajas y suben. Para negocios en crecimiento. Ideal si esperas más ingresos.</div></div>
+    <div class="card"><div class="card-icon">🔒</div><div class="card-head">Pago con Garantía</div><div class="card-body">Ofreces un activo (inmueble, vehículo). Tasa más baja → más riesgo personal.</div></div>
+    <div class="card"><div class="card-icon">🔗</div><div class="card-head">Consolidación de Deuda</div><div class="card-body">Varias deudas en una sola. Reduce cuota mensual y simplifica pagos.</div></div>
+    <div class="card"><div class="card-icon">💰</div><div class="card-head">Pago Único</div><div class="card-body">Pagas todo al final del plazo. Útil para créditos muy cortos.</div></div>
+  </div>
+</div></div>
+<div class="slide" data-slide="8"><div class="slide-num-badge">09 / 12</div><div class="slide-title ">4 Preguntas Antes de Firmar Cualquier Crédito</div><div class="slide-body">
+  <div class="steps-list">
+    <div class="step"><div class="step-num">01</div><div class="step-text"><strong>¿Para qué necesito el dinero?</strong> — Capital de trabajo ≠ compra de activos. El producto debe coincidir con el destino del crédito.</div></div>
+    <div class="step"><div class="step-num">02</div><div class="step-text"><strong>¿Cuánto puedo pagar mensualmente?</strong> — La cuota no debe superar el 30–40% de tu ingreso neto mensual del negocio.</div></div>
+    <div class="step"><div class="step-num">03</div><div class="step-text"><strong>¿Cuál es el costo real (TCEA)?</strong> — Compara siempre la TCEA, no la tasa nominal. Incluye comisiones y seguros.</div></div>
+    <div class="step"><div class="step-num">04</div><div class="step-text"><strong>¿Puedo ofrecer una garantía?</strong> — Con garantía real (inmueble) la tasa baja. Evalúa el riesgo de perder el activo.</div></div>
+  </div>
+  <div class="highlight-box">🏆 El mejor crédito es el que se paga cómodo, está bien documentado y no compromete el patrimonio personal.</div>
+</div></div>
+<div class="slide" data-slide="9"><div class="slide-num-badge">10 / 12</div><div class="slide-title ">Actividad Grupal — EcoAndes Tours</div><div class="slide-body">
+  <div class="highlight-box">📋 Contexto: EcoAndes necesita S/ 35,000 para renovar su flota de vehículos antes de la temporada alta (Semana Santa y fiestas patrias). Tienen dos opciones de crédito.</div>
+  <div class="steps-list">
+    <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Analiza las dos opciones de crédito</strong> — Ver ficha en el chat</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Calcula el costo real (TCEA)</strong> — De cada opción</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Considera el flujo de caja estacional</strong> — Del negocio</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Recomienda la mejor opción</strong> — Y justifica tu decisión</div></div>
+  </div>
+  <p style="font-size:12px;color:var(--txt3);">⏱ Tiempo: 20 minutos | Grupos de 3 a 4 personas | Presentan 2 grupos al terminar</p>
+</div></div>
+<div class="slide" data-slide="10"><div class="slide-num-badge">11 / 12</div><div class="slide-title ">Tu Checklist para Ir al Banco</div><div class="slide-body">
+  <div class="checklist">
+    <div class="check-item">☐ ¿Cuál es la TCEA (Tasa de Costo Efectivo Anual)?</div>
+    <div class="check-item">☐ ¿Qué comisiones se cobran al desembolso?</div>
+    <div class="check-item">☐ ¿El seguro es obligatorio? ¿Cuánto cuesta mensual?</div>
+    <div class="check-item">☐ ¿Cuánto recibiré efectivamente en mi cuenta?</div>
+    <div class="check-item">☐ ¿Puedo pagar por adelantado sin penalidad?</div>
+    <div class="check-item">☐ ¿Qué pasa si me atraso un mes? ¿Cuánto es la mora?</div>
+    <div class="check-item">☐ ¿El seguro del bien está incluido en el leasing?</div>
+  </div>
+  <div class="highlight-box">¡Sal del banco con criterio!</div>
+</div></div>
+<div class="slide" data-slide="11"><div class="slide-num-badge">12 / 12</div><div class="slide-title ">Lo que Aprendiste Hoy</div><div class="slide-body">
+  <div class="cards-grid">
+    <div class="card"><div class="card-icon">6</div><div class="card-head">Características del sistema financiero peruano</div><div class="card-body">Diversificación, regulación SBS, solvencia, acceso extendido, integración y inclusión.</div></div>
+    <div class="card"><div class="card-icon">6</div><div class="card-head">Productos financieros para turismo</div><div class="card-body">Capital de trabajo, MYPE, línea revolvente, leasing, factoring y descuento de letras.</div></div>
+    <div class="card"><div class="card-icon">4</div><div class="card-head">Preguntas clave antes de firmar</div><div class="card-body">Destino, cuota máxima, TCEA y garantía.</div></div>
+  </div>
+  <div class="highlight-box">"El crédito no es ni bueno ni malo. Es una herramienta. Usada bien, acelera tu negocio. Usada mal, puede hundirlo. Ahora tú ya sabes la diferencia." 📅 Próxima Sesión 7: Estados Financieros Básicos.</div>
+</div></div>
+</div>
+
+<script>
+let current = 0;
+const total = 12;
+
+function buildDots() {
+  const c = document.getElementById('dots');
+  c.innerHTML = '';
+  for(let i=0;i<total;i++) {
+    const d = document.createElement('div');
+    d.className = 'pdot' + (i===current?' done':'');
+    d.onclick = () => goTo(i);
+    c.appendChild(d);
+  }
+}
+
+function goTo(n) {
+  document.querySelector('.slide.active')?.classList.remove('active');
+  current = n;
+  document.querySelector(`[data-slide="${n}"]`).classList.add('active');
+  document.getElementById('counter').textContent = (n+1) + ' / ' + total;
+  document.getElementById('prev-btn').style.opacity = n===0?'0.3':'1';
+  document.getElementById('next-btn').style.opacity = n===total-1?'0.3':'1';
+  buildDots();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function nextSlide() { if(current < total-1) goTo(current+1); }
+function prevSlide() { if(current > 0) goTo(current-1); }
+
+document.addEventListener('keydown', e => {
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') nextSlide();
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') prevSlide();
+});
+
+// Touch/swipe support
+let touchStartX = 0;
+document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, {passive:true});
+document.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if(Math.abs(dx) > 50) { if(dx < 0) nextSlide(); else prevSlide(); }
+});
+
+goTo(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sesión 3 — Elaboración de Presupuestos Básicos · CENFOTUR Cajamarca 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#060d1a;--navy2:#0c1e38;--navy3:#142d52;
+  --gold:#c8922a;--gold2:#e8b84b;--gold3:#f5d98a;
+  --verde:#1a7a4a;--verde2:#22a863;
+  --glass:rgba(255,255,255,0.04);--glass2:rgba(255,255,255,0.08);
+  --border:rgba(200,146,42,0.18);--border2:rgba(255,255,255,0.07);
+  --txt:rgba(255,255,255,0.9);--txt2:rgba(255,255,255,0.55);--txt3:rgba(255,255,255,0.25);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Manrope',sans-serif;background:var(--navy);color:var(--txt);line-height:1.6;min-height:100vh;}
+
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(6,13,26,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 24px;gap:16px;
+}
+.topbar-info{display:flex;flex-direction:column;gap:2px;}
+.topbar-unit{font-family:'Space Grotesk',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold2);}
+.topbar-title{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:#fff;}
+.topbar-nav{display:flex;align-items:center;gap:8px;}
+.nav-btn{
+  padding:6px 14px;border-radius:100px;
+  font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;
+  border:1px solid var(--border2);background:var(--glass2);color:var(--txt2);
+  cursor:pointer;transition:all 0.2s;white-space:nowrap;
+}
+.nav-btn:hover{background:rgba(255,255,255,0.1);color:#fff;}
+.nav-btn.active-btn{background:var(--gold);border-color:var(--gold);color:#0c0800;}
+.slide-counter{font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--txt3);white-space:nowrap;}
+
+.slides-container{max-width:900px;margin:0 auto;padding:32px 24px 80px;}
+
+.slide{
+  display:none;
+  background:rgba(255,255,255,0.03);
+  border:1px solid var(--border2);
+  border-radius:20px;
+  padding:48px 48px 40px;
+  min-height:420px;
+  position:relative;
+  animation:fadeSlide 0.35s ease;
+}
+.slide.active{display:flex;flex-direction:column;gap:20px;}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+.slide-num-badge{
+  position:absolute;top:20px;right:24px;
+  font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:0.15em;text-transform:uppercase;color:var(--txt3);
+}
+
+.slide-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(20px,3vw,32px);
+  font-weight:700;color:#fff;line-height:1.2;letter-spacing:-0.02em;
+  border-left:3px solid var(--gold);
+  padding-left:16px;
+}
+.slide-title.cover-title{
+  font-size:clamp(28px,4vw,48px);
+  border-left:none;padding-left:0;
+  background:linear-gradient(120deg,var(--gold) 20%,var(--gold3) 80%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  text-align:center;margin:auto 0;
+}
+
+.slide-body{flex:1;display:flex;flex-direction:column;gap:16px;}
+
+.slide-subtitle{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--txt3);text-align:center;}
+
+.formula-box{
+  font-family:'Space Grotesk',monospace;
+  background:rgba(200,146,42,0.08);border:1px solid rgba(200,146,42,0.25);
+  border-radius:12px;padding:16px 20px;
+  font-size:clamp(13px,1.8vw,16px);font-weight:600;color:var(--gold2);
+  text-align:center;line-height:1.5;
+}
+
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;}
+.card{
+  background:var(--glass2);border:1px solid var(--border2);border-radius:12px;
+  padding:16px;display:flex;flex-direction:column;gap:8px;
+}
+.card-icon{font-size:22px;}
+.card-head{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:var(--gold2);}
+.card-body{font-size:12px;color:var(--txt2);line-height:1.5;}
+
+.table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border2);}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{background:rgba(200,146,42,0.1);color:var(--gold2);font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:10px 14px;text-align:left;}
+td{padding:10px 14px;border-top:1px solid var(--border2);color:var(--txt2);line-height:1.4;}
+tr:last-child td{color:var(--txt);font-weight:600;}
+
+.checklist{display:flex;flex-direction:column;gap:8px;}
+.check-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--txt2);line-height:1.5;}
+.check-item::before{content:'✦';color:var(--gold);flex-shrink:0;margin-top:2px;}
+
+.highlight-box{
+  background:rgba(26,122,74,0.08);border:1px solid rgba(34,168,99,0.2);
+  border-radius:10px;padding:14px 18px;font-size:13px;color:var(--txt2);line-height:1.6;
+}
+.highlight-box strong{color:var(--verde2);}
+
+.cover-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid var(--border);background:rgba(200,146,42,0.08);
+  padding:6px 18px;border-radius:100px;
+  font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:600;
+  letter-spacing:0.2em;text-transform:uppercase;color:var(--gold2);
+  margin:0 auto;
+}
+.cover-meta{font-size:13px;color:var(--txt3);text-align:center;margin-top:8px;}
+
+.vs-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:start;}
+.vs-label{background:rgba(200,146,42,0.12);border:1px solid rgba(200,146,42,0.3);border-radius:100px;padding:4px 14px;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;color:var(--gold2);text-align:center;align-self:start;margin-top:4px;}
+
+.steps-list{display:flex;flex-direction:column;gap:10px;}
+.step{display:flex;gap:12px;align-items:flex-start;}
+.step-num{
+  width:28px;height:28px;border-radius:50%;background:var(--gold);color:#0c0800;
+  font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;
+}
+.step-text{font-size:13px;color:var(--txt2);line-height:1.5;}
+.step-text strong{color:var(--txt);}
+
+.tag-row{display:flex;flex-wrap:wrap;gap:8px;}
+.tag{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(255,255,255,0.04);border:1px solid var(--border2);
+  border-radius:100px;padding:4px 12px;font-size:11px;color:var(--txt2);
+}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.col-section{display:flex;flex-direction:column;gap:10px;}
+.col-head{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold2);margin-bottom:4px;}
+
+.progress-dots{display:flex;gap:6px;justify-content:center;padding:8px 0;}
+.pdot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.1);cursor:pointer;transition:all 0.2s;}
+.pdot.done{background:var(--gold);}
+.pdot:hover{background:var(--gold2);}
+
+@media(max-width:600px){
+  .topbar{padding:10px 14px;}
+  .topbar-title{font-size:12px;}
+  .slide{padding:28px 20px 28px;}
+  .slides-container{padding:16px 12px 60px;}
+  .cards-grid{grid-template-columns:1fr;}
+  .two-col{grid-template-columns:1fr;}
+  .vs-grid{grid-template-columns:1fr;gap:8px;}
+  .vs-label{display:none;}
+}
+
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-info">
+    <div class="topbar-unit">Sesión 3 de 8 · CENFOTUR Cajamarca 2026</div>
+    <div class="topbar-title">Elaboración de Presupuestos Básicos</div>
+  </div>
+  <div class="topbar-nav">
+    <button class="nav-btn" id="prev-btn" onclick="prevSlide()">← Anterior</button>
+    <span class="slide-counter" id="counter">1 / 10</span>
+    <button class="nav-btn" id="next-btn" onclick="nextSlide()">Siguiente →</button>
+  </div>
+</div>
+
+<div class="slides-container">
+  <div class="progress-dots" id="dots"></div>
+  
+    <div class="slide active" data-slide="0">
+      <div class="slide-num-badge">01 / 10</div>
+      <div class="slide-body" style="align-items:center;justify-content:center;text-align:center;gap:24px;min-height:360px;">
+        <span class="cover-badge">Sesión 3 de 8</span>
+        <div class="slide-title cover-title">Elaboración de<br>Presupuestos Básicos</div>
+        <p class="slide-subtitle">Unidad II · Presupuestos</p>
+        <p style="font-size:14px;color:var(--txt2);">Presupuesto de Ventas · Presupuesto de Compras · Presupuesto de Caja</p>
+        <p class="cover-meta">CENFOTUR · Cajamarca, Perú · 2026</p>
+      </div>
+    </div>
+<div class="slide" data-slide="1"><div class="slide-num-badge">02 / 10</div><div class="slide-title ">¿Qué es un Presupuesto y por qué importa?</div><div class="slide-body">
+  <div class="formula-box">PRESUPUESTO = Plan en números = anticipar cuánto venderé, gastaré y me quedará</div>
+  <div class="two-col">
+    <div class="col-section">
+      <div class="col-head">❌ Sin presupuesto</div>
+      <div class="highlight-box">Es mucho más fácil perderse. Sin dirección, las decisiones son al azar.</div>
+    </div>
+    <div class="col-section">
+      <div class="col-head">✅ Con presupuesto</div>
+      <div class="highlight-box">No garantiza el camino perfecto, pero reduce errores y da dirección y control.</div>
+    </div>
+  </div>
+  <p style="font-size:13px;color:var(--txt2);">El presupuesto de ventas es el PRIMERO porque es la base de todo lo demás. De cuánto vendes depende cuánto compras, y de cuánto compras depende cuánto necesitas en caja.</p>
+</div></div>
+<div class="slide" data-slide="2"><div class="slide-num-badge">03 / 10</div><div class="slide-title ">Presupuesto de Ventas</div><div class="slide-body">
+  <div class="formula-box">Ventas Proyectadas = Unidades Proyectadas × Precio de Venta Unitario</div>
+  <div class="steps-list">
+    <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Analiza datos históricos</strong> — ¿Cuánto vendiste el mes pasado? ¿El mismo mes del año anterior?</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Evalúa el entorno</strong> — Temporada alta/baja, Carnaval de Cajamarca, Semana Santa, eventos locales.</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Define un objetivo SMART</strong> — Específico, medible, alcanzable, relevante, con tiempo definido.</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Proyecta por producto</strong> — Desglosa el total por tipo de plato, habitación o tour.</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-text"><strong>Valida con tu capacidad</strong> — Si proyectas 300 noches pero tu hostal tiene 8 hab. × 30 días = 240 máx.</div></div>
+  </div>
+</div></div>
+<div class="slide" data-slide="3"><div class="slide-num-badge">04 / 10</div><div class="slide-title ">Caso Real: Restaurante El Portal</div><div class="slide-body">
+  <p style="font-size:12px;color:var(--txt3);">📍 Plaza de Armas, Cajamarca | Octubre: S/ 22,000 | Meta noviembre: +10% = S/ 24,200</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Producto / Servicio</th><th>Unidades</th><th>Precio Unit.</th><th>Total</th></tr></thead>
+      <tbody>
+        <tr><td>Menú ejecutivo (Lun–Vie)</td><td>400</td><td>S/ 22</td><td>S/ 8,800</td></tr>
+        <tr><td>Menú especial (Sáb–Dom)</td><td>160</td><td>S/ 35</td><td>S/ 5,600</td></tr>
+        <tr><td>Platos a la carta</td><td>120</td><td>S/ 48</td><td>S/ 5,760</td></tr>
+        <tr><td>Bebidas y postres</td><td>—</td><td>—</td><td>S/ 4,070</td></tr>
+        <tr><td><strong>TOTAL PROYECTADO</strong></td><td></td><td></td><td><strong>S/ 24,230</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="highlight-box">📌 El presupuesto de ventas no es adivinar. Es proyectar con datos reales + contexto del mercado local.</div>
+</div></div>
+<div class="slide" data-slide="4"><div class="slide-num-badge">05 / 10</div><div class="slide-title ">Presupuesto de Compras</div><div class="slide-body">
+  <div class="formula-box">Compras = Ventas Proyectadas + Inventario Final Deseado − Inventario Inicial</div>
+  <div class="two-col">
+    <div class="col-section">
+      <div class="col-head">Los 5 Pasos</div>
+      <div class="steps-list">
+        <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Determina qué necesitas</strong> — Para producir lo proyectado</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Inventario inicial</strong> — Lo que ya tienes</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Inventario final deseado</strong> — Colchón de seguridad</div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Aplica la fórmula</strong> — Cantidad a comprar</div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-text"><strong>Multiplica × precio</strong> — Costo total de compras</div></div>
+      </div>
+    </div>
+    <div class="col-section">
+      <div class="col-head">🏨 Caso: Hostal Los Frailones</div>
+      <div class="checklist">
+        <div class="check-item">Noches proyectadas nov.: 180 noches</div>
+        <div class="check-item">Inventario inicial (amenities): 40 sets</div>
+        <div class="check-item">Inventario final deseado: 30 sets</div>
+        <div class="check-item">Costo por set: S/ 8.00</div>
+      </div>
+      <div class="formula-box">180 + 30 − 40 = 170 sets × S/ 8 = S/ 1,360</div>
+    </div>
+  </div>
+</div></div>
+<div class="slide" data-slide="5"><div class="slide-num-badge">06 / 10</div><div class="slide-title ">Presupuesto de Caja</div><div class="slide-body">
+  <div class="formula-box">Flujo Neto = Total Entradas − Total Salidas  |  Saldo Final = Saldo Inicial + Flujo Neto</div>
+  <div class="two-col">
+    <div class="col-section">
+      <div class="col-head">📥 Entradas de Caja</div>
+      <div class="checklist">
+        <div class="check-item">Ventas al contado del mes</div>
+        <div class="check-item">Cobro de cuentas pendientes (crédito mes anterior)</div>
+        <div class="check-item">Préstamos o aportes de capital</div>
+        <div class="check-item">Otros ingresos</div>
+      </div>
+    </div>
+    <div class="col-section">
+      <div class="col-head">📤 Salidas de Caja</div>
+      <div class="checklist">
+        <div class="check-item">Pagos a proveedores</div>
+        <div class="check-item">Sueldos y planillas del personal</div>
+        <div class="check-item">Alquiler, servicios, gastos operativos</div>
+        <div class="check-item">Cuotas de préstamos e intereses</div>
+      </div>
+    </div>
+  </div>
+  <div class="highlight-box">"La caja no es lo mismo que las ventas. Puedes vender S/ 10,000 y tener S/ 0 en caja si todos te deben."</div>
+</div></div>
+<div class="slide" data-slide="6"><div class="slide-num-badge">07 / 10</div><div class="slide-title ">Caso Real: EcoAndes Tours — Presupuesto de Caja</div><div class="slide-body">
+  <p style="font-size:12px;color:var(--txt3);">Agencia en Cajamarca — 60% ventas al contado, 40% cobradas a 30 días</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Concepto</th><th>Octubre</th><th>Noviembre</th><th>Diciembre</th></tr></thead>
+      <tbody>
+        <tr><td>Ventas al contado (60%)</td><td>S/ 15,000</td><td>S/ 12,000</td><td>S/ 18,000</td></tr>
+        <tr><td>Cobro crédito 30 días (40%)</td><td>S/ 8,000</td><td>S/ 10,000</td><td>S/ 8,000</td></tr>
+        <tr><td>TOTAL ENTRADAS</td><td>S/ 23,000</td><td>S/ 22,000</td><td>S/ 26,000</td></tr>
+        <tr><td>TOTAL SALIDAS</td><td>S/ 17,800</td><td>S/ 16,500</td><td>S/ 19,100</td></tr>
+        <tr><td>FLUJO NETO</td><td>S/ 5,200 ✔</td><td>S/ 5,500 ✔</td><td>S/ 6,900 ✔</td></tr>
+        <tr><td>Saldo inicial</td><td>S/ 3,000</td><td>S/ 8,200</td><td>S/ 13,700</td></tr>
+        <tr><td><strong>SALDO FINAL</strong></td><td><strong>S/ 8,200</strong></td><td><strong>S/ 13,700</strong></td><td><strong>S/ 20,600</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="highlight-box">📈 EcoAndes CRECE mes a mes: S/ 8,200 → S/ 13,700 → S/ 20,600. ¡La planificación funciona!</div>
+</div></div>
+<div class="slide" data-slide="7"><div class="slide-num-badge">08 / 10</div><div class="slide-title ">Los 3 Presupuestos Articulados</div><div class="slide-body">
+  <div class="cards-grid">
+    <div class="card"><div class="card-icon">📈</div><div class="card-head">Presupuesto de VENTAS</div><div class="card-body">¿Cuánto voy a vender? Proyección mensual por producto. Método SMART + datos históricos. Base de todos los demás.</div></div>
+    <div class="card"><div class="card-icon">🛒</div><div class="card-head">Presupuesto de COMPRAS</div><div class="card-body">¿Cuánto necesito comprar? Depende del presupuesto de ventas. Considera inventario inicial y final. Evita sobrestock.</div></div>
+    <div class="card"><div class="card-icon">💰</div><div class="card-head">Presupuesto de CAJA</div><div class="card-body">¿Cuándo entra y sale el dinero? Muestra la liquidez real. Entradas vs. salidas. Anticipa déficits.</div></div>
+  </div>
+  <div class="highlight-box">🔗 Si cambias las ventas proyectadas, cambia lo que compras, y cambia lo que necesitas en caja. ¡Son una sola cadena!</div>
+</div></div>
+<div class="slide" data-slide="8"><div class="slide-num-badge">09 / 10</div><div class="slide-title ">Trabajo Grupal — Caso: La Posada del Inca</div><div class="slide-body">
+  <div class="two-col">
+    <div class="col-section">
+      <div class="col-head">📋 Datos del Caso</div>
+      <div class="checklist">
+        <div class="check-item">Hostal boutique — 10 habitaciones, Centro histórico</div>
+        <div class="check-item">Noches proyectadas dic.: 233 noches</div>
+        <div class="check-item">Precio promedio/noche: S/ 150</div>
+        <div class="check-item">Inventario inicial (amenities): 50 sets</div>
+        <div class="check-item">Inventario final deseado: 30 sets · Costo: S/ 10</div>
+        <div class="check-item">Bono turismo dic.: S/ 5,000 adicionales</div>
+      </div>
+    </div>
+    <div class="col-section">
+      <div class="col-head">🎯 Preguntas del Grupo</div>
+      <div class="steps-list">
+        <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Presupuesto de ventas</strong> — Noches × precio promedio</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Presupuesto de compras</strong> — Aplica la fórmula completa</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Presupuesto de caja</strong> — Entradas (incluyendo bono), salidas y saldo final</div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Flujo neto</strong> — ¿Don Aurelio puede reinvertir en mejoras en enero?</div></div>
+      </div>
+    </div>
+  </div>
+</div></div>
+<div class="slide" data-slide="9"><div class="slide-num-badge">10 / 10</div><div class="slide-title ">Lo que aprendiste hoy</div><div class="slide-body">
+  <div class="cards-grid">
+    <div class="card"><div class="card-icon">📈</div><div class="card-head">Presupuesto de VENTAS</div><div class="card-body">Proyectas con criterio: datos históricos + entorno + capacidad real.</div></div>
+    <div class="card"><div class="card-icon">🛒</div><div class="card-head">Presupuesto de COMPRAS</div><div class="card-body">Calculas exactamente cuánto comprar, ni de más ni de menos.</div></div>
+    <div class="card"><div class="card-icon">💰</div><div class="card-head">Presupuesto de CAJA</div><div class="card-body">Sabes cuándo va a entrar y salir el dinero real de tu negocio.</div></div>
+  </div>
+  <div class="highlight-box">📅 Próxima Sesión 4: Flujo de caja y liquidez — cómo gestionar el efectivo día a día para que tu negocio nunca quede sin dinero.</div>
+</div></div>
+</div>
+
+<script>
+let current = 0;
+const total = 10;
+
+function buildDots() {
+  const c = document.getElementById('dots');
+  c.innerHTML = '';
+  for(let i=0;i<total;i++) {
+    const d = document.createElement('div');
+    d.className = 'pdot' + (i===current?' done':'');
+    d.onclick = () => goTo(i);
+    c.appendChild(d);
+  }
+}
+
+function goTo(n) {
+  document.querySelector('.slide.active')?.classList.remove('active');
+  current = n;
+  document.querySelector(`[data-slide="${n}"]`).classList.add('active');
+  document.getElementById('counter').textContent = (n+1) + ' / ' + total;
+  document.getElementById('prev-btn').style.opacity = n===0?'0.3':'1';
+  document.getElementById('next-btn').style.opacity = n===total-1?'0.3':'1';
+  buildDots();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function nextSlide() { if(current < total-1) goTo(current+1); }
+function prevSlide() { if(current > 0) goTo(current-1); }
+
+document.addEventListener('keydown', e => {
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') nextSlide();
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') prevSlide();
+});
+
+// Touch/swipe support
+let touchStartX = 0;
+document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, {passive:true});
+document.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if(Math.abs(dx) > 50) { if(dx < 0) nextSlide(); else prevSlide(); }
+});
+
+goTo(0);
+</script>
+</body>
+</html>

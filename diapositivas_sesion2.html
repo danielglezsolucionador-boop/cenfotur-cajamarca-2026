@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sesión 2 — Práctica y Trabajo Grupal · CENFOTUR Cajamarca 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#060d1a;--navy2:#0c1e38;--navy3:#142d52;
+  --gold:#c8922a;--gold2:#e8b84b;--gold3:#f5d98a;
+  --verde:#1a7a4a;--verde2:#22a863;
+  --glass:rgba(255,255,255,0.04);--glass2:rgba(255,255,255,0.08);
+  --border:rgba(200,146,42,0.18);--border2:rgba(255,255,255,0.07);
+  --txt:rgba(255,255,255,0.9);--txt2:rgba(255,255,255,0.55);--txt3:rgba(255,255,255,0.25);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Manrope',sans-serif;background:var(--navy);color:var(--txt);line-height:1.6;min-height:100vh;}
+
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(6,13,26,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 24px;gap:16px;
+}
+.topbar-info{display:flex;flex-direction:column;gap:2px;}
+.topbar-unit{font-family:'Space Grotesk',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold2);}
+.topbar-title{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:#fff;}
+.topbar-nav{display:flex;align-items:center;gap:8px;}
+.nav-btn{
+  padding:6px 14px;border-radius:100px;
+  font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;
+  border:1px solid var(--border2);background:var(--glass2);color:var(--txt2);
+  cursor:pointer;transition:all 0.2s;white-space:nowrap;
+}
+.nav-btn:hover{background:rgba(255,255,255,0.1);color:#fff;}
+.nav-btn.active-btn{background:var(--gold);border-color:var(--gold);color:#0c0800;}
+.slide-counter{font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--txt3);white-space:nowrap;}
+
+.slides-container{max-width:900px;margin:0 auto;padding:32px 24px 80px;}
+
+.slide{
+  display:none;
+  background:rgba(255,255,255,0.03);
+  border:1px solid var(--border2);
+  border-radius:20px;
+  padding:48px 48px 40px;
+  min-height:420px;
+  position:relative;
+  animation:fadeSlide 0.35s ease;
+}
+.slide.active{display:flex;flex-direction:column;gap:20px;}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+.slide-num-badge{
+  position:absolute;top:20px;right:24px;
+  font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:0.15em;text-transform:uppercase;color:var(--txt3);
+}
+
+.slide-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(20px,3vw,32px);
+  font-weight:700;color:#fff;line-height:1.2;letter-spacing:-0.02em;
+  border-left:3px solid var(--gold);
+  padding-left:16px;
+}
+.slide-title.cover-title{
+  font-size:clamp(28px,4vw,48px);
+  border-left:none;padding-left:0;
+  background:linear-gradient(120deg,var(--gold) 20%,var(--gold3) 80%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  text-align:center;margin:auto 0;
+}
+
+.slide-body{flex:1;display:flex;flex-direction:column;gap:16px;}
+
+.slide-subtitle{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--txt3);text-align:center;}
+
+.formula-box{
+  font-family:'Space Grotesk',monospace;
+  background:rgba(200,146,42,0.08);border:1px solid rgba(200,146,42,0.25);
+  border-radius:12px;padding:16px 20px;
+  font-size:clamp(13px,1.8vw,16px);font-weight:600;color:var(--gold2);
+  text-align:center;line-height:1.5;
+}
+
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;}
+.card{
+  background:var(--glass2);border:1px solid var(--border2);border-radius:12px;
+  padding:16px;display:flex;flex-direction:column;gap:8px;
+}
+.card-icon{font-size:22px;}
+.card-head{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:var(--gold2);}
+.card-body{font-size:12px;color:var(--txt2);line-height:1.5;}
+
+.table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border2);}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{background:rgba(200,146,42,0.1);color:var(--gold2);font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:10px 14px;text-align:left;}
+td{padding:10px 14px;border-top:1px solid var(--border2);color:var(--txt2);line-height:1.4;}
+tr:last-child td{color:var(--txt);font-weight:600;}
+
+.checklist{display:flex;flex-direction:column;gap:8px;}
+.check-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--txt2);line-height:1.5;}
+.check-item::before{content:'✦';color:var(--gold);flex-shrink:0;margin-top:2px;}
+
+.highlight-box{
+  background:rgba(26,122,74,0.08);border:1px solid rgba(34,168,99,0.2);
+  border-radius:10px;padding:14px 18px;font-size:13px;color:var(--txt2);line-height:1.6;
+}
+.highlight-box strong{color:var(--verde2);}
+
+.cover-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid var(--border);background:rgba(200,146,42,0.08);
+  padding:6px 18px;border-radius:100px;
+  font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:600;
+  letter-spacing:0.2em;text-transform:uppercase;color:var(--gold2);
+  margin:0 auto;
+}
+.cover-meta{font-size:13px;color:var(--txt3);text-align:center;margin-top:8px;}
+
+.vs-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:start;}
+.vs-label{background:rgba(200,146,42,0.12);border:1px solid rgba(200,146,42,0.3);border-radius:100px;padding:4px 14px;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;color:var(--gold2);text-align:center;align-self:start;margin-top:4px;}
+
+.steps-list{display:flex;flex-direction:column;gap:10px;}
+.step{display:flex;gap:12px;align-items:flex-start;}
+.step-num{
+  width:28px;height:28px;border-radius:50%;background:var(--gold);color:#0c0800;
+  font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;
+}
+.step-text{font-size:13px;color:var(--txt2);line-height:1.5;}
+.step-text strong{color:var(--txt);}
+
+.tag-row{display:flex;flex-wrap:wrap;gap:8px;}
+.tag{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(255,255,255,0.04);border:1px solid var(--border2);
+  border-radius:100px;padding:4px 12px;font-size:11px;color:var(--txt2);
+}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.col-section{display:flex;flex-direction:column;gap:10px;}
+.col-head{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold2);margin-bottom:4px;}
+
+.progress-dots{display:flex;gap:6px;justify-content:center;padding:8px 0;}
+.pdot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.1);cursor:pointer;transition:all 0.2s;}
+.pdot.done{background:var(--gold);}
+.pdot:hover{background:var(--gold2);}
+
+@media(max-width:600px){
+  .topbar{padding:10px 14px;}
+  .topbar-title{font-size:12px;}
+  .slide{padding:28px 20px 28px;}
+  .slides-container{padding:16px 12px 60px;}
+  .cards-grid{grid-template-columns:1fr;}
+  .two-col{grid-template-columns:1fr;}
+  .vs-grid{grid-template-columns:1fr;gap:8px;}
+  .vs-label{display:none;}
+}
+
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-info">
+    <div class="topbar-unit">Sesión 2 de 8 · CENFOTUR Cajamarca 2026</div>
+    <div class="topbar-title">Práctica y Trabajo Grupal</div>
+  </div>
+  <div class="topbar-nav">
+    <button class="nav-btn" id="prev-btn" onclick="prevSlide()">← Anterior</button>
+    <span class="slide-counter" id="counter">1 / 12</span>
+    <button class="nav-btn" id="next-btn" onclick="nextSlide()">Siguiente →</button>
+  </div>
+</div>
+
+<div class="slides-container">
+  <div class="progress-dots" id="dots"></div>
+  
+    <div class="slide active" data-slide="0">
+      <div class="slide-num-badge">01 / 12</div>
+      <div class="slide-body" style="align-items:center;justify-content:center;text-align:center;gap:24px;min-height:360px;">
+        <span class="cover-badge">Sesión 2 de 8</span>
+        <div class="slide-title cover-title">Costos, Precio y<br>Punto de Equilibrio</div>
+        <p class="slide-subtitle">Unidad I · Práctica y Trabajo Grupal</p>
+        <p style="font-size:14px;color:var(--txt2);">Resolvemos casos reales de negocios en Cajamarca · ⚡ 100% Práctica</p>
+        <p class="cover-meta">CENFOTUR · Cajamarca, Perú · 2026</p>
+      </div>
+    </div>
+<div class="slide" data-slide="1"><div class="slide-num-badge">02 / 12</div><div class="slide-title ">Plan de la Sesión — 120 Minutos</div><div class="slide-body">
+  <div class="cards-grid">
+    <div class="card"><div class="card-icon">📐</div><div class="card-head">BLOQUE 1 · 10 min — Repaso</div><div class="card-body">Margen bruta, Precio por margen, Punto de equilibrio</div></div>
+    <div class="card"><div class="card-icon">🔍</div><div class="card-head">BLOQUE 2 · 35 min — Caso Guiado</div><div class="card-body">Café y Quesos La Collpa — Cajamarca</div></div>
+    <div class="card"><div class="card-icon">👥</div><div class="card-head">BLOQUE 3 · 50 min — Trabajo Grupal</div><div class="card-body">3 casos reales: Restaurante, Hostal, Agencia</div></div>
+    <div class="card"><div class="card-icon">🏆</div><div class="card-head">BLOQUE 4 · 25 min — Plenaria</div><div class="card-body">Cada grupo expone sus resultados y reflexiones</div></div>
+  </div>
+  <div class="highlight-box">Sesión 100% práctica — No hay teoría nueva hoy. El aprendizaje real ocurre cuando resuelves el problema.</div>
+</div></div>
+<div class="slide" data-slide="2"><div class="slide-num-badge">03 / 12</div><div class="slide-title ">Fórmula 1 — Margen de Ganancia Bruta</div><div class="slide-body">
+  <div class="formula-box">Margen = (Ventas − Costo de Producción) / Ventas × 100</div>
+  <div class="two-col">
+    <div class="col-section">
+      <div class="col-head">Ejemplo Resuelto</div>
+      <div class="checklist">
+        <div class="check-item">Precio de venta: S/ 30.00</div>
+        <div class="check-item">Costo de producción: S/ 12.00</div>
+        <div class="check-item">Margen = (30 − 12) / 30 × 100</div>
+        <div class="check-item"><strong>Resultado: 60%</strong></div>
+      </div>
+    </div>
+    <div class="col-section">
+      <div class="col-head">Semáforo de Rentabilidad</div>
+      <div class="checklist">
+        <div class="check-item">🟢 Mayor a 40% — Excelente</div>
+        <div class="check-item">🟡 Entre 20% y 40% — Aceptable</div>
+        <div class="check-item">🔴 Menor a 20% — ⚠️ Revisar costos</div>
+      </div>
+    </div>
+  </div>
+</div></div>
+<div class="slide" data-slide="3"><div class="slide-num-badge">04 / 12</div><div class="slide-title ">Fórmula 2 — Precio de Venta por Margen</div><div class="slide-body">
+  <div class="formula-box">Precio de Venta = Costo del Producto ÷ (1 − Margen deseado)</div>
+  <div class="steps-list">
+    <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Identificar el costo del producto</strong> — S/ 65.00</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Definir el margen deseado</strong> — 38% → 0.38</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Aplicar la fórmula</strong> — 65 ÷ (1 − 0.38) = 65 ÷ 0.62</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Precio de venta final</strong> — S/ 104.84 → S/ 105</div></div>
+  </div>
+  <div class="highlight-box">💡 TIP: Redondea SIEMPRE hacia arriba y verifica que el precio sea competitivo en el mercado de Cajamarca.</div>
+</div></div>
+<div class="slide" data-slide="4"><div class="slide-num-badge">05 / 12</div><div class="slide-title ">Fórmula 3 — Punto de Equilibrio</div><div class="slide-body">
+  <div class="formula-box">PE = Costos Fijos Totales ÷ (Precio Unitario − Costo Variable Unitario)</div>
+  <div class="cards-grid">
+    <div class="card"><div class="card-icon">CF</div><div class="card-head">Costos Fijos Totales</div><div class="card-body">Alquiler, sueldos, servicios, licencias. No cambian con el volumen.</div></div>
+    <div class="card"><div class="card-icon">PVU</div><div class="card-head">Precio de Venta Unitario</div><div class="card-body">Lo que cobras por cada unidad o servicio vendido.</div></div>
+    <div class="card"><div class="card-icon">CVU</div><div class="card-head">Costo Variable Unitario</div><div class="card-body">Lo que cuesta producir cada unidad (materia prima, envase, etc.)</div></div>
+  </div>
+  <div class="highlight-box">⭐ PVU − CVU = MARGEN DE CONTRIBUCIÓN: cuánto aporta cada venta para pagar costos fijos</div>
+</div></div>
+<div class="slide" data-slide="5"><div class="slide-num-badge">06 / 12</div><div class="slide-title ">Caso Guiado — Café y Quesos La Collpa</div><div class="slide-body">
+  <div class="two-col">
+    <div class="col-section">
+      <div class="col-head">📍 Barrio La Collpa, Cajamarca</div>
+      <p style="font-size:12px;color:var(--txt2);">Tienda artesanal de productos lácteos y café cajamarquino. Producto estrella: Combo Café + Queso Fresco.</p>
+      <div class="checklist">
+        <div class="check-item">Café en grano: S/ 1.80</div>
+        <div class="check-item">Leche para el café: S/ 0.60</div>
+        <div class="check-item">Queso fresco 100g: S/ 2.40</div>
+        <div class="check-item">Envoltura y servilleta: S/ 0.20</div>
+        <div class="check-item"><strong>Total costo variable: S/ 5.00</strong></div>
+        <div class="check-item">Precio de venta combo: S/ 12.00</div>
+        <div class="check-item">Costos fijos totales/mes: S/ 1,880</div>
+      </div>
+    </div>
+    <div class="col-section">
+      <div class="col-head">Pregunta</div>
+      <div class="highlight-box">Doña Lucía quiere saber: ¿Cuántos combos necesita vender para no perder dinero?</div>
+      <p style="font-size:12px;color:var(--txt3);margin-top:12px;">¿Cuánto creen que es el margen de ganancia del combo? → Respondan en el chat</p>
+    </div>
+  </div>
+</div></div>
+<div class="slide" data-slide="6"><div class="slide-num-badge">07 / 12</div><div class="slide-title ">Resolución — Margen y Precio del Nuevo Producto</div><div class="slide-body">
+  <div class="two-col">
+    <div class="col-section">
+      <div class="col-head">Margen del Combo</div>
+      <div class="formula-box">Ganancia = S/ 12 − S/ 5 = S/ 7.00</div>
+      <div class="formula-box">Margen = (7 ÷ 12) × 100 = 58.3% ✓</div>
+    </div>
+    <div class="col-section">
+      <div class="col-head">Nuevo Producto — Pack Regalo</div>
+      <div class="checklist">
+        <div class="check-item">Queso madurado + café 250g</div>
+        <div class="check-item">Costo del pack: S/ 18.00</div>
+        <div class="check-item">Margen deseado: 45%</div>
+      </div>
+      <div class="formula-box">Precio = 18 ÷ (1 − 0.45) = 18 ÷ 0.55</div>
+      <div class="formula-box">Precio final: S/ 32.73 → S/ 33 ✓</div>
+    </div>
+  </div>
+</div></div>
+<div class="slide" data-slide="7"><div class="slide-num-badge">08 / 12</div><div class="slide-title ">Resolución — Punto de Equilibrio de La Collpa</div><div class="slide-body">
+  <div class="two-col">
+    <div class="col-section">
+      <div class="col-head">Cálculo Paso a Paso</div>
+      <div class="formula-box">MC = S/ 12 − S/ 5 = S/ 7.00</div>
+      <div class="formula-box">PE = S/ 1,880 ÷ S/ 7 = 269 combos/mes</div>
+      <div class="formula-box">Por día (26 días) = 269 ÷ 26 ≈ 11 combos/día</div>
+    </div>
+    <div class="col-section">
+      <div class="col-head">Meta: ganar S/ 1,500</div>
+      <div class="formula-box">(CF + Ganancia) ÷ MC = (1,880 + 1,500) ÷ 7</div>
+      <div class="formula-box">3,380 ÷ 7 = 483 combos/mes = 19/día</div>
+    </div>
+  </div>
+  <div class="highlight-box">✓ PE: 11 combos/día → Meta: 19 combos/día (solo 8 combos más)</div>
+</div></div>
+<div class="slide" data-slide="8"><div class="slide-num-badge">09 / 12</div><div class="slide-title ">¡Es el momento de practicar!</div><div class="slide-body">
+  <div class="cards-grid">
+    <div class="card"><div class="card-icon">🍽️</div><div class="card-head">GRUPO 1 — Cevichería El Cuarto</div><div class="card-body">Precio: S/ 35 | CV: S/ 14 | CF: S/ 3,200/mes</div></div>
+    <div class="card"><div class="card-icon">🛏️</div><div class="card-head">GRUPO 2 — Hostal La Ruta de los Frailones</div><div class="card-body">Precio: S/ 110 | CV: S/ 30 | CF: S/ 4,000/mes</div></div>
+    <div class="card"><div class="card-icon">🗺️</div><div class="card-head">GRUPO 3 — EcoAndes Tours</div><div class="card-body">Precio: S/ 95 | CV: S/ 62 | CF: S/ 2,600/mes</div></div>
+  </div>
+  <div class="highlight-box">📋 30 minutos en salas separadas · 4 preguntas por resolver · 1 vocero por grupo · Casos en el chat de Zoom</div>
+</div></div>
+<div class="slide" data-slide="9"><div class="slide-num-badge">10 / 12</div><div class="slide-title ">Plenaria — Comparamos los Tres Negocios</div><div class="slide-body">
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Métrica</th><th>🍽️ Cevichería</th><th>🛏️ Hostal</th><th>🗺️ EcoAndes</th></tr></thead>
+      <tbody>
+        <tr><td>Margen de Contribución</td><td>S/ 21</td><td>S/ 80</td><td>S/ 33</td></tr>
+        <tr><td>Punto de Equilibrio/mes</td><td>153 platos</td><td>50 noches</td><td>79 tours</td></tr>
+        <tr><td>PE diario (26 días)</td><td>6 platos/día</td><td>2 noches/día</td><td>3 tours/día</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="highlight-box">💬 Las celdas se completan en vivo durante la exposición de cada grupo. El vocero presenta en 3 minutos.</div>
+</div></div>
+<div class="slide" data-slide="10"><div class="slide-num-badge">11 / 12</div><div class="slide-title ">Aprendizajes del Día</div><div class="slide-body">
+  <div class="steps-list">
+    <div class="step"><div class="step-num">📊</div><div class="step-text"><strong>Las fórmulas son simples</strong> — El reto es tener los datos organizados. Con tres números (PVU, CVU, CF) puedes tomar decisiones de negocio.</div></div>
+    <div class="step"><div class="step-num">⚖️</div><div class="step-text"><strong>Sin punto de equilibrio, no sabes si ganas o pierdes</strong> — Muchos negocios confunden movimiento de caja con rentabilidad. Son cosas distintas.</div></div>
+    <div class="step"><div class="step-num">🚀</div><div class="step-text"><strong>Estos cálculos se pueden automatizar</strong> — Lo que hicieron hoy a mano se puede hacer en segundos. Próxima sesión: presupuestos básicos.</div></div>
+  </div>
+</div></div>
+<div class="slide" data-slide="11"><div class="slide-num-badge">12 / 12</div><div class="slide-title ">Cierre y Próximos Pasos</div><div class="slide-body">
+  <div class="two-col">
+    <div class="col-section">
+      <div class="col-head">📝 Para esta semana</div>
+      <div class="checklist">
+        <div class="check-item">Calcula el PE de tu propio negocio con datos reales</div>
+        <div class="check-item">Identifica tus 3 principales costos fijos</div>
+        <div class="check-item">Determina el margen bruto de tu producto estrella</div>
+      </div>
+    </div>
+    <div class="col-section">
+      <div class="col-head">🔜 Sesión 3 — Próxima clase</div>
+      <div class="checklist">
+        <div class="check-item">📈 Presupuesto de Ventas</div>
+        <div class="check-item">🛒 Presupuesto de Compras</div>
+        <div class="check-item">💰 Presupuesto de Caja</div>
+        <div class="check-item">📅 Planificación financiera mensual</div>
+      </div>
+    </div>
+  </div>
+</div></div>
+</div>
+
+<script>
+let current = 0;
+const total = 12;
+
+function buildDots() {
+  const c = document.getElementById('dots');
+  c.innerHTML = '';
+  for(let i=0;i<total;i++) {
+    const d = document.createElement('div');
+    d.className = 'pdot' + (i===current?' done':'');
+    d.onclick = () => goTo(i);
+    c.appendChild(d);
+  }
+}
+
+function goTo(n) {
+  document.querySelector('.slide.active')?.classList.remove('active');
+  current = n;
+  document.querySelector(`[data-slide="${n}"]`).classList.add('active');
+  document.getElementById('counter').textContent = (n+1) + ' / ' + total;
+  document.getElementById('prev-btn').style.opacity = n===0?'0.3':'1';
+  document.getElementById('next-btn').style.opacity = n===total-1?'0.3':'1';
+  buildDots();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function nextSlide() { if(current < total-1) goTo(current+1); }
+function prevSlide() { if(current > 0) goTo(current-1); }
+
+document.addEventListener('keydown', e => {
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') nextSlide();
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') prevSlide();
+});
+
+// Touch/swipe support
+let touchStartX = 0;
+document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, {passive:true});
+document.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if(Math.abs(dx) > 50) { if(dx < 0) nextSlide(); else prevSlide(); }
+});
+
+goTo(0);
+</script>
+</body>
+</html>

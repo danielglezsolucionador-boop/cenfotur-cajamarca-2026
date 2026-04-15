@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sesión 8 — Evaluación Final y Gran Cierre · CENFOTUR Cajamarca 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#060d1a;--navy2:#0c1e38;--navy3:#142d52;
+  --gold:#c8922a;--gold2:#e8b84b;--gold3:#f5d98a;
+  --verde:#1a7a4a;--verde2:#22a863;
+  --glass:rgba(255,255,255,0.04);--glass2:rgba(255,255,255,0.08);
+  --border:rgba(200,146,42,0.18);--border2:rgba(255,255,255,0.07);
+  --txt:rgba(255,255,255,0.9);--txt2:rgba(255,255,255,0.55);--txt3:rgba(255,255,255,0.25);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Manrope',sans-serif;background:var(--navy);color:var(--txt);line-height:1.6;min-height:100vh;}
+
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(6,13,26,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 24px;gap:16px;
+}
+.topbar-info{display:flex;flex-direction:column;gap:2px;}
+.topbar-unit{font-family:'Space Grotesk',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold2);}
+.topbar-title{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:#fff;}
+.topbar-nav{display:flex;align-items:center;gap:8px;}
+.nav-btn{
+  padding:6px 14px;border-radius:100px;
+  font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;
+  border:1px solid var(--border2);background:var(--glass2);color:var(--txt2);
+  cursor:pointer;transition:all 0.2s;white-space:nowrap;
+}
+.nav-btn:hover{background:rgba(255,255,255,0.1);color:#fff;}
+.nav-btn.active-btn{background:var(--gold);border-color:var(--gold);color:#0c0800;}
+.slide-counter{font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--txt3);white-space:nowrap;}
+
+.slides-container{max-width:900px;margin:0 auto;padding:32px 24px 80px;}
+
+.slide{
+  display:none;
+  background:rgba(255,255,255,0.03);
+  border:1px solid var(--border2);
+  border-radius:20px;
+  padding:48px 48px 40px;
+  min-height:420px;
+  position:relative;
+  animation:fadeSlide 0.35s ease;
+}
+.slide.active{display:flex;flex-direction:column;gap:20px;}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+.slide-num-badge{
+  position:absolute;top:20px;right:24px;
+  font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:0.15em;text-transform:uppercase;color:var(--txt3);
+}
+
+.slide-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(20px,3vw,32px);
+  font-weight:700;color:#fff;line-height:1.2;letter-spacing:-0.02em;
+  border-left:3px solid var(--gold);
+  padding-left:16px;
+}
+.slide-title.cover-title{
+  font-size:clamp(28px,4vw,48px);
+  border-left:none;padding-left:0;
+  background:linear-gradient(120deg,var(--gold) 20%,var(--gold3) 80%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  text-align:center;margin:auto 0;
+}
+
+.slide-body{flex:1;display:flex;flex-direction:column;gap:16px;}
+
+.slide-subtitle{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--txt3);text-align:center;}
+
+.formula-box{
+  font-family:'Space Grotesk',monospace;
+  background:rgba(200,146,42,0.08);border:1px solid rgba(200,146,42,0.25);
+  border-radius:12px;padding:16px 20px;
+  font-size:clamp(13px,1.8vw,16px);font-weight:600;color:var(--gold2);
+  text-align:center;line-height:1.5;
+}
+
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;}
+.card{
+  background:var(--glass2);border:1px solid var(--border2);border-radius:12px;
+  padding:16px;display:flex;flex-direction:column;gap:8px;
+}
+.card-icon{font-size:22px;}
+.card-head{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:var(--gold2);}
+.card-body{font-size:12px;color:var(--txt2);line-height:1.5;}
+
+.table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border2);}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{background:rgba(200,146,42,0.1);color:var(--gold2);font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:10px 14px;text-align:left;}
+td{padding:10px 14px;border-top:1px solid var(--border2);color:var(--txt2);line-height:1.4;}
+tr:last-child td{color:var(--txt);font-weight:600;}
+
+.checklist{display:flex;flex-direction:column;gap:8px;}
+.check-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--txt2);line-height:1.5;}
+.check-item::before{content:'✦';color:var(--gold);flex-shrink:0;margin-top:2px;}
+
+.highlight-box{
+  background:rgba(26,122,74,0.08);border:1px solid rgba(34,168,99,0.2);
+  border-radius:10px;padding:14px 18px;font-size:13px;color:var(--txt2);line-height:1.6;
+}
+.highlight-box strong{color:var(--verde2);}
+
+.cover-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid var(--border);background:rgba(200,146,42,0.08);
+  padding:6px 18px;border-radius:100px;
+  font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:600;
+  letter-spacing:0.2em;text-transform:uppercase;color:var(--gold2);
+  margin:0 auto;
+}
+.cover-meta{font-size:13px;color:var(--txt3);text-align:center;margin-top:8px;}
+
+.vs-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:start;}
+.vs-label{background:rgba(200,146,42,0.12);border:1px solid rgba(200,146,42,0.3);border-radius:100px;padding:4px 14px;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;color:var(--gold2);text-align:center;align-self:start;margin-top:4px;}
+
+.steps-list{display:flex;flex-direction:column;gap:10px;}
+.step{display:flex;gap:12px;align-items:flex-start;}
+.step-num{
+  width:28px;height:28px;border-radius:50%;background:var(--gold);color:#0c0800;
+  font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;
+}
+.step-text{font-size:13px;color:var(--txt2);line-height:1.5;}
+.step-text strong{color:var(--txt);}
+
+.tag-row{display:flex;flex-wrap:wrap;gap:8px;}
+.tag{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(255,255,255,0.04);border:1px solid var(--border2);
+  border-radius:100px;padding:4px 12px;font-size:11px;color:var(--txt2);
+}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.col-section{display:flex;flex-direction:column;gap:10px;}
+.col-head{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold2);margin-bottom:4px;}
+
+.progress-dots{display:flex;gap:6px;justify-content:center;padding:8px 0;}
+.pdot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.1);cursor:pointer;transition:all 0.2s;}
+.pdot.done{background:var(--gold);}
+.pdot:hover{background:var(--gold2);}
+
+@media(max-width:600px){
+  .topbar{padding:10px 14px;}
+  .topbar-title{font-size:12px;}
+  .slide{padding:28px 20px 28px;}
+  .slides-container{padding:16px 12px 60px;}
+  .cards-grid{grid-template-columns:1fr;}
+  .two-col{grid-template-columns:1fr;}
+  .vs-grid{grid-template-columns:1fr;gap:8px;}
+  .vs-label{display:none;}
+}
+
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-info">
+    <div class="topbar-unit">Sesión 8 de 8 · CENFOTUR Cajamarca 2026</div>
+    <div class="topbar-title">Evaluación Final y Gran Cierre</div>
+  </div>
+  <div class="topbar-nav">
+    <button class="nav-btn" id="prev-btn" onclick="prevSlide()">← Anterior</button>
+    <span class="slide-counter" id="counter">1 / 8</span>
+    <button class="nav-btn" id="next-btn" onclick="nextSlide()">Siguiente →</button>
+  </div>
+</div>
+
+<div class="slides-container">
+  <div class="progress-dots" id="dots"></div>
+  
+    <div class="slide active" data-slide="0">
+      <div class="slide-num-badge">01 / 8</div>
+      <div class="slide-body" style="align-items:center;justify-content:center;text-align:center;gap:24px;min-height:360px;">
+        <span class="cover-badge">Sesión 8 de 8</span>
+        <div class="slide-title cover-title">Evaluación Final<br>y Gran Cierre</div>
+        <p class="slide-subtitle">Gran Cierre · Certificación</p>
+        <p style="font-size:14px;color:var(--txt2);">Lo que construiste en 8 sesiones, lo demuestras hoy.</p>
+        <p class="cover-meta">CENFOTUR · Cajamarca, Perú · 2026</p>
+      </div>
+    </div>
+<div class="slide" data-slide="1"><div class="slide-num-badge">02 / 8</div><div class="slide-title ">Lo que Construiste en 8 Sesiones</div><div class="slide-body">
+  <div class="cards-grid">
+    <div class="card"><div class="card-icon">I</div><div class="card-head">COSTOS Y PRECIO</div><div class="card-body">Costo total · Costos fijos vs. variables · Margen bruta · Precio = Costo / (1-margen) · Punto de equilibrio</div></div>
+    <div class="card"><div class="card-icon">II</div><div class="card-head">PRESUPUESTOS</div><div class="card-body">Presupuesto maestro · Presupuesto de ventas · Compras · Caja · Flujo neto de efectivo</div></div>
+    <div class="card"><div class="card-icon">III</div><div class="card-head">FINANZAS</div><div class="card-body">Rentabilidad · Riesgo · Liquidez · Sistema financiero peruano · Crédito formal vs. informal · Tasa efectiva</div></div>
+    <div class="card"><div class="card-icon">IV</div><div class="card-head">ESTADOS FINANCIEROS</div><div class="card-body">Balance General · Estado de Resultados · Activo = Pasivo + Patrimonio · Utilidad bruta → neta · Flujo de caja</div></div>
+  </div>
+  <div class="highlight-box">Hoy integras las 4 unidades en un solo caso real.</div>
+</div></div>
+<div class="slide" data-slide="2"><div class="slide-num-badge">03 / 8</div><div class="slide-title ">El Tablero del Empresario — 6 Fórmulas</div><div class="slide-body">
+  <div class="cards-grid">
+    <div class="card"><div class="card-icon">📊</div><div class="card-head">Costo Total</div><div class="card-body">Producción + Admin + Ventas + Financiero</div></div>
+    <div class="card"><div class="card-icon">📈</div><div class="card-head">Margen Bruto</div><div class="card-body">(Ventas − Costo) / Ventas × 100</div></div>
+    <div class="card"><div class="card-icon">🏷️</div><div class="card-head">Precio de Venta</div><div class="card-body">Costo del producto / (1 − margen)</div></div>
+    <div class="card"><div class="card-icon">⚖️</div><div class="card-head">Punto de Equilibrio</div><div class="card-body">Costos Fijos / Margen de Contribución</div></div>
+    <div class="card"><div class="card-icon">💡</div><div class="card-head">Margen de Contribución</div><div class="card-body">Precio unitario − Costo variable unitario</div></div>
+    <div class="card"><div class="card-icon">📋</div><div class="card-head">Ecuación Contable</div><div class="card-body">Activo = Pasivo + Patrimonio</div></div>
+  </div>
+</div></div>
+<div class="slide" data-slide="3"><div class="slide-num-badge">04 / 8</div><div class="slide-title ">Caso Integrador — La Posada del Cerro Cumbe Mayo</div><div class="slide-body">
+  <div class="two-col">
+    <div class="col-section">
+      <div class="col-head">Perfil del Negocio</div>
+      <div class="checklist">
+        <div class="check-item">Propietaria: María Soledad Vargas</div>
+        <div class="check-item">Turismo vivencial · 24 km de Cajamarca</div>
+        <div class="check-item">6 hab. (cap. 12 pers.)</div>
+        <div class="check-item">Precio alojamiento: S/ 150/noche · Costo: S/ 35</div>
+        <div class="check-item">Precio tour: S/ 85/persona · Costo: S/ 30</div>
+        <div class="check-item">Costos fijos: S/ 3,500/mes</div>
+        <div class="check-item">Ventas 2024: S/ 62,400 anuales</div>
+      </div>
+    </div>
+    <div class="col-section">
+      <div class="col-head">6 Preguntas · 45 minutos</div>
+      <div class="steps-list">
+        <div class="step"><div class="step-num">I</div><div class="step-text"><strong>Margen bruta por servicio</strong> — ¿Cuál es más rentable: alojamiento o tour?</div></div>
+        <div class="step"><div class="step-num">I</div><div class="step-text"><strong>Punto de equilibrio</strong> — ¿Cuántas noches/mes para no perder dinero?</div></div>
+        <div class="step"><div class="step-num">I</div><div class="step-text"><strong>Precio temporada alta</strong> — Precio con margen del 42% para alojamiento</div></div>
+        <div class="step"><div class="step-num">IV</div><div class="step-text"><strong>Balance General</strong> — ¿Qué % pertenece a la propietaria?</div></div>
+        <div class="step"><div class="step-num">IV</div><div class="step-text"><strong>Estado de Resultados</strong> — Hasta Utilidad Neta. ¿Fue buen año?</div></div>
+        <div class="step"><div class="step-num">III</div><div class="step-text"><strong>Finanzas</strong> — Ampliar 3 hab.: S/ 45,000. ¿Qué crédito elegir?</div></div>
+      </div>
+    </div>
+  </div>
+</div></div>
+<div class="slide" data-slide="4"><div class="slide-num-badge">05 / 8</div><div class="slide-title ">Solucionario — Aprendemos Juntos</div><div class="slide-body">
+  <div class="cards-grid">
+    <div class="card"><div class="card-icon">✓ Margen Bruta</div><div class="card-head">Alojamiento: (150-35)/150×100 = 76.7% | Tour: (85-30)/85×100 = 64.7% → El alojamiento es más rentable</div><div class="card-body"></div></div>
+    <div class="card"><div class="card-icon">✓ Punto de Equilibrio</div><div class="card-head">MC = 150-35 = S/ 115/noche | PE = S/ 3,500 / S/ 115 = 30.4 → Necesita ≈ 31 noches/mes</div><div class="card-body"></div></div>
+    <div class="card"><div class="card-icon">✓ Precio Temporada Alta</div><div class="card-head">Precio = S/ 35 / (1-0.42) = S/ 35 / 0.58 = S/ 60.34</div><div class="card-body"></div></div>
+    <div class="card"><div class="card-icon">✓ Balance General</div><div class="card-head">Activo total: S/ 98,000 | Pasivo total: S/ 60,000 | Patrimonio = S/ 38,000 (38.8%)</div><div class="card-body"></div></div>
+    <div class="card"><div class="card-icon">✓ Estado de Resultados</div><div class="card-head">Ventas: S/ 62,400 | Costos: S/ 42,000 | Utilidad Neta ≈ S/ 14,100 — Buen año ✅</div><div class="card-body"></div></div>
+    <div class="card"><div class="card-icon">✓ Crédito para Ampliación</div><div class="card-head">Crédito formal (SBS): menor tasa, contrato claro | Producto: Crédito MYPE o Leasing | Evitar crédito informal</div><div class="card-body"></div></div>
+  </div>
+</div></div>
+<div class="slide" data-slide="5"><div class="slide-num-badge">06 / 8</div><div class="slide-title ">Lo que Puedes Hacer HOY en tu Negocio</div><div class="slide-body">
+  <div class="cards-grid">
+    <div class="card"><div class="card-icon">✅</div><div class="card-head">Calcular mi costo real</div><div class="card-body">Por producto o servicio.</div></div>
+    <div class="card"><div class="card-icon">✅</div><div class="card-head">Fijar precios con criterio</div><div class="card-body">Usando el margen técnico, no el ojo.</div></div>
+    <div class="card"><div class="card-icon">✅</div><div class="card-head">Encontrar mi PE mensual</div><div class="card-body">Saber exactamente cuánto vender cada día.</div></div>
+    <div class="card"><div class="card-icon">✅</div><div class="card-head">Elaborar presupuesto</div><div class="card-body">De ventas y de caja básico.</div></div>
+    <div class="card"><div class="card-icon">✅</div><div class="card-head">Evaluar un crédito</div><div class="card-body">Calcular la tasa efectiva real.</div></div>
+    <div class="card"><div class="card-icon">✅</div><div class="card-head">Leer un Balance General</div><div class="card-body">E interpretar mi patrimonio.</div></div>
+    <div class="card"><div class="card-icon">✅</div><div class="card-head">Construir Estado de Resultados</div><div class="card-body">Básico para mi negocio.</div></div>
+    <div class="card"><div class="card-icon">✅</div><div class="card-head">Distinguir crédito formal</div><div class="card-body">De informal y elegir con criterio.</div></div>
+  </div>
+</div></div>
+<div class="slide" data-slide="6"><div class="slide-num-badge">07 / 8</div><div class="slide-title ">¿Qué Sigue Ahora?</div><div class="slide-body">
+  <div class="cards-grid">
+    <div class="card"><div class="card-icon">🎯</div><div class="card-head">OPCIÓN 1 — Aplicar lo aprendido solo</div><div class="card-body">Con tu landing del cierre, las 6 fórmulas y las plantillas del curso ya tienes todo lo que necesitas para empezar. Es tuyo. Sin costo adicional.</div></div>
+    <div class="card"><div class="card-icon">📈</div><div class="card-head">OPCIÓN 2 — Ir al siguiente nivel</div><div class="card-body">Si quieres profundizar — flujo de caja complejo, análisis de inversiones, estructuración de créditos — hay un siguiente paso disponible.</div></div>
+    <div class="card"><div class="card-icon">🤝</div><div class="card-head">OPCIÓN 3 — Asesoría personalizada</div><div class="card-body">Una pregunta sobre tu negocio específico puede tener un impacto mayor que toda la teoría. La consultoría directa existe.</div></div>
+  </div>
+  <div class="highlight-box"><a href="https://wa.me/51925825254?text=Hola%20M.Sc.%20Daniel%2C%20completé%20el%20curso%20CENFOTUR%20Cajamarca%202026%20y%20quisiera%20conversar%20sobre%20mi%20negocio." style="color:var(--gold2);font-weight:700;" target="_blank">📲 Agendar conversación con M.Sc. Daniel González</a></div>
+</div></div>
+<div class="slide" data-slide="7"><div class="slide-num-badge">08 / 8</div><div class="slide-title ">✓ Curso Completado · 8 de 8 Sesiones</div><div class="slide-body">
+  <div class="slide-body" style="align-items:center;justify-content:center;text-align:center;gap:24px;">
+    <p style="font-size:clamp(18px,3vw,28px);color:var(--txt2);font-style:italic;line-height:1.4;max-width:600px;">
+      "Lo que aprendiste aquí<br>no se queda en esta pantalla.<br><strong style="color:#fff;">SE QUEDA EN TU NEGOCIO.</strong>"
+    </p>
+    <div class="tag-row" style="justify-content:center;">
+      <span class="tag">✓ Costos y Precio</span>
+      <span class="tag">✓ Presupuestos</span>
+      <span class="tag">✓ Finanzas</span>
+      <span class="tag">✓ Estados Financieros</span>
+    </div>
+    <p style="font-size:13px;color:var(--txt3);">Gracias, Cajamarca. Hasta pronto.<br>M.Sc. Daniel González Hernández · CENFOTUR Cajamarca · 2026</p>
+  </div>
+</div></div>
+</div>
+
+<script>
+let current = 0;
+const total = 8;
+
+function buildDots() {
+  const c = document.getElementById('dots');
+  c.innerHTML = '';
+  for(let i=0;i<total;i++) {
+    const d = document.createElement('div');
+    d.className = 'pdot' + (i===current?' done':'');
+    d.onclick = () => goTo(i);
+    c.appendChild(d);
+  }
+}
+
+function goTo(n) {
+  document.querySelector('.slide.active')?.classList.remove('active');
+  current = n;
+  document.querySelector(`[data-slide="${n}"]`).classList.add('active');
+  document.getElementById('counter').textContent = (n+1) + ' / ' + total;
+  document.getElementById('prev-btn').style.opacity = n===0?'0.3':'1';
+  document.getElementById('next-btn').style.opacity = n===total-1?'0.3':'1';
+  buildDots();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function nextSlide() { if(current < total-1) goTo(current+1); }
+function prevSlide() { if(current > 0) goTo(current-1); }
+
+document.addEventListener('keydown', e => {
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') nextSlide();
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') prevSlide();
+});
+
+// Touch/swipe support
+let touchStartX = 0;
+document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, {passive:true});
+document.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if(Math.abs(dx) > 50) { if(dx < 0) nextSlide(); else prevSlide(); }
+});
+
+goTo(0);
+</script>
+</body>
+</html>
